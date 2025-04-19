@@ -1,0 +1,53 @@
+<div class="wrapper">
+  <div class="pdf-view">
+    <div class="hide-list-actions">
+      <input type="checkbox" id="btnExpand" hidden />
+      <label for="btnExpand" class="btnExpand-icon">
+        <fa-icon [icon]="icons.faChevronDown"></fa-icon>
+      </label>
+      <div class="list-actions">
+        <label for="btnExpand" class="btnCollspand-icon">
+          <fa-icon [icon]="icons.faChevronUp"></fa-icon>
+        </label>
+        <div class="zoom group">
+          <p class="text-group">Zoom</p>
+          <button mat-mini-fab class="btn-icons" (click)="onZoomOut()">
+            <fa-icon [icon]="icons.faMagnifyingGlassMinus"></fa-icon>
+          </button>
+          <button mat-mini-fab class="btn-icons" (click)="onZoomIn()">
+            <fa-icon [icon]="icons.faMagnifyingGlassPlus"></fa-icon>
+          </button>
+        </div>
+
+        <div class="zoom group">
+          <p class="text-group">Page</p>
+          <button mat-mini-fab class="btn-icons" (click)="onChangePageOfType('-')">
+            <fa-icon [icon]="icons.faCircleMinus"></fa-icon>
+          </button>
+          <input type="number" class="page-text" [value]="pageCur()" [max]="maxPage()" min="1" disabled />
+          <button mat-mini-fab class="btn-icons" (click)="onChangePageOfType('+')">
+            <fa-icon [icon]="icons.faCirclePlus"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <pdf-viewer
+      [src]="src"
+      [rotation]="0"
+      [original-size]="true"
+      [show-all]="true"
+      [fit-to-page]="false"
+      [zoom]="zoom()"
+      [zoom-scale]="'page-width'"
+      [stick-to-page]="false"
+      [render-text]="true"
+      [external-link-target]="'blank'"
+      [autoresize]="true"
+      [show-borders]="false"
+      style="width: 100%; height: 100vh"
+      (after-load-complete)="OnLoadComplete($event)"
+      [page]="pageCur()"
+    ></pdf-viewer>
+  </div>
+</div>

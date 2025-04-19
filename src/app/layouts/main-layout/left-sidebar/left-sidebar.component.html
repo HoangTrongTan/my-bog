@@ -1,0 +1,26 @@
+<div class="wrapper" [ngClass]="({ expanWidth: openMenu() })">
+  <div class="boxes-btn">
+    <button tabindex="0" (blur)="onBlur()">
+      <icon-bar-toggle (toggle)="onClick()" [active]="openMenu()" />
+    </button>
+  </div>
+  <div class="routes">
+    <div class="boxes-btn boxes-btn-list" [ngClass]="({ expan: openMenu })">
+      @for (item of menu(); track $index) {
+      <button
+        [routerLink]="['/', item.path]"
+        matTooltipPosition="right"
+        [matTooltip]="item.toolltip"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <p>{{ item.toolltip }}</p>
+      </button>
+      }
+    </div>
+  </div>
+  <div class="boxes-btn">
+    <button tabindex="0" [routerLink]="path.HOME">
+      <fa-icon [icon]="faHouseChimney"></fa-icon>
+    </button>
+  </div>
+</div>

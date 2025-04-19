@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <h3 class="t-center title">CERTIFICATES</h3>
+  <div class="menu-taps">
+    <mat-tab-group class="group-taps">
+      @for(tap of listCertificates; track tap.title){
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <!-- <fa-icon [icon]="tap.icon"></fa-icon> -->
+          {{ tap.title }}
+        </ng-template>
+        <app-list [lists]="tap.access"/>
+      </mat-tab>
+      }
+    </mat-tab-group>
+  </div>
+</div>

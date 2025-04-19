@@ -1,0 +1,79 @@
+<div class="wrapper">
+  <div class="header">
+    <div class="info">
+      <p>TANTIENTI - BETTER EVERY DAY 🚀</p>
+      <p>software engineer</p>
+    </div>
+    <div class="my-img">
+      <img src="/access/imgs/signatral2.png" alt="err" />
+    </div>
+  </div>
+  <div class="card">
+    <div class="introduct">
+      <div class="cmd">
+        <div class="dot-hacker" style="--dot: #ee3333"></div>
+        <div class="dot-hacker" style="--dot: #eeee00"></div>
+        <div class="dot-hacker" style="--dot: #00bb00"></div>
+      </div>
+      <div class="info">
+        <div class="boxes">
+          <p>WELCOME TO MY BLOG! 🚀</p>
+          <app-text-render [text]="textRuns" />
+          <div>
+            <button class="learn-more">
+              <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+              </span>
+              <span class="button-text">ABOUT ME !</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="top-social flex-center">
+      <div class="boxes-icons flex-center">
+        <div class="items-list">
+          @for(item of icons; track $index){
+          <div
+            class="item-icon"
+            matTooltipPosition="below"
+            [matTooltip]="item.name"
+            [ngStyle]="{
+              '--color-hover': item.color
+            }"
+          >
+            <div class="overlay"></div>
+            <fa-icon class="icon-social" [icon]="item.icon"></fa-icon>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="my-img-border">
+    </div>
+    <div class="my-img">
+      <img src="/access/imgs/me.png" alt="err" />
+    </div>
+  </div>
+  <!-- ------------------------------------------- -->
+  <div class="download-csv">
+    <button class="Btn" [routerLink]="PATH.VIEW_MY_CV">
+      <fa-icon [icon]="faEye" class="eye"></fa-icon>
+      <fa-icon [icon]="faFaceGrinHearts" class="face"></fa-icon>
+      <p>MY CV</p>
+    </button>
+  </div>
+  <!-- ------------------------------------------- -->
+  <div class="details-knolage flex-center">
+    @for(item of knolages; track $index){
+      <div class="knolage-items flex-center">
+        <p>{{ item.count }}</p>
+        <p>{{ item.text }}</p>
+      </div>
+    }
+  </div>
+  <!-- ------------------------------------------- -->
+  <div class="footer">
+    <p>© 2025 trong tan</p>
+  </div>
+</div>

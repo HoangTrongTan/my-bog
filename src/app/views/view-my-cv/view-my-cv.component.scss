@@ -1,0 +1,103 @@
+$bgMain: #282936;
+.mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
+
+.wrapper {
+  padding: 7px 0;
+  .btnExpand-icon,
+  .btnCollspand-icon {
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 10px;
+    padding: 2px 10px;
+    color: #8c8c8e8f;
+    transition: all 0.7s linear;
+    &:hover {
+      background: #84838346;
+    }
+    &:hover {
+      color: #37383e;
+    }
+  }
+
+  .pdf-view {
+    position: relative;
+    overflow: hidden;
+    .hide-list-actions {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      .btnExpand-icon {
+        position: absolute;
+      }
+      #btnExpand:checked ~ .btnExpand-icon {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      .list-actions {
+        display: flex;
+        position: absolute;
+        padding: 15px 15px 25px 15px;
+        background: $bgMain;
+        border-radius: 10px;
+        gap: 1em;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%) translateY(-100%);
+        z-index: 100;
+        transition: all 0.3s linear;
+        .btnCollspand-icon {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .group {
+          position: relative;
+          padding: 9px 6px 6px 6px;
+          border: 2px solid #8c8c8e;
+          border-radius: 7px;
+          display: flex;
+          gap: 0.3em;
+          .mat-mdc-mini-fab {
+            width: 30px;
+            height: 30px;
+          }
+          .text-group {
+            position: absolute;
+            background: $bgMain;
+            color: #8c8c8e;
+            padding: 0 6px;
+            top: -10px;
+            font-size: 13px;
+            font-weight: bold;
+            font-size: 10px;
+          }
+          .page-text {
+            width: 30px;
+            padding: 7px 5px;
+            border: none;
+            outline: none;
+            border-radius: 7px;
+            -moz-appearance: textfield; /* Firefox */
+            appearance: textfield;
+
+            /* Ẩn spinner trên Firefox */
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+            caret-color: $bgMain;
+          }
+        }
+      }
+
+      #btnExpand:checked ~ .list-actions {
+        transform: translateX(-50%) translateY(10px);
+      }
+    }
+  }
+}

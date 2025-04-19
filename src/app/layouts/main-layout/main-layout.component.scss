@@ -1,0 +1,20 @@
+
+.warpper {
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  background: no-repeat center url(/access/imgs/hinh-nen-vu-tru-2.jpg), #242527;
+  background-blend-mode: overlay;
+  overflow: hidden;
+
+  .content {
+    flex: 1;
+    .body {
+      height: 100%;
+      overflow-y: overlay;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none;
+    }
+  }
+}

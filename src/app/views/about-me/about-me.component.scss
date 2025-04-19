@@ -1,0 +1,137 @@
+$bookWidth: 450px;
+$bookHeight: 600px;
+$bookSpancing: 10px;
+$radiusPage: 5px;
+
+.wrapper {
+  position: relative;
+  padding: 10px;
+  .book-box {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+  }
+  .center {
+    text-align: center;
+  }
+
+  .flip-box {
+    flex-shrink: 0;
+    flex-grow: 0;
+    width: calc($bookWidth * 2);
+    height: $bookHeight;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    position: relative;
+    .leaf {
+      transform-style: preserve-3d;
+      position: absolute;
+      height: 100%;
+      width: 50%;
+      left: 50%;
+      transform-origin: left 0px;
+      transform: rotate3d(0, 0, 0, 0deg);
+      z-index: var(--z-index);
+      transition: transform 1s linear;
+      border-radius: 7px;
+      .bg-fit-content{
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .cover {
+        background-image: url(/access/imgs/cover.png);
+      }
+      .cover-back-bg{
+        background-image: url(/access/imgs/cover2.png);
+      }
+      .container-3d {
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        #canvas3d {
+          width: 320px !important;
+          height: 320px !important;
+          max-width: fit-content;
+        }
+      }
+      .page-index-f{
+        background-image: url(/access/imgs/pageBook2.png);
+        background-size: 100% 100%;
+      }
+      .page-index-b{
+        background-image: url(/access/imgs/flipPageBook.png);
+        background-size: 100% 100%;
+      }
+      .page {
+        transform-style: preserve-3d;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 80px 40px 20px 40px;
+        border-radius: 7px;
+        p {
+          font-family: "Garamond", "Times New Roman", serif;
+          color: #5C4033;
+          font-style: italic;
+          text-align: justify;
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+          font-size: 14px;
+          line-height: 1.6;
+          font-weight: bold;
+        }
+      }
+      .index {
+        font-weight: bold;
+      }
+      .front {
+        transform: rotate3d(0, 1, 0, 0deg) translate3d(0, 0, 0.1px);
+        .index {
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+        }
+      }
+      .back {
+        transform: rotate3d(0, 1, 0, 180deg) translate3d(0, 0, 0.1px);
+        .index {
+          position: absolute;
+          left: 10px;
+          bottom: 10px;
+        }
+      }
+    }
+  }
+  .pages-btn {
+    flex-shrink: 0;
+    flex-grow: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    padding-top: 20px;
+    .btn-book {
+      .btn-item {
+        cursor: pointer;
+        padding: 10px 15px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 4px rgba(255, 255, 255, 0.623);
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.144),
+          rgba(255, 255, 255, 0.247),
+          rgba(255, 255, 255, 0.39)
+        );
+        display: inline-block;
+        transition: box-shadow 0.15s, transform 0.15s;
+        border-color: rgba(255, 255, 255, 0.623);
+        &:active {
+          box-shadow: none;
+          transform: translateY(2px);
+        }
+      }
+    }
+  }
+}

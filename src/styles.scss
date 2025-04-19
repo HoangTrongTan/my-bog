@@ -1,0 +1,69 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+} /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.ng2-pdf-viewer-container {
+  overflow-y: scroll !important;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: 1px;
+  scrollbar-color: #8C8C8E transparent;
+  scrollbar-gutter: stable;
+}
+.mat-mdc-text-field-wrapper{
+  height: auto !important;
+}
+
+.t-center{
+  text-align: center;
+}
+
+.mdc-tab__text-label{
+  color: #f0f0f0 !important;
+}
+
+.mat-mdc-tab-body-wrapper{
+  height: 100%;
+}
+.mat-mdc-tab-body-content{
+  display: flex;
+  position: relative;
+}
+.lightboxOverlay{
+  width: 100% !important;
+  height: 100% !important;
+}
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
