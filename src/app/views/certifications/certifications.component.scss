@@ -1,22 +1,24 @@
-.mat-mdc-tab-body-wrapper{
-    height: 100%;
+.mat-mdc-tab-body-wrapper {
+  height: 100%;
 }
-.wrapper{
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    .title{
-        padding: 20px 0;
-        font-size: 20px;
-        color: #f0f0f0;
-        letter-spacing: 3px;
+.wrapper {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  .title {
+    padding: 20px 0;
+    font-size: 20px;
+    color: #f0f0f0;
+    letter-spacing: 3px;
+  }
+  .menu-taps {
+    flex: 1;
+    width: clamp(300px, 100%, 100%);
+    .group-taps {
+      height: 100%;
+      width: clamp(300px, 100%, 100%);
     }
-    .menu-taps{
-        flex: 1;
-        .group-taps{
-            height: 100%;
-            
-        }
-    }
+  }
 }

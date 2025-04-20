@@ -1,5 +1,8 @@
-import { AfterViewInit, Component, input, output } from '@angular/core';
+import { AfterViewInit, Component, input } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LightboxModule, Lightbox } from 'ngx-lightbox';
+import { IconDefinition, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+
 type Tthumb = {
   src: string;
   caption: string;
@@ -7,15 +10,18 @@ type Tthumb = {
 };
 @Component({
   selector: 'app-list',
-  imports: [LightboxModule],
+  imports: [LightboxModule, FontAwesomeModule],
   standalone: true,
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements AfterViewInit {
-  lists = input<{ img: string; link: string }[]>([]);
+  lists = input<{ img: string; link: string; }[]>([]);
   private urlBase = '/access/imgs/certificate/';
   _album: Tthumb[] = [];
+  icons = {
+    faUpRightFromSquare,
+  };
 
   ngAfterViewInit(): void {
     this._album = this.lists().map((item) => ({

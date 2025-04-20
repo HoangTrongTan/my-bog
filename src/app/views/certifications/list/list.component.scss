@@ -4,15 +4,46 @@
   overflow-y: scroll;
   padding: 15px;
   scrollbar-width: none;
+
   .list-certificates {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    img {
+    .wrapp-imgs {
+      position: relative;
       width: 300px;
       height: 200px;
-      cursor: pointer;
-      // flex: 1 0 0;
+      .link-icons {
+        position: absolute;
+        top: 5px;
+        right: 16px;
+        color: aliceblue;
+        padding: 10px;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        background-color: rgb(255, 230, 0);
+        cursor: pointer;
+        transition: all 0.1s linear;
+        &:hover{
+          top: 3px;
+          right: 13px;
+          transform: scale(1.1);
+        }
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        // flex: 1 0 0;
+        transition: mask-composite 0.3s linear;
+        -webkit-mask: url("/access/imgs/top-right-corner-2.png") no-repeat,
+          linear-gradient(#000000 0 0);
+        mask-size: auto auto;
+        mask-position: 100% 0;
+        mask-composite: exclude;
+        &:hover {
+        }
+      }
     }
   }
 }

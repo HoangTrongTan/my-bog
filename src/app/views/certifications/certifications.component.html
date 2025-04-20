@@ -1,14 +1,22 @@
 <div class="wrapper">
   <h3 class="t-center title">CERTIFICATES</h3>
   <div class="menu-taps">
-    <mat-tab-group class="group-taps">
+    <mat-tab-group class="group-taps" #tabGroup>
       @for(tap of listCertificates; track tap.title){
       <mat-tab>
+        @if (isString(tap.icon)) {
         <ng-template mat-tab-label>
-          <!-- <fa-icon [icon]="tap.icon"></fa-icon> -->
+          <span style="margin-right: 7px;" [innerHTML]="tap.icon"></span>
           {{ tap.title }}
         </ng-template>
-        <app-list [lists]="tap.access"/>
+        } @else {
+
+        <ng-template mat-tab-label>
+          <fa-icon style="margin-right: 7px;" [icon]="tap.icon"></fa-icon>
+          {{ tap.title }}
+        </ng-template>
+        }
+        <app-list [lists]="tap.access" />
       </mat-tab>
       }
     </mat-tab-group>

@@ -1,7 +1,16 @@
 <div class="wrapper">
   <div class="list-certificates">
     @for(img of lists(); track $index; let i = $index){
-    <img [src]="'/access/imgs/certificate/' + img.img" alt="" (click)="open(i)" />
+    <div class="wrapp-imgs">
+      <img
+        [src]="'/access/imgs/certificate/' + img.img"
+        alt=""
+        (click)="open(i)"
+      />
+      <a class="link-icons" target="_blank" [href]="img.link">
+        <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
+      </a>
+    </div>
     }
   </div>
 </div>
