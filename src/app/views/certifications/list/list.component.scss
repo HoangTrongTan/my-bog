@@ -13,6 +13,10 @@
       position: relative;
       width: 300px;
       height: 200px;
+      transition: all 0.2s linear;
+      &:hover{
+        box-shadow: 0 0px 3px 3px #ffffff7f;
+      }
       .link-icons {
         position: absolute;
         top: 5px;
