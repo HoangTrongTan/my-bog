@@ -1,9 +1,27 @@
-<div class="warpper">
+<div class="warpper" #wrapperMainLayout>
   <app-left-sidebar />
   <div class="content">
+    <app-header-responsive ($clickMenu)="clickMenuOpen($event)" />
     <div class="body">
       <router-outlet />
     </div>
   </div>
   <app-right-sidebar />
+  <div class="menu-bars" [ngClass]="({ expan: openMenu() })">
+    <div class="header-img">
+      <img src="/access/imgs/myImg1.jpg" alt="">
+    </div>
+    <div class="boxes-btn-list">
+      @for (item of menu(); track $index) {
+      <button
+        [routerLink]="['/', item.path]"
+        matTooltipPosition="right"
+        [matTooltip]="item.toolltip"
+      >
+        <mat-icon class="icons">{{ item.icon }}</mat-icon>
+        <p class="text">{{ item.toolltip }}</p>
+      </button>
+      }
+    </div>
+  </div>
 </div>

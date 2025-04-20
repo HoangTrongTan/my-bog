@@ -4,15 +4,15 @@ import {
   ElementRef,
   OnInit,
   QueryList,
-  ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { Application } from '@splinetool/runtime';
+import { ResponsiveBookComponent } from './responsive-book/responsive-book.component';
 // https://app.spline.design/community/file/bcc9e075-7b80-40cf-8dc9-9c5d521655a6
 @Component({
   selector: 'app-about-me',
   standalone: true,
-  imports: [],
+  imports: [ResponsiveBookComponent],
   templateUrl: './about-me.component.html',
   styleUrl: './about-me.component.scss',
 })

@@ -135,3 +135,9 @@ $radiusPage: 5px;
     }
   }
 }
+
+@media (max-width: 950px) {
+  .wrapper {
+    display: none;
+  }
+}

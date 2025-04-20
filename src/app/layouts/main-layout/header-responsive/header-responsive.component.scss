@@ -1,11 +1,23 @@
-.wrapper {
+.header-menu {
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background: #242527d2;
-  height: 100%;
-  padding: 20px 10px;
-  .boxes-img {
-    padding: 5px;
-    background: black;
-    border-radius: 50%;
+  position: relative;
+  overflow-y: overlay;
+  scrollbar-width: none;
+  .menu-toggle {
+    color: #ececec;
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    .icon-menu-bar {
+      padding: 6px;
+    }
+    .icon-home {
+      padding: 6px;
+    }
   }
   .avatar {
     width: 40px;
@@ -40,23 +52,10 @@
     }
   }
 }
-@keyframes loop {
-  0% {
-    background-color: rgb(0, 255, 0);
-    width: 1px;
-    height: 1px;
-  }
-  100% {
-    background-color: rgba(0, 255, 0, 0.256);
-    width: 22px;
-    height: 22px;
-  }
-}
-
 
 // responsive
-@media (max-width: 1200px) {
-  .wrapper{
+@media (min-width: 1199px) {
+  .header-menu {
     display: none;
   }
 }
