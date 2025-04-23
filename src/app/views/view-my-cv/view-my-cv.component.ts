@@ -82,6 +82,6 @@ export class ViewMyCvComponent {
   }
 
   onZoomOut() {
-    this.zoom.update((old) => (old - 0.1 < 1 ? 1 : old - 0.1));
+    this.zoom.update((old) => (old - 0.1 < 0.4 ? 0.4 : old - 0.1));
   }
 }

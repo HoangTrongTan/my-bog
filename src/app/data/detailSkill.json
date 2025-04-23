@@ -1,0 +1,10 @@
+[
+  {
+    "type": "JS",
+    "desrc": "Cách hoạt động của Closure, hoist\nPhạm vi các biến\nCách hoạt động của polifill\nTìm hiểu về function, Settimeout"
+  },
+  {
+    "type": "React-JS",
+    "desrc": "Tìm hiểu về HOOC\nLàm quen với các hooks cơ bản\nTìm hiểu về Function component"
+  }
+]
