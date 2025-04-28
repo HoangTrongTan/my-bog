@@ -1,0 +1,283 @@
+[
+  {
+    "type": "Programe Language",
+    "part": "project",
+    "items": [
+      {
+        "type": "JS",
+        "img": "/access/imgs/js.png",
+        "relatedProject": [
+          {
+            "title": "Music App",
+            "link": "https://hoangtrongtan.github.io/music/",
+            "git": "https://github.com/HoangTrongTan/music"
+          }
+        ],
+        "percent": 85
+      },
+      {
+        "type": "Java",
+        "img": "/access/imgs/java.png",
+        "percent": 50
+      },
+      {
+        "type": "C#",
+        "img": "/access/imgs/c-sharp.png",
+        "relatedProject": [
+          {
+            "title": "Hair Salon Staff Manager App",
+            "link": "https://github.com/HoangTrongTan/staff-manager"
+          }
+        ],
+        "percent": 70
+      },
+      {
+        "type": "C++",
+        "img": "/access/imgs/c++.png",
+        "relatedProject": [
+          {
+            "title": "Plant Care Machine",
+            "link": "https://hoangtrongtan.github.io/he-thong-tuoi-cay-tu-dong-IOT/",
+            "git": "https://github.com/HoangTrongTan/he-thong-tuoi-cay-tu-dong-IOT",
+            "img": "/access/imgs/"
+          }
+        ],
+        "percent": 50
+      },
+      {
+        "type": "Python",
+        "img": "/access/imgs/python.png",
+        "percent": 60
+      },
+      {
+        "type": "Type script",
+        "img": "/access/imgs/ts.png",
+        "percent": 70
+      },
+      {
+        "type": "Sql",
+        "img": "/access/imgs/SQL.png",
+        "percent": 80
+      },
+      {
+        "type": "CSS",
+        "img": "/access/imgs/css.jpg",
+        "percent": 85
+      },
+      {
+        "type": "HTML",
+        "img": "/access/imgs/html.png",
+        "percent": 90
+      },
+      {
+        "type": "MySql",
+        "img": "/access/imgs/Mysql.jpg",
+        "percent": 80
+      },
+      {
+        "type": "MongoDB",
+        "img": "/access/imgs/mongoDB.png",
+        "percent": 80
+      },
+      {
+        "type": "php",
+        "img": "/access/imgs/php.jpg",
+        "relatedProject": [
+          {
+            "title": "Laptop Store App",
+            "git": "https://github.com/HoangTrongTan/shop-computer-php"
+          },
+          {
+            "title": "Task for Students",
+            "git": "https://github.com/HoangTrongTan/phan-chia-cong-viec-php"
+          }
+        ],
+        "percent": 85
+      }
+    ]
+  },
+  {
+    "type": "Frameworks",
+    "part": "project",
+    "items": [
+      {
+        "type": "React-JS",
+        "img": "/access/imgs/react.jpg",
+        "relatedProject": [
+          {
+            "title": "Chap App",
+            "git": "https://github.com/HoangTrongTan/chat-app-react-node"
+          },
+          {
+            "title": "Student Exam Management App",
+            "link": "https://exam-manager-saodo-education.vercel.app/#/login",
+            "git": "https://github.com/HoangTrongTan/quanlybaithi-react-asp"
+          },
+          {
+            "title": "Retake & Relearn Registration App",
+            "git": "https://github.com/HoangTrongTan/dang-ky-thi-lai-hoc-lai-react-laravel/tree/main/FE"
+          },
+          {
+            "title": "Secure Data Encryption App",
+            "git": "https://github.com/HoangTrongTan/ThuatToanMaHoa_CoDiep",
+            "link": "https://hoangtrongtan.github.io/ThuatToanMaHoa_CoDiep/"
+          }
+        ],
+        "percent": 85
+      },
+      {
+        "type": "Asp.Net Core",
+        "img": "/access/imgs/asp.png",
+        "relatedProject": [
+          {
+            "title": "Student Exam Management App",
+            "link": "https://github.com/HoangTrongTan/quanlybaithi-react-asp/tree/main/back-end"
+          }
+        ],
+        "percent": 70
+      },
+      {
+        "type": "Angular-JS",
+        "img": "/access/imgs/angular.png",
+        "percent": 50
+      },
+      {
+        "type": "Next-JS",
+        "img": "/access/imgs/next.jpg",
+        "percent": 75,
+        "relatedProject": [
+          {
+            "title": "TikTok App",
+            "git": "https://github.com/HoangTrongTan/tiktok-nextjs14-node/tree/main/FE"
+          }
+        ]
+      },
+      {
+        "type": "Express-JS",
+        "img": "/access/imgs/node.png",
+        "percent": 80,
+        "relatedProject": [
+          {
+            "title": "Chat App",
+            "git": "https://github.com/HoangTrongTan/chat-app-react-node/tree/main/server-chat"
+          },
+          {
+            "title": "TikTok App",
+            "git": "https://github.com/HoangTrongTan/tiktok-nextjs14-node/tree/main/BE"
+          }
+        ]
+      },
+      {
+        "type": "Django",
+        "img": "/access/imgs/django.png",
+        "percent": 60,
+        "relatedProject": [
+          {
+            "title": "Fashion Shop App",
+            "git": "https://github.com/HoangTrongTan/shop-clothes-django",
+            "img": "/access/imgs/"
+          }
+        ]
+      },
+      {
+        "type": "Android Studio",
+        "img": "/access/imgs/android-studio.png",
+        "percent": 70,
+        "relatedProject": [
+          {
+            "title": "Student portal for University",
+            "git": "https://github.com/HoangTrongTan/xem-lich-thoi-khoa-bieu-androidstdio/tree/main/FE"
+          },
+          {
+            "title": "Choice exam App",
+            "git": "https://github.com/HoangTrongTan/Practice-test-android."
+          }
+        ]
+      },
+      {
+        "type": "Phaser-JS",
+        "img": "/access/imgs/phaser.png",
+        "relatedProject": [
+          {
+            "title": "Flappy Bird Game",
+            "git": "https://github.com/HoangTrongTan/flappy-birt-PhaserJs",
+            "link": "https://hoangtrongtan.github.io/flappy-birt-PhaserJs/"
+          },
+          {
+            "title": "Plane Shooting Game",
+            "git": "https://github.com/HoangTrongTan/plane-game-phaserJs",
+            "link": "https://hoangtrongtan.github.io/plane-game-phaserJs/"
+          },
+          {
+            "title": "Snake Game",
+            "git": "https://github.com/HoangTrongTan/snake-game-PhaserJs",
+            "link": "https://hoangtrongtan.github.io/snake-game-PhaserJs/index.html"
+          }
+        ],
+        "percent": 70
+      },
+      {
+        "type": "Vue-JS",
+        "img": "/access/imgs/vue.jpg",
+        "percent": 50
+      }
+    ]
+  },
+  {
+    "type": "Tools",
+    "part": "tools",
+    "items": [
+      {
+        "type": "Visual Studio Code",
+        "img": "/access/imgs/visual_studio_code.png",
+        "percent": 80
+      },
+      {
+        "type": "Dev c++",
+        "img": "/access/imgs/devc.jpg",
+        "percent": 60
+      },
+      {
+        "type": "Sql Server",
+        "img": "/access/imgs/sqltools.png",
+        "percent": 70
+      },
+      {
+        "type": "Eclipse",
+        "img": "/access/imgs/eclipse.jpg",
+        "percent": 60
+      },
+      {
+        "type": "Android Studio",
+        "img": "/access/imgs/android-studio.png",
+        "percent": 70
+      },
+      {
+        "type": "Visual Studio",
+        "percent": 70,
+        "img": "/access/imgs/visualstudio.png"
+      },
+      {
+        "type": "Xampp",
+        "percent": 70,
+        "img": "/access/imgs/xamp.png"
+      },
+      {
+        "type": "Arduino",
+        "img": "/access/imgs/arduino.jpg",
+        "percent": 40
+      }
+    ]
+  },
+  {
+    "type": "Cmd",
+    "part": "tools",
+    "items": [
+      {
+        "type": "Git",
+        "img": "/access/imgs/git.png",
+        "percent": 70
+      }
+    ]
+  }
+]
