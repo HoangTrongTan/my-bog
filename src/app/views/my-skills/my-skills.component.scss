@@ -1,5 +1,6 @@
 .wrapper {
   padding: 20px;
+  transition: all 0.3s linear;
   .title {
     width: 450px;
     position: relative;
@@ -90,7 +91,6 @@
     gap: 1em;
     .skill {
       flex: 1;
-      min-width: 300px;
       .e-card {
         box-shadow: 0px 8px 28px -9px rgba(0, 0, 0, 0.45);
         position: absolute;
@@ -143,6 +143,7 @@
       }
       .wrap {
         height: 500px;
+        width: clamp(300px, 100%, 600px);
         padding: 15px;
         border-radius: 10px;
         margin-top: 10px;
@@ -180,15 +181,25 @@
       }
     }
     .target-skills {
-      width: 500px;
+      width: clamp(350px, 100%, 600px);
       height: 500px;
-      // background-color: #2d2d3a;
       position: sticky;
       top: 0;
+      #canvas3d {
+        width: 350px !important;
+        height: 350px !important;
+        max-width: fit-content;
+      }
       .circle-shadow {
         width: 100%;
         height: 400px;
         position: relative;
+        #canvas3d {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
         .circle {
           position: absolute;
           left: 50%;
@@ -225,16 +236,43 @@
             position: absolute;
             width: 60px;
             height: 60px;
-            background-color: #fff;
+            color: rgb(87, 83, 153);
+            padding: 10px;
+            background-color: #7f57993b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s linear;
+            cursor: pointer;
+            &:hover {
+              // transform: skew(-5deg);
+              box-shadow: -5px 0 1px rgba(153, 153, 153, 0.2),
+                -10px 0 1px rgba(153, 153, 153, 0.2),
+                inset 0 0 20px rgba(255, 255, 255, 0.3),
+                inset 0 0 5px rgba(255, 255, 255, 0.5),
+                0 5px 5px rgba(0, 0, 0, 0.082);
+            }
+            .text {
+              color: #fff;
+              font-weight: bolder;
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 140px;
+              bottom: -20px;
+              text-align: center;
+            }
+
             &:nth-child(1) {
-              top: 10px ;
-              right: 100px ;
+              top: 10px;
+              right: 100px;
             }
 
             &:nth-child(2) {
               top: 50%;
               transform: translateY(-50%);
-              right: 10px;
+              right: 30px;
             }
 
             &:nth-child(3) {
@@ -246,10 +284,9 @@
               top: 10px;
             }
             &:nth-child(5) {
-              left: 10px;
+              left: 30px;
               top: 50%;
               transform: translateY(-50%);
-              right: 10px;
             }
             &:nth-child(6) {
               bottom: 10px;
@@ -258,6 +295,22 @@
           }
         }
       }
+    }
+  }
+}
+
+// -----------RESPONSIVE-----------
+@media (max-width: 500px) {
+  .wrapper {
+    padding: 10px 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .title {
+      width: 320px;
+    }
+    .box-skills {
+      width: 350px;
     }
   }
 }

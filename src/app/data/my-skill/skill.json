@@ -61,7 +61,7 @@
       },
       {
         "type": "CSS",
-        "img": "/access/imgs/css.jpg",
+        "img": "/access/imgs/css.png",
         "percent": 85
       },
       {
@@ -71,7 +71,7 @@
       },
       {
         "type": "MySql",
-        "img": "/access/imgs/Mysql.jpg",
+        "img": "/access/imgs/Mysql.png",
         "percent": 80
       },
       {
@@ -81,7 +81,7 @@
       },
       {
         "type": "php",
-        "img": "/access/imgs/php.jpg",
+        "img": "/access/imgs/php.png",
         "relatedProject": [
           {
             "title": "Laptop Store App",
@@ -102,7 +102,7 @@
     "items": [
       {
         "type": "React-JS",
-        "img": "/access/imgs/react.jpg",
+        "img": "/access/imgs/react.png",
         "relatedProject": [
           {
             "title": "Chap App",
@@ -218,7 +218,7 @@
       },
       {
         "type": "Vue-JS",
-        "img": "/access/imgs/vue.jpg",
+        "img": "/access/imgs/vue.png",
         "percent": 50
       }
     ]
@@ -234,7 +234,7 @@
       },
       {
         "type": "Dev c++",
-        "img": "/access/imgs/devc.jpg",
+        "img": "/access/imgs/devc.png",
         "percent": 60
       },
       {
@@ -244,7 +244,7 @@
       },
       {
         "type": "Eclipse",
-        "img": "/access/imgs/eclipse.jpg",
+        "img": "/access/imgs/eclipse.png",
         "percent": 60
       },
       {
@@ -264,7 +264,7 @@
       },
       {
         "type": "Arduino",
-        "img": "/access/imgs/arduino.jpg",
+        "img": "/access/imgs/arduino.png",
         "percent": 40
       }
     ]

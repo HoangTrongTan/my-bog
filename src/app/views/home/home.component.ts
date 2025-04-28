@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { MainLayoutComponent } from '../../layouts/main-layout/main-layout.component';
-import { LoaderComponent } from '../../components/loader';
 import { TextRenderComponent } from '../../components/text-render/text-render.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
