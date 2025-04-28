@@ -19,7 +19,7 @@ export class ResponsiveBookComponent implements OnInit {
 
   ngOnInit(): void {
     // make sure you have a canvas in the body
-    const canvas: any = document.getElementById('canvas3d');
+    const canvas: any = document.getElementById('canvas3dAboutRes');
     // start the application and load the scene
     const spline = new Application(canvas);
     spline.load('https://prod.spline.design/0AgcNBmJ3guKmseE/scene.splinecode');
