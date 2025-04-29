@@ -151,6 +151,24 @@
         position: relative;
         border-radius: 10px;
         overflow: hidden;
+        &::before{
+          content: "";
+          position: absolute;
+          top: -35px;
+          right: -35px;
+          width: 80px;
+          height: 80px;
+          background-color: #ffc107;
+          border-radius: 50%;
+        }
+        .sum {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          color: #fff;
+          font-weight: bold;
+          font-size: 11px;
+        }
         .title-skl {
           color: #fff;
           padding-bottom: 15px;
@@ -161,22 +179,7 @@
           overflow-y: overlay;
           scrollbar-width: none;
           margin-top: 10px;
-          .item-child {
-            display: flex;
-            gap: 1em;
-            align-items: center;
-            margin-top: 5px;
-            .percent {
-              width: 50px;
-              color: rgb(85, 85, 85);
-            }
-            img {
-              z-index: 100;
-              width: 60px;
-              height: 60px;
-              border-radius: 50%;
-            }
-          }
+          
         }
       }
     }
@@ -254,7 +257,7 @@
                 0 5px 5px rgba(0, 0, 0, 0.082);
             }
             .text {
-              color: #fff;
+              color: yellow;
               font-weight: bolder;
               position: absolute;
               left: 50%;
@@ -262,6 +265,7 @@
               width: 140px;
               bottom: -20px;
               text-align: center;
+              font-size: 10px;
             }
 
             &:nth-child(1) {
@@ -292,6 +296,39 @@
               bottom: 10px;
               left: 100px;
             }
+          }
+        }
+      }
+      .sumary {
+        margin-top: 25px;
+        display: flex;
+        gap: 2em;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        background: #2d2d3a;
+        padding: 10px;
+        border-radius: 7px;
+        .details {
+          ::ng-deep .customColorSpinner circle {
+            stroke: #49ea4e !important;
+          }
+          .process-percent {
+            position: relative;
+            .percent-num--circle {
+              position: absolute;
+              color: #fff;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
+          p {
+            color: #8d8d8f;
+            font-weight: bold;
+            text-align: center;
+            font-size: 11px;
+            margin-top: 5px;
           }
         }
       }

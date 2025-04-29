@@ -1,0 +1,11 @@
+<div
+  class="item-child"
+  matRipple
+  matRippleColor="#4d4d5c6e"
+  (click)="onSetRelatedProjectClick(item()?.relatedProject)"
+>
+  <!-- <p>{{ item.type }}</p> -->
+  <img [src]="item()?.img" alt="" />
+  <mat-progress-bar mode="determinate" [value]="count"></mat-progress-bar>
+  <p class="percent">{{ count }}%</p>
+</div>

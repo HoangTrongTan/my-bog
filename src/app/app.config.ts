@@ -11,6 +11,7 @@ import { provideStore } from '@ngrx/store';
 import { provideAppTranslateService } from './services/translate.service';
 import { NgxImageZoomComponent, NgxImageZoomModule } from 'ngx-image-zoom';
 import { provideClientHydration } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideAppTranslateService(),
     provideStore(),
     NgxImageZoomModule,
+    provideAnimations()
   ],
 };

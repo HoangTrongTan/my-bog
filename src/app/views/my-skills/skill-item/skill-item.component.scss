@@ -1,0 +1,24 @@
+.item-child {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  transition: all 0.3s linear;
+  border-radius: 7px;
+  padding: 8px;
+  position: relative;
+  cursor: pointer;
+  &:hover {
+    background-color: #2d2d3a;
+  }
+  .percent {
+    width: 50px;
+    color: #adadaf;
+    font-weight: bold;
+  }
+  img {
+    z-index: 100;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+}

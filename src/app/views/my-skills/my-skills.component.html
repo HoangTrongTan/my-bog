@@ -24,25 +24,20 @@
     <div class="skill">
       @for(skill of skills;track $index){
       <div class="wrap">
+        <p class="sum">{{ skill.items.length }}+</p>
         <div class="e-card playing">
           <div class="wave"></div>
           <div class="wave"></div>
           <div class="wave"></div>
         </div>
         <h3 class="title-skl">{{ skill.type }}</h3>
-        <div class="item-of--panel">
+        @if(shouldAnimate){
+        <div class="item-of--panel" [@listAnimation]>
           @for(item of skill.items; track item.type){
-          <div class="item-child">
-            <!-- <p>{{ item.type }}</p> -->
-            <img [src]="item.img" alt="" />
-            <mat-progress-bar
-              mode="determinate"
-              [value]="item?.percent"
-            ></mat-progress-bar>
-            <p class="percent">{{ item?.percent }}%</p>
-          </div>
+          <div><app-skill-item [item]="item" /></div>
           }
         </div>
+        }
       </div>
       }
     </div>
@@ -80,6 +75,22 @@
           </div>
         </div>
         <canvas id="canvas3d" width="320" height="320"></canvas>
+      </div>
+      <div class="sumary">
+        @for(item of platform; track $index){
+        <div class="details">
+          <div class="process-percent">
+            <mat-progress-spinner
+              diameter="70"
+              class="customColorSpinner"
+              [value]="item.percent"
+            >
+            </mat-progress-spinner>
+            <p class="percent-num--circle">{{ item.percent }}%</p>
+          </div>
+          <p>{{ item.title }}</p>
+        </div>
+        }
       </div>
     </div>
   </div>
