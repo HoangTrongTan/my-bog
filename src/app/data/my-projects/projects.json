@@ -1,0 +1,70 @@
+[
+  {
+    "type": ["web", "ai"],
+    "title": "Fashion Shop Integrated AI",
+    "percent": 100,
+    "fromDate": "02/01/2021",
+    "toDate": "05/02/2021",
+    "member": 1,
+    "responsibility": "Dev",
+    "tech": "nextjs,nodejs,surprise,mongo,jwt,Redux-ToolKit",
+    "techImg": ["next.jpg", "node.png", "mongoDB.png", "jwt.png"],
+    "ide": ["Visual Studio"],
+    "content": "Func:\n+ System management (product, comment, delivery type, rating for product, authorized users).\n+ Product suggestions.\n+ Lucky spin.\n+ Notications.\n+ Comment product (realtimes).\n+ Product reviews.\n+ Add cart.\n+ Favourite products, viewed products.\n+ Change language.\n+ Change theme.\n+ View article.\n+ Pay for VNPay.\n+ SEO optimization.\n+ Find By price, type, best seller, latest.\n+ Drop heart."
+  },
+  {
+    "type": ["iot"],
+    "title": "Smart Irrigation App",
+    "percent": 100,
+    "fromDate": "06/02/2021",
+    "toDate": "15/03/2021",
+    "member": 1,
+    "responsibility": "Dev",
+    "ide": ["Arduino"],
+    "tech": "c++,Blynk App,surprise, Relay module, Esp-32, temperature and humidity sensor.",
+    "techImg": ["arduino.png", "c++.png", "esp32.png"],
+    "content": "Func:\n+ Automatically water and stop watering according to soil conditions.\n+ View current temperature."
+  },
+  {
+    "type": ["mobile"],
+    "title": "Choice exam App",
+    "percent": 100,
+    "fromDate": "04/03/2021",
+    "toDate": "05/04/2021",
+    "member": 1,
+    "responsibility": "Dev",
+    "ide": ["Android Studio", "Visual Studio"],
+    "tech": "php (make to API),java,Volley, Recycleview",
+    "techImg": ["android-studio.png", "java.png", "php.png"],
+    "content": "Func:\n+ login.\n+ Rank user.\n+ Exam level."
+  },
+  {
+    "type": ["mobile"],
+    "title": "Student portal for University",
+    "percent": 100,
+    "fromDate": "07/04/2021",
+    "toDate": "10/05/2021",
+    "member": 1,
+    "responsibility": "Dev",
+    "ide": ["Android Studio", "Visual Studio"],
+    "tech": "php (make to API),java,Volley, Recycleview, Etebarian",
+    "techImg": ["recycleview.png", "java.png", "php.png"],
+    "content": "Func:\n+ Teacher and student decentralization.\n+ Notifycation (to class and to all student).\n+ Show Calendar (by day, month, year, subject, Semester, Teacher), scores.\n+ Edit info my self.\n+ Show students by class, teacher.\n+ Show regulations."
+  },
+  {
+    "type": ["web"],
+    "title": "TikTok App",
+    "percent": 100,
+    "fromDate": "04/05/2021",
+    "toDate": "11/06/2021",
+    "member": 1,
+    "responsibility": "Dev",
+    "ide": ["Visual Studio"],
+    "tech": "nextjs,nodejs,mongo,jwt,Redux-ToolKit",
+    "techImg": ["next.jpg", "node.png", "mongoDB.png", "jwt.png"],
+    "content": "Func:\n +Upload video\n +Drop heart\n +Comment Video\n +Chat real time(edit, delete, drop hert)\n +Personal page\n +Notifycations\n +Login with google\n +Edit time video"
+  },
+  {
+    
+  }
+]

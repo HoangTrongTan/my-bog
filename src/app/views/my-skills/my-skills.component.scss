@@ -4,6 +4,9 @@
   .title {
     width: 450px;
     position: relative;
+    opacity: 0;
+    transform: translateX(-100%);
+    animation: fadeInTo 0.3s linear 1.5s forwards;
     &::after {
       content: "";
       position: absolute;
@@ -80,6 +83,12 @@
         top: 32px;
         width: 80px;
         fill: #fff;
+      }
+    }
+    @keyframes fadeInTo {
+      to{
+        opacity: 1;
+        transform: translateX(0);
       }
     }
   }

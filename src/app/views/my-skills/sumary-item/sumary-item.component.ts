@@ -19,6 +19,6 @@ export class SumaryItemComponent implements OnInit {
           clearInterval(intervalCount);
         }
       }, 70);
-    }, 80);
+    }, 10);
   }
 }

@@ -23,7 +23,7 @@
   <div class="box-skills">
     <div class="skill">
       @for(skill of skills;track $index){
-      <div class="wrap">
+      <div class="wrap" [@fadeSlideIn]="visibleItems[$index] ? 'visible' : 'hidden'">
         <p class="sum">{{ skill.items.length }}+</p>
         <div class="e-card playing">
           <div class="wave"></div>
