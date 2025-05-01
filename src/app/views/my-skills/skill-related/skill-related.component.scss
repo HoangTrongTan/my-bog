@@ -1,0 +1,82 @@
+.ng-fa-icon {
+  color: #fff !important;
+}
+.wrapp {
+  transform: rotateY(180deg);
+  z-index: 0;
+  padding: 15px;
+  .btn-back {
+    cursor: pointer;
+    color: #c3c3c3;
+    background: #3d3d45e3;
+    transition: background 0.3s linear;
+    padding: 10px;
+    width: 50px;
+    border-radius: 8px;
+    &:hover {
+      background: #54545ee3;
+    }
+  }
+  .title-main {
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #e3e2e2;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 10px 0;
+  }
+
+  .item-rt {
+    position: relative;
+    padding: 15px 8px;
+    margin-bottom: 10px;
+    transition: all 0.3s linear;
+    border-radius: 6px;
+    color: #aeadad;
+    &:hover {
+      background-color: #2d2d3a;
+    }
+    &:hover .btn-access {
+      opacity: 1;
+      z-index: 100;
+    }
+    &:hover .git {
+      right: 0;
+      transform: translateY(0);
+      top: -10px;
+    }
+    &:hover .link {
+      right: 0;
+      transform: translateY(0);
+      bottom: -10px;
+    }
+    .text {
+      color: #c0bfbf;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-access {
+      position: absolute;
+      right: 50px;
+      transition: all 0.3s linear;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0;
+      z-index: -1;
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 35px;
+      text-align: center;
+    }
+    .git {
+      color: #fff;
+      background: linear-gradient(to bottom, #de4c35, #ffffff8c);
+    }
+    .link {
+      background: linear-gradient(to bottom, rgb(74, 31, 228), #ffffff88);
+    }
+  }
+}

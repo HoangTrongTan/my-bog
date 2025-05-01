@@ -1,0 +1,18 @@
+<div
+  [ngClass]="{ 'cube-flip': !!relatedProjects?.length}"
+  class="box-skill-3d-wrapp"
+>
+  <div class="cube">
+    <div class="item-of--panel" [@listAnimation]>
+      @for(item of items(); track item.type){
+      <div><app-skill-item [item]="item" (outputEvent)="onReceiveRelatedProject($event)" /></div>
+      }
+    </div>
+    <div class="related-box">
+      <app-skill-related
+        [relatedProjects]="relatedProjects"
+        (btnBack)="onBack()"
+      />
+    </div>
+  </div>
+</div>

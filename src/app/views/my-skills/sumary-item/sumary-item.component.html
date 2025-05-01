@@ -1,0 +1,12 @@
+<div class="details">
+  <div class="process-percent">
+    <mat-progress-spinner
+      diameter="70"
+      class="customColorSpinner"
+      [value]="count"
+    >
+    </mat-progress-spinner>
+    <p class="percent-num--circle">{{ count }}%</p>
+  </div>
+  <p>{{ item()?.title }}</p>
+</div>

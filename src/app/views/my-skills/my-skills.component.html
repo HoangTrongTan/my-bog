@@ -32,11 +32,7 @@
         </div>
         <h3 class="title-skl">{{ skill.type }}</h3>
         @if(shouldAnimate){
-        <div class="item-of--panel" [@listAnimation]>
-          @for(item of skill.items; track item.type){
-          <div><app-skill-item [item]="item" /></div>
-          }
-        </div>
+        <app-skill-box3d [items]="skill.items" />
         }
       </div>
       }
@@ -76,22 +72,13 @@
         </div>
         <canvas id="canvas3d" width="320" height="320"></canvas>
       </div>
-      <div class="sumary">
+      @if(shouldAnimate){
+      <div class="sumary" [@listAnimation]>
         @for(item of platform; track $index){
-        <div class="details">
-          <div class="process-percent">
-            <mat-progress-spinner
-              diameter="70"
-              class="customColorSpinner"
-              [value]="item.percent"
-            >
-            </mat-progress-spinner>
-            <p class="percent-num--circle">{{ item.percent }}%</p>
-          </div>
-          <p>{{ item.title }}</p>
-        </div>
+        <app-sumary-item [item]="item" />
         }
       </div>
+      }
     </div>
   </div>
 </div>

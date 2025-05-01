@@ -1,0 +1,17 @@
+<div class="wrapp">
+  <div class="btn-back" (click)="onBack()">
+    <fa-icon [icon]="icons.faSquareCaretLeft"></fa-icon>
+  </div>
+  <p class="title-main">Related Projects</p>
+    @for(item of relatedProjects();track $index){
+        <div class="item-rt">
+            <p class="text">{{ item.title }}</p>
+            <div class="btn-access git">
+                <a [href]="item.git" target="_blank"><fa-icon [icon]="icons.faGitAlt"></fa-icon></a>
+            </div>
+            <div class="btn-access link">
+                <a [href]="item.link" target="_blank"><fa-icon [icon]="icons.faLink"></fa-icon></a>
+            </div>
+        </div>
+    }
+</div>

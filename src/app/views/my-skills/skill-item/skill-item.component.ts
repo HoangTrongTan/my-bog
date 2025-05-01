@@ -1,8 +1,7 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { SkillServiceService } from '../skill-service.service';
-import { TRelatedProjectItem } from '../skills.type';
+import { TRelatedProjectItem, TSkill } from '../skills.type';
 
 @Component({
   selector: 'app-skill-item',
@@ -12,17 +11,8 @@ import { TRelatedProjectItem } from '../skills.type';
 })
 export class SkillItemComponent implements OnInit {
   count = 0;
-  item = input<
-    | {
-        type: string;
-        img: string;
-        relatedProject?: TRelatedProjectItem[];
-        percent: number;
-      }
-    | undefined
-  >();
-
-  constructor(private skillService: SkillServiceService) {}
+  item = input<TSkill | undefined>();
+  outputEvent = output<TRelatedProjectItem[] | undefined>();
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -35,7 +25,7 @@ export class SkillItemComponent implements OnInit {
     }, 80);
   }
 
-  onSetRelatedProjectClick(relatedProject: TRelatedProjectItem[] | undefined) {
-    this.skillService.setRelatedProject(relatedProject);
+  onClick(value: TRelatedProjectItem[] | undefined) {
+    this.outputEvent.emit(value);
   }
 }

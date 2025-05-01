@@ -151,7 +151,7 @@
         position: relative;
         border-radius: 10px;
         overflow: hidden;
-        &::before{
+        &::before {
           content: "";
           position: absolute;
           top: -35px;
@@ -173,13 +173,6 @@
           color: #fff;
           padding-bottom: 15px;
           border-bottom: 2.5px solid #3b3b49;
-        }
-        .item-of--panel {
-          height: 400px;
-          overflow-y: overlay;
-          scrollbar-width: none;
-          margin-top: 10px;
-          
         }
       }
     }
@@ -271,30 +264,56 @@
             &:nth-child(1) {
               top: 10px;
               right: 100px;
+              animation: nth-scale 0.3s linear 1.5s forwards;
+              transform: scale(0);
+            }
+            @keyframes nth-scale {
+              from {
+                transform: scale(0);
+              }
+              to {
+                transform: scale(1);
+              }
+            }
+            @keyframes nth-scale-center {
+              from {
+                transform: translateY(-50%) scale(0);
+              }
+              to {
+                transform: translateY(-50%) scale(1);
+              }
             }
 
             &:nth-child(2) {
               top: 50%;
-              transform: translateY(-50%);
+              transform: translateY(-50%) scale(0);
               right: 30px;
+              animation: nth-scale-center 0.3s linear 1.7s forwards;
             }
 
             &:nth-child(3) {
               bottom: 10px;
               right: 100px;
+              transform: scale(0);
+              animation: nth-scale 0.3s linear 1.9s forwards;
             }
             &:nth-child(4) {
               left: 100px;
               top: 10px;
+              transform: scale(0);
+              animation: nth-scale 0.3s linear 2.1s forwards;
             }
             &:nth-child(5) {
               left: 30px;
               top: 50%;
-              transform: translateY(-50%);
+              transform: translateY(-50%) scale(0);
+              animation: nth-scale-center 0.3s linear 2.3s forwards;
             }
             &:nth-child(6) {
               bottom: 10px;
               left: 100px;
+              transform: scale(0);
+              animation: nth-scale 0.3s linear 2.5s forwards;
             }
           }
         }
@@ -309,28 +328,7 @@
         background: #2d2d3a;
         padding: 10px;
         border-radius: 7px;
-        .details {
-          ::ng-deep .customColorSpinner circle {
-            stroke: #49ea4e !important;
-          }
-          .process-percent {
-            position: relative;
-            .percent-num--circle {
-              position: absolute;
-              color: #fff;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-            }
-          }
-          p {
-            color: #8d8d8f;
-            font-weight: bold;
-            text-align: center;
-            font-size: 11px;
-            margin-top: 5px;
-          }
-        }
+        
       }
     }
   }
