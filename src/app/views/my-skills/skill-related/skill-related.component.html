@@ -3,7 +3,8 @@
     <fa-icon [icon]="icons.faSquareCaretLeft"></fa-icon>
   </div>
   <p class="title-main">Related Projects</p>
-    @for(item of relatedProjects();track $index){
+  <p class="title-language">Lang - {{ relatedProjects()?.type }}</p>
+    @for(item of relatedProjects()?.relatedProject;track $index){
         <div class="item-rt">
             <p class="text">{{ item.title }}</p>
             <div class="btn-access git">

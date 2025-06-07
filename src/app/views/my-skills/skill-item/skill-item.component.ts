@@ -12,7 +12,7 @@ import { TRelatedProjectItem, TSkill } from '../skills.type';
 export class SkillItemComponent implements OnInit {
   count = 0;
   item = input<TSkill | undefined>();
-  outputEvent = output<TRelatedProjectItem[] | undefined>();
+  outputEvent = output<TSkill | undefined>();
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -25,7 +25,7 @@ export class SkillItemComponent implements OnInit {
     }, 80);
   }
 
-  onClick(value: TRelatedProjectItem[] | undefined) {
+  onClick(value: TSkill | undefined) {    
     this.outputEvent.emit(value);
   }
 }

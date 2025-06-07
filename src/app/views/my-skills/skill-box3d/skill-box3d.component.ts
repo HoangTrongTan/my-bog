@@ -16,13 +16,13 @@ import { listAnimation } from '../../../common/listAnimation';
 export class SkillBox3dComponent {
   items = input<TSkill[]>([]);
 
-  relatedProjects: TRelatedProjectItem[] | undefined = []
+  skills: TSkill | undefined = undefined;
 
-  onReceiveRelatedProject(value: TRelatedProjectItem[] | undefined){
-    this.relatedProjects = value;
+  onReceiveRelatedProject(value: TSkill | undefined){
+    this.skills = value;
   }
 
   onBack(){
-    this.relatedProjects = undefined;
+    this.skills = undefined;
   }
 }

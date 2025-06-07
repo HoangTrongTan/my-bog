@@ -42,3 +42,13 @@
     }
   }
 }
+// -----------RESPONSIVE-----------
+@media (max-width: 500px) {
+  .box-skill-3d-wrapp {
+    .cube {
+      .related-box {
+        transform: rotateY(-90deg) translateZ(-260px);
+      }
+    }
+  }
+}

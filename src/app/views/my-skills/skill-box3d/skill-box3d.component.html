@@ -1,5 +1,5 @@
 <div
-  [ngClass]="{ 'cube-flip': !!relatedProjects?.length}"
+  [ngClass]="{ 'cube-flip': !! skills}"
   class="box-skill-3d-wrapp"
 >
   <div class="cube">
@@ -10,7 +10,7 @@
     </div>
     <div class="related-box">
       <app-skill-related
-        [relatedProjects]="relatedProjects"
+        [relatedProjects]="skills"
         (btnBack)="onBack()"
       />
     </div>
