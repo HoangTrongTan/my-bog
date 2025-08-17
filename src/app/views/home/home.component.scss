@@ -5,6 +5,7 @@
 $margin-show-cv: 40px;
 .wrapper {
   padding: 0 20px 0px 20px;
+  animation: candy-bounce 1s ease-out 1.5s both;
   .header {
     padding: 30px 50px;
     width: 100%;
@@ -226,7 +227,6 @@ $margin-show-cv: 40px;
       background-color: #f0f0f4;
       bottom: -30px;
       right: 19.2%;
-      z-index: 100;
       overflow: hidden;
       transition: all 0.3s linear;
       &::before {
@@ -245,6 +245,13 @@ $margin-show-cv: 40px;
         animation: rotBGimg 3s linear infinite;
       }
     }
+    
+    .box-img-avartar{
+      animation: left-2right-candy-bounce 1s ease-out 1.8s both;
+      z-index: 100;
+      position: relative;
+    }
+
     @keyframes rotBGimg {
       from {
         left: 50%;

@@ -77,3 +77,48 @@ body {
 .mdc-linear-progress__bar-inner{
   border-color: #FFC107 !important;
 }
+
+@keyframes candy-bounce {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+    transform: translateY(0) scaleX(1) scaleY(1);
+  }
+  20% {
+    transform: translateY(-100px) scaleX(0.8) scaleY(1.2); 
+  }
+  40% {
+    transform: translateY(0) scaleX(1.3) scaleY(0.7);
+  }
+  60% {
+    transform: translateY(-50px) scaleX(0.9) scaleY(1.1);
+  }
+  80% {
+    transform: translateY(0) scaleX(1.1) scaleY(0.9); 
+  }
+  100% {
+    transform: translateY(0) scaleX(1) scaleY(1); 
+  }
+}
+
+@keyframes left-2right-candy-bounce {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) scaleX(1) scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(50px) scaleX(1) scaleY(1);
+  }
+  70% {
+    transform: translateX(100px) scaleX(0.7) scaleY(1.3);
+  }
+  80% {
+    transform: translateX(100px) scaleX(1.2) scaleY(0.8); 
+  }
+  100% {
+    transform: translateX(100px) scaleX(1) scaleY(1);
+  }
+}
