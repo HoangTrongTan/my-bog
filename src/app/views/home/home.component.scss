@@ -406,6 +406,9 @@ $margin-show-cv: 40px;
 @media (max-width: 460px) {
   .wrapper {
     .card {
+      .box-img-avartar{
+        transform: translateX(2px) !important;
+      }
       .my-img-border {
         width: 250px;
         height: 250px;
