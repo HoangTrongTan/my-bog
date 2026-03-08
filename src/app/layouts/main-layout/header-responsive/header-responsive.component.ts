@@ -3,10 +3,12 @@ import { Component, EventEmitter, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars, faHouseChimneyWindow } from '@fortawesome/free-solid-svg-icons';
+import { MatMenu, MatMenuTrigger } from "@angular/material/menu";
+import { ToggleThemeComponent } from "../../../components/toggle-theme/toggle-theme.component";
 
 @Component({
   selector: 'app-header-responsive',
-  imports: [FontAwesomeModule, CommonModule, RouterLink],
+  imports: [FontAwesomeModule, CommonModule, RouterLink, MatMenu, ToggleThemeComponent, MatMenuTrigger],
   templateUrl: './header-responsive.component.html',
   styleUrl: './header-responsive.component.scss'
 })

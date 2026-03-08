@@ -1,9 +1,12 @@
+.mat-menu-toggle-theme {
+  display: flex;
+  justify-content: center;
+}
 .header-menu {
   padding: 7px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #242527d2;
   position: relative;
   overflow-y: overlay;
   scrollbar-width: none;
@@ -23,6 +26,7 @@
     width: 40px;
     height: 40px;
     position: relative;
+    cursor: pointer;
     .online {
       width: 12px;
       height: 12px;
