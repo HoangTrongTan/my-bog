@@ -37,12 +37,11 @@ $margin-show-cv: 40px;
       }
     }
   }
-  .card {
+  .card-intro {
     position: relative;
 
     .introduct {
       height: 400px;
-      background: url("/access/imgs/hinh-nen-vu-tru-2.jpg") no-repeat, #2425277d;
       background-blend-mode: overlay;
       background-size: cover;
       display: flex;

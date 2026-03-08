@@ -1,0 +1,39 @@
+<mat-dialog-content>
+  <div class="dialogMyCv">
+    @if(!this.isAuthurized()){
+    <div class="login">
+      <p>Screet key</p>
+      <input
+        [ngModel]="passWord()"
+        (ngModelChange)="passWord.set($event)"
+        placeholder="enter key..."
+      />
+      <app-button-custom (click)="onHandleCheckPass()" text="Check" customeSize="sm" />
+    </div>
+    } @else {
+    <div class="login-success">
+      @for(ite of this.dataList();track $index){
+        <p class="item-cv">
+          <a [href]="ite.linkCv" style="text-decoration: none; color: black;">
+            <span>
+              <fa-icon [icon]="iconCv(ite.typeCv)"></fa-icon>
+            </span>
+            <span> {{ite.nameCv}}</span>
+            <span class="icon-down">
+              <fa-icon [icon]="iconDown"></fa-icon>
+            </span>
+          </a>
+        </p>
+      }
+    </div>
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <app-button-custom
+    mat-button
+    mat-dialog-close
+    text="Cancel"
+    customeSize="sm"
+  ></app-button-custom>
+</mat-dialog-actions>

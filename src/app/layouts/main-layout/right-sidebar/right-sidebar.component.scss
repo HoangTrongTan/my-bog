@@ -1,11 +1,10 @@
 .wrapper {
-  background: #242527d2;
   height: 100%;
   padding: 20px 10px;
   .boxes-img {
     padding: 5px;
-    background: black;
     border-radius: 50%;
+    cursor: pointer;
   }
   .avatar {
     width: 40px;

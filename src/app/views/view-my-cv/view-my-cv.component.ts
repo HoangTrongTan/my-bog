@@ -14,7 +14,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { GoogleGenAI } from '@google/genai';
-import { FormsModule, NgModel } from '@angular/forms';
+import { ButtonCustomComponent } from '../../components/button-custom/button-custom.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MyCvDialogCp } from './dialogListCv/dialog-ls-cv';
 
 const ai = new GoogleGenAI({
   apiKey: 'AIzaSyDiqrEuUpNl-K5hUPCiyICx3svEEQ8q344',
@@ -23,14 +25,15 @@ const ai = new GoogleGenAI({
 @Component({
   selector: 'app-view-my-cv',
   standalone: true,
-
   imports: [
     PdfViewerModule,
     FontAwesomeModule,
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-  ],
+    ButtonCustomComponent,
+    MatDialogModule,
+],
   templateUrl: './view-my-cv.component.html',
   styleUrl: './view-my-cv.component.scss',
 })
@@ -46,9 +49,11 @@ export class ViewMyCvComponent {
 
     console.log(reponse.text);
   }
-  constructor() {
+  constructor(private dialogMyCv: MatDialog) {
     this.Res();
   }
+
+
 
   maxPage = signal<number>(0);
   pageCur = signal<number>(1);
@@ -83,5 +88,25 @@ export class ViewMyCvComponent {
 
   onZoomOut() {
     this.zoom.update((old) => (old - 0.1 < 0.4 ? 0.4 : old - 0.1));
+  }
+
+  openDialogMyCv(){
+    this.dialogMyCv.open(MyCvDialogCp, {
+       data: {
+        data: [
+          {
+            typeCv: 'WORD',
+            nameCv: 'CV - Apply job',
+            linkCv: '/access/words/CVTan.docx'
+          },
+          {
+            typeCv: 'PDF',
+            nameCv: 'CV - Working in FPT',
+            linkCv: '/access/pdfs/CV_TANHT6-TanTiny.pdf'
+          }
+        ],
+        passValid: 'Tandev1511@api'
+       }
+    })
   }
 }

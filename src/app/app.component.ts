@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs';
 import { LoaderComponent } from './components/loader';
 import { CommonModule } from '@angular/common';
+import { ThemeService } from './services/theme.service';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, LoaderComponent, CommonModule],
@@ -15,11 +16,16 @@ import { CommonModule } from '@angular/common';
 export class AppComponent implements OnInit {
   isLoading = signal<boolean>(false);
 
-  constructor(private translate: TranslateService, private router: Router) {
+  constructor(
+    private translate: TranslateService, 
+    private router: Router,
+    private themeService: ThemeService
+    ) {
     // translate.setTranslation('en', translationsEN);
     // translate.setDefaultLang('en');
   }
   ngOnInit(): void {
+    this.themeService.loadTheme();
     this.router.events
       .pipe(
         filter(

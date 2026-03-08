@@ -1,0 +1,26 @@
+.dialogMyCv{
+    overflow-y: overlay;
+    width: 250px;
+    height: 150px;
+    perspective: 500px;
+}
+.login-success{
+    transform-style: preserve-3d;
+    transition: all 0.5s;
+    .item-cv{
+        padding: 7px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        border-radius: 5px;
+        position: relative;
+        &:hover{
+            background: rgb(223, 221, 221);
+        }
+        .icon-down{
+            position: absolute;
+            right: 7px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}

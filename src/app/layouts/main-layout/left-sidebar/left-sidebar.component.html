@@ -1,11 +1,11 @@
-<div class="wrapper" [ngClass]="({ expanWidth: openMenu() })">
-  <div class="boxes-btn">
+<div class="wrapper card-sidebar" [ngClass]="({ expanWidth: openMenu() })">
+  <div class="boxes-btn button-bg">
     <button tabindex="0" (blur)="onBlur()">
       <icon-bar-toggle (toggle)="onClick()" [active]="openMenu()" />
     </button>
   </div>
   <div class="routes">
-    <div class="boxes-btn boxes-btn-list" [ngClass]="({ expan: openMenu })">
+    <div class="boxes-btn button-bg boxes-btn-list card" [ngClass]="({ expan: openMenu })">
       @for (item of menu(); track $index) {
       <button
         [routerLink]="['/', item.path]"
@@ -18,7 +18,7 @@
       }
     </div>
   </div>
-  <div class="boxes-btn">
+  <div class="boxes-btn button-bg">
     <button tabindex="0" [routerLink]="path.HOME">
       <fa-icon [icon]="faHouseChimney"></fa-icon>
     </button>

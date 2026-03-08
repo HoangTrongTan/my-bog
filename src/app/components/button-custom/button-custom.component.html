@@ -1,5 +1,15 @@
-<button class="button">
+<button
+  class="button"
+  [style]="{
+  'border-with': this.SlsBtn.borderSize,
+  'border-radius': this.SlsBtn.roundBorder,
+  'padding': this.SlsBtn.padding,
+}"
+>
   @for(ch of getTextArr;track $index ){
-  <span>{{ ch }}</span>
+  <span [style]="{ 
+    'font-size': this.SlsBtn.fontSize, 
+    'padding': this.SlsBtn.spanPd,
+    }">{{ ch }}</span>
   }
 </button>

@@ -1,8 +1,17 @@
-<div class="wrapper">
-  <div class="boxes-img">
+<div class="wrapper card-sidebar">
+  <!-- #biến="exportAsName" -->
+  <div class="boxes-img" [matMenuTriggerFor]="menu">
       <div class="avatar">
         <img src="/access/imgs/me.jpg" alt="err" width="100%" height="100%">
         <div class="online"></div>
       </div>
   </div>
+  <mat-menu #menu="matMenu" classList="avatar-menu">
+    <div mat-menu-item (click)="$event.stopPropagation()">
+      <toggle-theme />
+    </div>
+    <button mat-menu-item>
+      <span>Disable alerts</span>
+    </button>
+  </mat-menu>
 </div>

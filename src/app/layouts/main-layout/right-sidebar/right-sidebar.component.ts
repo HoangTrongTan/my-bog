@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { IconBarsToggle } from '../../../components/icon-bars-toggle';
-import { NgxImageZoomComponent, NgxImageZoomModule } from 'ngx-image-zoom';
-import { NgOptimizedImage } from '@angular/common';
+import {MatMenuModule} from '@angular/material/menu';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { ToggleThemeComponent } from '../../../components/toggle-theme/toggle-theme.component';
 
 @Component({
   selector: 'app-right-sidebar',
-  imports: [NgxImageZoomModule],
+  imports: [NgxImageZoomModule, MatMenuModule, ToggleThemeComponent],
   standalone: true,
   templateUrl: './right-sidebar.component.html',
   styleUrl: './right-sidebar.component.scss',

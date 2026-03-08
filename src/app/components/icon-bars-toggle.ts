@@ -30,7 +30,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       .bars {
         width: 100%;
         height: 2px;
-        background-color: #8C8C8E;
+        background-color: var(--text-light-in-button);
         border-radius: 4px;
       }
 

@@ -1,7 +1,7 @@
 .wrapper {
-  background: #171717;
   padding: 20px 40px;
   height: 100vh;
+  transition: all 0.4s linear;
 }
 
 // responsive
@@ -28,7 +28,7 @@
   opacity: 1;
 }
 
-.isHide{
+.isHide {
   opacity: 0;
   z-index: -9999;
 }
