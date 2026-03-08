@@ -14,6 +14,8 @@
   // màu các button trong list
   --list-btn-bg: #191919; 
   --bg-img-home-page: url("/access/imgs/hinh-nen-vu-tru-2.jpg") no-repeat, #2425277d;
+
+  --header-bg-responsive: transparent;
 }
 
 .dark-mode {
@@ -30,6 +32,8 @@
   --list-btn-bg: #191919;
 
   --bg-img-home-page: url("/access/imgs/hinh-nen-vu-tru-2.jpg") no-repeat, #2425277d;
+
+  --header-bg-responsive: #131414d2;
 }
 
 .light-mode {
@@ -40,7 +44,7 @@
   // Text: #1f1f1f
   --bg-box: #f5f5f5; 
   --bg-page: #d7d3d3;
-  --bg-card: #9b1c31;
+  --bg-card: #fff;
   --text-primary: #222;
   --text-secondary: #666;
   --bg-main: no-repeat center url("/access/imgs/hinh-nen-vu-tru-2-light.png"), #242527;
@@ -54,4 +58,6 @@
 
 
   --bg-img-home-page: url("/access/imgs/hinh-nen-vu-tru-2-light.png") no-repeat, #2425277d;
+
+  --header-bg-responsive: transparent;
 }

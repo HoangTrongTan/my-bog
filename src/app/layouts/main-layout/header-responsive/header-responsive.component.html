@@ -1,4 +1,4 @@
-<div class="header-menu">
+<div class="header-menu header-bg-responsive">
   <div class="menu-toggle">
     <div
       class="icon-menu-bar"
@@ -12,8 +12,13 @@
       <fa-icon [icon]="icons.faHouseChimneyWindow"></fa-icon>
     </div>
   </div>
-  <div class="avatar">
+  <div class="avatar" [matMenuTriggerFor]="menu">
     <img src="/access/imgs/me.jpg" alt="err" width="100%" height="100%" />
     <div class="online"></div>
   </div>
+  <mat-menu #menu="matMenu" classList="avatar-menu">
+    <div mat-menu-item (click)="$event.stopPropagation()" class="mat-menu-toggle-theme">
+      <toggle-theme />
+    </div>
+  </mat-menu>
 </div>
