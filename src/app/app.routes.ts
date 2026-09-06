@@ -50,6 +50,20 @@ export const routes: Routes = [
             (mod) => mod.ProjectsComponent
           ),
       },
+      {
+        path: PATH_CONFIG.EXPRESSION,
+        loadComponent: () =>
+          import('./views/expression/expression.component').then(
+            (mod) => mod.ExpressionComponent
+          ),
+      },
+      {
+        path: PATH_CONFIG.TECH_KNOWLEDGE,
+        loadComponent: () =>
+          import('./views/tech-knowledge/tech-knowledge.component').then(
+            (mod) => mod.TechKnowledgeComponent
+          ),
+      },
     ],
   },
   {

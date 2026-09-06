@@ -23,8 +23,13 @@ export const MENU = [
   },
   {
     path: PATH_CONFIG.EXPRESSION,
-    icon: 'data_exploration',
-    toolltip: 'My Expression',
+    icon: 'rate_review',
+    toolltip: 'Góp Ý & Lời Chúc',
+  },
+  {
+    path: PATH_CONFIG.TECH_KNOWLEDGE,
+    icon: 'cloud_sync',
+    toolltip: 'Knowledge Hub',
   },
   {
     path: PATH_CONFIG.PRIZES,

@@ -13,7 +13,9 @@ export class AudioService {
     'style-robot': [261.63, 293.66, 329.63, 392.00, 440.00, 523.25], // Sci-Fi Major
     'style-quantum': [329.63, 349.23, 392.00, 493.88, 523.25, 659.25], // Lydian synth
     'style-quan-van-truong': [146.83, 164.81, 196.00, 220.00, 293.66], // Deep War Drums / Pentatonic Low
-    'style-cosmic': [261.63, 329.63, 392.00, 493.88, 587.33, 659.25] // Ethereal 9th Chord
+    'style-cosmic': [261.63, 329.63, 392.00, 493.88, 587.33, 659.25], // Ethereal 9th Chord
+    'style-sports': [329.63, 392.00, 440.00, 493.88, 587.33, 659.25], // Dynamic Energetic Pulse
+    'style-horror': [110.00, 116.54, 138.59, 155.56, 164.81, 220.00, 233.08] // Sinister Diminished Tritone Sub-Bass
   };
 
   private currentStyle = 'style-cyberpunk';
@@ -40,9 +42,9 @@ export class AudioService {
 
     const osc = this.audioCtx.createOscillator();
     const gain = this.audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, this.audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(150, this.audioCtx.currentTime + 0.08);
+    osc.type = this.currentStyle === 'style-horror' ? 'sawtooth' : 'sine';
+    osc.frequency.setValueAtTime(this.currentStyle === 'style-horror' ? 220 : 600, this.audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(this.currentStyle === 'style-horror' ? 80 : 150, this.audioCtx.currentTime + 0.08);
 
     gain.gain.setValueAtTime(0.15, this.audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.08);
@@ -102,6 +104,8 @@ export class AudioService {
       osc.type = 'sawtooth';
     } else if (this.currentStyle === 'style-quan-van-truong') {
       osc.type = 'sine';
+    } else if (this.currentStyle === 'style-horror') {
+      osc.type = 'sawtooth';
     } else {
       osc.type = 'sine';
     }

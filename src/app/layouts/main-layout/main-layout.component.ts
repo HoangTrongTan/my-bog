@@ -16,6 +16,7 @@ import { CustomCursorComponent } from '../../components/custom-cursor/custom-cur
 import { ThemeCharacterSelectorComponent } from '../../components/theme-character-selector/theme-character-selector.component';
 import { FortuneModalComponent } from '../../components/fortune-modal/fortune-modal.component';
 import { MobileBottomNavComponent } from '../../components/mobile-bottom-nav/mobile-bottom-nav.component';
+import { TodoListModalComponent } from '../../components/todo-list-modal/todo-list-modal.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -34,7 +35,8 @@ import { MobileBottomNavComponent } from '../../components/mobile-bottom-nav/mob
     CustomCursorComponent,
     ThemeCharacterSelectorComponent,
     FortuneModalComponent,
-    MobileBottomNavComponent
+    MobileBottomNavComponent,
+    TodoListModalComponent
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
@@ -42,6 +44,7 @@ import { MobileBottomNavComponent } from '../../components/mobile-bottom-nav/mob
 export class MainLayoutComponent {
   @ViewChild('fortuneModal') fortuneModal!: FortuneModalComponent;
   @ViewChild('studioSelector') studioSelector!: ThemeCharacterSelectorComponent;
+  @ViewChild('todoModal') todoModal!: TodoListModalComponent;
 
   openMenu = signal<boolean>(false);
   menu = signal(MENU);
@@ -59,6 +62,12 @@ export class MainLayoutComponent {
   openStudioSelector() {
     if (this.studioSelector) {
       this.studioSelector.openPanel();
+    }
+  }
+
+  openTodoListModal() {
+    if (this.todoModal) {
+      this.todoModal.openModal();
     }
   }
 }

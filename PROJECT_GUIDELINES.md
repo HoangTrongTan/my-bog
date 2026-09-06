@@ -69,14 +69,13 @@ Canvas particle weather system controlled by `ParticleWeatherComponent`:
 ---
 
 ## 🤹 4. Key Interactive Components & Layout Architecture
+- **Slide-out Menu Drawer**: `.menu-bars` (`src/app/layouts/main-layout/main-layout.component.html`). Modern glassmorphism panel with glowing avatar header, active route highlighting, spring animation, and backdrop overlay click-to-close.
+- **Home Social Pills & Avatar Anchor**: `.top-social` & `.box-img-avartar` (`src/app/views/home/home.component.html`). Dynamic flex sizing without clipping & locked center anchor grid for avatar image/border.
 - **Canvas Weather Overlay**: `app-particle-weather` (`src/app/components/particle-weather`). HTML5 canvas particle renderer.
 - **Custom Dynamic Cursor**: `app-custom-cursor` (`src/app/components/custom-cursor`). Elevated to **`z-[100000]`** with strict `pointer-events-none` so it sits above all modals without blocking input clicks.
-- **Studio Customization Drawer**: `app-theme-character-selector` (`src/app/components/theme-character-selector`). Triggered via Right Sidebar glass column icon ("🎨 Tùy chỉnh Studio") and Avatar Dropdowns. Floating bottom-right button removed for clean screen layout.
-- **Draggable Menu Sidebar**: `LeftSidebarComponent` (`src/app/layouts/main-layout/left-sidebar`). Reorderable navigation items powered by Angular CDK (`@angular/cdk/drag-drop`).
-- **Matching Right Glass Column**: `RightSidebarComponent` (`src/app/layouts/main-layout/right-sidebar`). Vertical glass card column (`w-[100px] h-full`) matching Left Sidebar aesthetic with quick action tooltips.
-- **AI Fortune Oracle Modal**: `app-fortune-modal` (`src/app/components/fortune-modal`). Powered by `FortuneService` using Gemini API (`gemini-2.0-flash`) with Pythagorean Numerology fallback.
-- **Mobile Bottom Navigation**: `app-mobile-bottom-nav` (`src/app/components/mobile-bottom-nav`). Fixed 5-button bottom navbar for mobile screens (`< 768px`).
-- **Character-Adaptive Loader**: `app-loader` (`src/app/components/loader.ts`). Dynamically renders spinners matching the active character style.
+- **Studio Customization Drawer**: `app-theme-character-selector` (`src/app/components/theme-character-selector`). Triggered via Right Sidebar glass column icon ("🎨 Tùy chỉnh Studio") and Avatar Dropdowns.
+- **Lucky Fortune & Feedback Page**: `ExpressionComponent` (`/expression`). Interactive shaking bamboo fortune cylinder ("Linh Quẻ Cát Tường") + Wish & Feedback submission book.
+- **Cloud & DevOps Knowledge Hub**: `TechKnowledgeComponent` (`/tech-knowledge`). Data source: `src/app/data/tech-knowledge.data.ts`. Filterable card grid & detail modal covering AWS VPC, EC2, DynamoDB, NAT Gateway, Security Groups, Internet Gateway, VPC Peering, Docker, Kubernetes, and ASP.NET Core / Angular deployment on AWS ECS Fargate.
 
 ---
 

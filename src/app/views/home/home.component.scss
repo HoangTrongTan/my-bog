@@ -174,30 +174,52 @@ $margin-show-cv: 40px;
     }
     .top-social {
       position: absolute;
-      top: 0;
+      top: -22px;
       left: 50%;
       transform: translateX(-50%);
-      width: 270px;
-      height: 43px;
+      width: auto;
+      max-width: 95%;
+      padding: 5px 14px;
+      height: auto;
+      min-height: 44px;
       border-radius: 50px;
       background-color: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 12px var(--glow-color);
       z-index: 100;
       .boxes-icons {
+        width: 100%;
         .items-list {
           display: flex;
           align-items: center;
-          gap: 0.2em;
+          justify-content: center;
+          flex-wrap: nowrap;
+          gap: 6px;
           .item-icon {
-            padding: 10px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
             cursor: pointer;
             border-radius: 10px;
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             .icon-social {
               color: var(--text-secondary);
+              font-size: 15px;
               z-index: 1;
+              transition: color 0.3s ease;
+            }
+            &:hover {
+              transform: translateY(-2px) scale(1.1);
+              border-color: var(--accent-color);
+              box-shadow: 0 0 10px var(--glow-color);
             }
             &:hover .icon-social {
               color: var(--accent-color);
@@ -210,7 +232,7 @@ $margin-show-cv: 40px;
               position: absolute;
               inset: 0;
               background: var(--color-hover);
-              opacity: 0.4;
+              opacity: 0.35;
               clip-path: circle(7% at 20% 20%);
               transition: all 0.3s linear;
               z-index: -1;
@@ -219,36 +241,73 @@ $margin-show-cv: 40px;
         }
       }
     }
-    .my-img-border {
-      @include border-img;
-      width: 270px;
-      height: 270px;
-      background-color: var(--bg-card);
-      bottom: -30px;
-      right: 19.2%;
-      overflow: hidden;
-      transition: all 0.3s linear;
-      &::before {
-        content: "";
-        position: absolute;
-        width: 100px;
-        height: 130%;
-        background-image: linear-gradient(
-          180deg,
-          rgb(0, 183, 255),
-          rgb(255, 48, 255)
-        );
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%) rotate(90deg);
-        animation: rotBGimg 3s linear infinite;
-      }
-    }
     
-    .box-img-avartar{
-      animation: left-2right-candy-bounce 1s ease-out 1.8s both;
+    .box-img-avartar {
+      position: absolute;
+      bottom: -60px;
+      right: 8%;
+      width: 280px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 100;
-      position: relative;
+      animation: left-2right-candy-bounce 1s ease-out 1.8s both;
+
+      .my-img-border {
+        position: absolute;
+        inset: 0;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 0 30px var(--glow-color);
+        overflow: hidden;
+        transition: all 0.3s linear;
+
+        &::before {
+          content: "";
+          position: absolute;
+          width: 130px;
+          height: 140%;
+          background-image: linear-gradient(
+            180deg,
+            var(--accent-color),
+            var(--accent-secondary)
+          );
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%) rotate(90deg);
+          animation: rotBGimg 3s linear infinite;
+        }
+      }
+
+      .my-img {
+        position: absolute;
+        width: 256px;
+        height: 256px;
+        border-radius: 50%;
+        background: url("/access/imgs/hinh-nen-vu-tru-2.jpg") center/cover no-repeat;
+        border: 2px solid var(--border-color);
+        z-index: 10;
+        transition: all 0.3s linear;
+        overflow: hidden;
+
+        img {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top center;
+          z-index: 20;
+          filter: drop-shadow(0 0 10px var(--glow-color));
+          animation: imgRunShadow 3s linear infinite;
+        }
+      }
     }
 
     @keyframes rotBGimg {
@@ -261,26 +320,6 @@ $margin-show-cv: 40px;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%) rotate(360deg);
-      }
-    }
-    .my-img {
-      width: 250px;
-      height: 250px;
-      bottom: -20px;
-      right: 20%;
-      background: url("/access/imgs/hinh-nen-vu-tru-2.jpg") center;
-      @include border-img;
-
-      z-index: 100;
-      transition: all 0.3s linear;
-      img {
-        position: absolute;
-        top: -60px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 100;
-        filter: drop-shadow(5px -5px 0.3em orange);
-        animation: imgRunShadow 3s linear infinite;
       }
     }
   }
@@ -331,24 +370,46 @@ $margin-show-cv: 40px;
       }
     }
   }
+
   .details-knolage {
-    height: auto;
-    gap: 1.5em;
-    flex-wrap: wrap;
-    padding: 20px 0;
-    justify-content: space-around;
-    .knolage-items {
-      gap: 1em;
-      flex: 1;
-      p:nth-child(1) {
-        text-align: left;
-        font-weight: bold;
-        color: var(--accent-color);
-        min-width: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+    width: 100%;
+
+    .knolage-card {
+      padding: 1.25rem 1rem;
+      border-radius: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      &:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent-color);
+        box-shadow: 0 8px 25px var(--glow-color);
       }
-      p:nth-child(2) {
+
+      .count-badge {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--accent-color);
+        line-height: 1;
+        text-shadow: 0 0 10px var(--glow-color);
+      }
+
+      .label-text {
+        font-size: 0.8rem;
+        font-weight: 600;
         color: var(--text-primary);
-        min-width: 160px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
     }
   }
@@ -384,51 +445,171 @@ $margin-show-cv: 40px;
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 992px) {
   .wrapper {
-    .card {
-      .my-img-border {
-        bottom: -180px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      .my-img {
-        bottom: -170px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    }
-    .download-csv {
-      margin-top: 200px;
-    }
-  }
-}
-@media (max-width: 460px) {
-  .wrapper {
-    .card {
-      .box-img-avartar{
-        transform: translateX(2px) !important;
-      }
-      .my-img-border {
-        width: 250px;
-        height: 250px;
-        bottom: -180px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      .my-img {
-        width: 230px;
-        height: 230px;
-        bottom: -170px;
-        left: 50%;
-        transform: translateX(-50%);
+    padding: 0 12px;
+
+    .header {
+      padding: 15px 10px;
+      justify-content: flex-end;
+      .info {
+        p:first-child {
+          font-size: 11px;
+        }
+        p:last-child {
+          font-size: 10px;
+        }
       }
     }
 
+    .card-intro {
+      .introduct {
+        height: auto;
+        min-height: 360px;
+        padding-top: 25px;
+        padding-bottom: 25px;
+        mask-size: 100% 40px;
+
+        .info .boxes {
+          p:first-child {
+            font-size: 22px;
+            margin: 6px 0;
+          }
+        }
+      }
+
+      .box-img-avartar {
+        position: relative;
+        bottom: 0;
+        right: 0;
+        margin: 35px auto 0 auto;
+        transform: none !important;
+      }
+    }
+
+    .details-knolage {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .download-csv {
+      margin-top: 35px;
+    }
   }
 }
+
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 0 8px;
+
+    .header {
+      padding: 12px 5px;
+      gap: 0.5rem;
+      .info {
+        p:first-child {
+          font-size: 10px;
+          line-height: 1.2;
+        }
+        p:last-child {
+          font-size: 9px;
+        }
+      }
+      .my-img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    .card-intro {
+      .top-social {
+        top: -18px;
+        padding: 4px 8px;
+        max-width: 98%;
+        .boxes-icons .items-list {
+          gap: 4px;
+          .item-icon {
+            width: 30px;
+            height: 30px;
+            .icon-social {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+
+      .introduct {
+        min-height: 340px;
+        .cmd {
+          right: 15px;
+          top: 12px;
+          gap: 0.5em;
+        }
+        .info {
+          padding: 15px 10px;
+          .boxes {
+            p:first-child {
+              font-size: 16px;
+              word-break: break-word;
+            }
+            button.learn-more {
+              width: 10rem;
+              .button-text {
+                font-size: 10px;
+                line-height: 2.2;
+              }
+            }
+          }
+        }
+      }
+
+      .box-img-avartar {
+        width: 210px;
+        height: 210px;
+        margin: 25px auto 0 auto;
+
+        .my-img-border {
+          width: 210px;
+          height: 210px;
+        }
+
+        .my-img {
+          width: 190px;
+          height: 190px;
+
+          img {
+            width: 200px;
+            top: -20px;
+          }
+        }
+      }
+    }
+
+    .details-knolage {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+
+      .knolage-card {
+        padding: 10px 6px;
+
+        .count-badge {
+          font-size: 1.3rem;
+        }
+
+        .label-text {
+          font-size: 0.7rem;
+        }
+      }
+    }
+
+    .footer {
+      margin-bottom: 75px;
+    }
+  }
+}
+
 @media (max-width: 1024px) and (max-height: 900px) {
   .footer {
-    margin-bottom: 70px;
+    margin-bottom: 75px;
   }
 }
+

@@ -1,65 +1,104 @@
-<div class="wrapper card-sidebar transition-all duration-300 glass-card !rounded-2xl shadow-2xl border border-theme-border" [ngClass]="({ expanWidth: openMenu() })">
+<div
+  class="wrapper card-sidebar transition-all duration-300 glass-card !rounded-2xl shadow-2xl border border-theme-border flex flex-col items-center justify-between py-4"
+  [ngClass]="{ expanWidth: openMenu() }"
+>
   <!-- Top Bar / Toggle Button -->
-  <div class="boxes-btn button-bg">
-    <button tabindex="0" (blur)="onBlur()" (click)="onClick()" class="hover:scale-105 transition-transform">
+  <div class="top-btn w-full flex items-center justify-center px-2 py-1 shrink-0">
+    <button
+      tabindex="0"
+      (blur)="onBlur()"
+      (click)="onClick()"
+      class="w-12 h-12 rounded-xl flex items-center justify-center text-theme-accent hover:bg-white/10 active:scale-95 transition-all cursor-pointer"
+      [matTooltip]="openMenu() ? 'Thu gọn menu' : 'Mở rộng menu'"
+      matTooltipPosition="right"
+    >
       <icon-bar-toggle [active]="openMenu()" />
     </button>
   </div>
 
   <!-- Routes Menu with Drag and Drop -->
-  <div class="routes my-2">
-    <div 
-      cdkDropList 
+  <div class="routes my-3 w-full flex-1 overflow-y-auto overflow-x-hidden px-2 custom-scrollbar">
+    <div
+      cdkDropList
       (cdkDropListDropped)="drop($event)"
-      class="boxes-btn button-bg boxes-btn-list card flex flex-col gap-2 p-1" 
-      [ngClass]="({ expan: openMenu() })"
+      class="boxes-btn-list flex flex-col gap-2.5 w-full items-center"
     >
       @for (item of menu(); track item.path) {
-      <div 
-        cdkDrag 
-        class="group relative flex items-center w-full rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing hover:bg-white/10"
-      >
-        <!-- Drag Handle Icon -->
-        <div cdkDragHandle class="absolute left-1 opacity-0 group-hover:opacity-60 text-slate-400 cursor-grab p-1">
-          <mat-icon class="!w-4 !h-4 !text-sm">drag_indicator</mat-icon>
-        </div>
-
-        <button
-          [routerLink]="['/', item.path]"
-          (mouseenter)="audioService.playClickSound()"
-          matTooltipPosition="right"
-          [matTooltip]="item.toolltip + ' (Kéo thả để đổi thứ tự)'"
-          class="w-full flex items-center gap-3 p-3 text-left border-none bg-transparent hover:text-theme-accent transition-colors"
+        <div
+          cdkDrag
+          class="group relative flex items-center w-full rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing"
         >
-          <mat-icon class="text-theme-accent group-hover:scale-110 transition-transform">{{ item.icon }}</mat-icon>
-          <p class="font-medium text-sm transition-all duration-200 overflow-hidden whitespace-nowrap">
-            <span>{{ item.toolltip }}</span>
-          </p>
-        </button>
+          <!-- Drag Handle Icon (Visible on hover when expanded) -->
+          <div
+            *ngIf="openMenu()"
+            cdkDragHandle
+            class="absolute left-1 z-10 opacity-0 group-hover:opacity-60 text-slate-400 cursor-grab p-1"
+          >
+            <mat-icon class="!w-4 !h-4 !text-sm">drag_indicator</mat-icon>
+          </div>
 
-        <!-- Character Style Icon Badge Detail -->
-        <div class="absolute right-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-          @if (themeService.activeCharacterStyle() === 'style-ninja') {
-            <span class="text-xs text-red-500 font-bold">🥷</span>
-          } @else if (themeService.activeCharacterStyle() === 'style-robot') {
-            <span class="text-xs text-cyan-400 font-bold">🤖</span>
-          } @else if (themeService.activeCharacterStyle() === 'style-quantum') {
-            <span class="text-xs text-purple-400 font-bold">⚡</span>
-          } @else if (themeService.activeCharacterStyle() === 'style-quan-van-truong') {
-            <span class="text-xs text-emerald-400 font-bold">🐉</span>
-          } @else if (themeService.activeCharacterStyle() === 'style-cosmic') {
-            <span class="text-xs text-pink-400 font-bold">🌌</span>
-          }
+          <!-- Main Nav Link -->
+          <a
+            [routerLink]="['/', item.path]"
+            routerLinkActive="active-sidebar-link"
+            (mouseenter)="audioService.playClickSound()"
+            matTooltipPosition="right"
+            [matTooltip]="item.toolltip + ' (Kéo thả để đổi thứ tự)'"
+            class="nav-item-btn w-full flex items-center justify-center rounded-xl p-2.5 text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-200"
+            [ngClass]="{ 'px-3 justify-start gap-3': openMenu() }"
+          >
+            <div class="icon-container w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110">
+              <mat-icon class="!w-5 !h-5 !text-xl text-theme-accent">{{ item.icon }}</mat-icon>
+            </div>
+
+            <span
+              *ngIf="openMenu()"
+              class="font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis flex-1 text-white"
+            >
+              {{ item.toolltip }}
+            </span>
+
+            <!-- Character Style Icon Badge Detail (Visible only when expanded) -->
+            <div *ngIf="openMenu()" class="shrink-0 ml-auto opacity-70 group-hover:opacity-100 transition-opacity">
+              @if (themeService.activeCharacterStyle() === 'style-ninja') {
+                <span class="text-xs text-red-500 font-bold">🥷</span>
+              } @else if (themeService.activeCharacterStyle() === 'style-robot') {
+                <span class="text-xs text-cyan-400 font-bold">🤖</span>
+              } @else if (themeService.activeCharacterStyle() === 'style-quantum') {
+                <span class="text-xs text-purple-400 font-bold">⚡</span>
+              } @else if (themeService.activeCharacterStyle() === 'style-quan-van-truong') {
+                <span class="text-xs text-emerald-400 font-bold">🐉</span>
+              } @else if (themeService.activeCharacterStyle() === 'style-cosmic') {
+                <span class="text-xs text-pink-400 font-bold">🌌</span>
+              } @else if (themeService.activeCharacterStyle() === 'style-sports') {
+                <span class="text-xs text-amber-400 font-bold">⚽</span>
+              } @else if (themeService.activeCharacterStyle() === 'style-horror') {
+                <span class="text-xs text-red-600 font-bold">💀</span>
+              }
+            </div>
+          </a>
         </div>
-      </div>
       }
     </div>
   </div>
 
   <!-- Home Link Button -->
-  <div class="boxes-btn button-bg">
-    <button tabindex="0" [routerLink]="path.HOME" (mouseenter)="audioService.playClickSound()" class="hover:scale-105 transition-transform text-theme-accent">
-      <fa-icon [icon]="faHouseChimney"></fa-icon>
-    </button>
+  <div class="bottom-btn w-full flex items-center justify-center px-2 py-1 shrink-0 border-t border-white/10 pt-3">
+    <a
+      [routerLink]="path.HOME"
+      routerLinkActive="active-sidebar-link"
+      (mouseenter)="audioService.playClickSound()"
+      matTooltipPosition="right"
+      matTooltip="Trang Chủ (Home)"
+      class="nav-item-btn w-12 h-12 rounded-xl flex items-center justify-center text-theme-accent hover:bg-white/10 active:scale-95 transition-all cursor-pointer"
+      [ngClass]="{ 'w-full px-3 justify-start gap-3 h-auto py-2.5': openMenu() }"
+    >
+      <div class="icon-container w-9 h-9 rounded-lg flex items-center justify-center shrink-0">
+        <fa-icon [icon]="faHouseChimney" class="text-lg"></fa-icon>
+      </div>
+      <span *ngIf="openMenu()" class="font-medium text-sm whitespace-nowrap overflow-hidden text-ellipsis text-white">
+        Trang Chủ
+      </span>
+    </a>
   </div>
 </div>

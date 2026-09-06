@@ -5,6 +5,7 @@ export const PATH_CONFIG = {
   SKILLS: 'skills',
   PROJECTS: 'projects',
   EXPRESSION: 'expression',
+  TECH_KNOWLEDGE: 'tech-knowledge',
   PRIZES: 'prizes',
   VIEW_MY_CV: 'view-my-cv',
 };

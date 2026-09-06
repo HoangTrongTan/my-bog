@@ -62,6 +62,23 @@ import { ThemeService } from '../../services/theme.service';
           </div>
         </ng-container>
 
+        <!-- Sports Speedbolt Style -->
+        <ng-container *ngIf="themeService.activeCharacterStyle() === 'style-sports'">
+          <div class="relative w-8 h-8 flex items-center justify-center drop-shadow-[0_0_14px_rgba(245,158,11,0.9)] pointer-events-none">
+            <svg class="w-7 h-7 text-amber-400 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
+            </svg>
+          </div>
+        </ng-container>
+
+        <!-- Horror Shinigami Death Scythe / Skull Style -->
+        <ng-container *ngIf="themeService.activeCharacterStyle() === 'style-horror'">
+          <div class="relative w-9 h-9 flex items-center justify-center drop-shadow-[0_0_16px_rgba(220,38,38,0.95)] pointer-events-none">
+            <div class="text-xl animate-bounce">💀</div>
+            <div class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></div>
+          </div>
+        </ng-container>
+
         <!-- Dynamic Glow Halo -->
         <div class="absolute inset-0 rounded-full bg-theme-accent/20 blur-md -z-10 transform scale-150 pointer-events-none"></div>
       </div>

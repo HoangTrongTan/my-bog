@@ -2,6 +2,7 @@
 <app-custom-cursor />
 <app-theme-character-selector #studioSelector />
 <app-fortune-modal #fortuneModal />
+<app-todo-list-modal #todoModal />
 <app-mobile-bottom-nav (openFortune)="openFortuneModal()" />
 
 <div class="warpper main-bg relative z-10" #wrapperMainLayout>
@@ -12,22 +13,56 @@
       <router-outlet />
     </div>
   </div>
-  <app-right-sidebar (openFortune)="openFortuneModal()" (openStudio)="openStudioSelector()" />
-  <div class="menu-bars" [ngClass]="({ expan: openMenu() })">
-    <div class="header-img">
-      <img src="/access/imgs/myImg1.jpg" alt="">
-    </div>
-    <div class="boxes-btn-list">
-      @for (item of menu(); track $index) {
-      <button
-        [routerLink]="['/', item.path]"
-        matTooltipPosition="right"
-        [matTooltip]="item.toolltip"
+  <app-right-sidebar (openFortune)="openFortuneModal()" (openStudio)="openStudioSelector()" (openTodoList)="openTodoListModal()" />
+  <!-- Backdrop overlay for mobile/desktop menu drawer -->
+  <div 
+    *ngIf="openMenu()" 
+    class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[4990] transition-opacity duration-300" 
+    (click)="clickMenuOpen(false)"
+  ></div>
+
+  <!-- Slide-out Menu Drawer -->
+  <div class="menu-bars glass-card border-r border-white/10" [ngClass]="({ expan: openMenu() })">
+    <!-- Header Profile Section -->
+    <div class="drawer-header flex flex-col items-center pt-8 pb-6 px-4 border-b border-white/10 relative">
+      <button 
+        (click)="clickMenuOpen(false)" 
+        class="absolute top-4 right-4 text-slate-400 hover:text-white p-1.5 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
       >
-        <mat-icon class="icons">{{ item.icon }}</mat-icon>
-        <p class="text">{{ item.toolltip }}</p>
+        <mat-icon class="!w-5 !h-5 !text-xl">close</mat-icon>
+      </button>
+
+      <div class="avatar-wrapper relative group mb-3 cursor-pointer">
+        <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-theme-accent via-cyan-400 to-purple-500 blur opacity-75 group-hover:opacity-100 transition duration-500"></div>
+        <img src="/access/imgs/me.jpg" alt="Hoang Trong Tan" class="relative w-20 h-20 rounded-full object-cover border-2 border-theme-accent shadow-2xl">
+        <div class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-900 shadow-md"></div>
+      </div>
+
+      <h3 class="text-white font-bold text-base tracking-wide">Hoàng Trọng Tấn</h3>
+      <p class="text-xs text-theme-accent font-semibold tracking-wider uppercase mt-1">Full-Stack & Cloud Engineer</p>
+    </div>
+
+    <!-- Navigation List -->
+    <div class="boxes-btn-list p-4 flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-220px)]">
+      @for (item of menu(); track $index) {
+      <button 
+        [routerLink]="['/', item.path]" 
+        (click)="clickMenuOpen(false)"
+        routerLinkActive="active-menu-item"
+        class="nav-btn group flex items-center gap-3.5 px-3.5 py-3 rounded-xl border border-white/5 bg-slate-900/60 hover:bg-theme-accent/15 hover:border-theme-accent/50 text-slate-300 hover:text-white transition-all duration-300 text-left cursor-pointer"
+      >
+        <div class="w-9 h-9 rounded-lg bg-slate-800/90 group-hover:bg-theme-accent/20 flex items-center justify-center text-theme-accent group-hover:scale-110 transition-all duration-300 shrink-0">
+          <mat-icon class="!w-5 !h-5 !text-xl">{{ item.icon }}</mat-icon>
+        </div>
+        <span class="font-semibold text-sm tracking-wide flex-1 text-white">{{ item.toolltip }}</span>
+        <mat-icon class="!w-4 !h-4 !text-base opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-theme-accent">chevron_right</mat-icon>
       </button>
       }
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="drawer-footer mt-auto p-4 border-t border-white/10 text-center">
+      <p class="text-[11px] text-slate-400 font-medium">TANTIENTI STUDIO © 2026</p>
     </div>
   </div>
 </div>

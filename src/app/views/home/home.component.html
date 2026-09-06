@@ -66,11 +66,11 @@
     </button>
   </div>
   <!-- ------------------------------------------- -->
-  <div class="details-knolage flex-center">
+  <div class="details-knolage">
     @for(item of knolages; track $index){
-      <div class="knolage-items flex-center">
-        <p>{{ item.count }}</p>
-        <p>{{ item.text }}</p>
+      <div class="knolage-card glass-card">
+        <div class="count-badge">{{ item.count }}</div>
+        <div class="label-text">{{ item.text }}</div>
       </div>
     }
   </div>

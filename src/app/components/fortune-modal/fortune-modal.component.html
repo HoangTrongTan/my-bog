@@ -1,0 +1,317 @@
+<!-- Backdrop Overlay -->
+<div
+  *ngIf="isOpen()"
+  class="fixed inset-0 bg-black/75 backdrop-blur-md z-[9999] flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-hidden animate-fadeIn"
+  (click)="closeModal()"
+>
+  <!-- Main Modal Card (Compact max-w-2xl and responsive max-h-[85vh]) -->
+  <div
+    class="relative w-full max-w-2xl max-h-[85vh] p-4 sm:p-5 rounded-2xl shadow-2xl transition-all duration-300 flex flex-col gap-3 overflow-hidden border border-white/10"
+    [ngClass]="modalThemeClass"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Decorative Theme Emblems -->
+    <div class="absolute -right-16 -top-16 w-48 h-48 rounded-full blur-3xl opacity-25 bg-theme-accent pointer-events-none"></div>
+
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5 shrink-0 relative z-10">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-8 h-8 rounded-lg bg-theme-accent/20 border border-theme-accent flex items-center justify-center text-theme-accent text-lg shadow-[0_0_12px_var(--glow-color)] shrink-0">
+          <mat-icon class="!w-5 !h-5 !text-lg">{{ headerIcon }}</mat-icon>
+        </div>
+        <div class="min-w-0">
+          <span class="block text-[9px] uppercase font-bold text-theme-accent tracking-widest leading-none mb-0.5">{{ themeBadgeTitle }}</span>
+          <h2 class="text-base sm:text-lg font-extrabold text-white tracking-tight truncate">{{ modalTitle }}</h2>
+        </div>
+      </div>
+
+      <!-- Tab Switcher & Close Button -->
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="flex items-center p-0.5 rounded-lg bg-slate-950/90 border border-white/10 text-[11px]">
+          <button
+            (click)="activeTab.set('draw'); audioService.playClickSound()"
+            class="px-2.5 py-1 rounded-md font-bold transition-all cursor-pointer"
+            [ngClass]="{
+              'bg-theme-accent text-slate-950 shadow-sm': activeTab() === 'draw',
+              'text-slate-300 hover:text-white': activeTab() !== 'draw'
+            }"
+          >
+            ⛩️ Rút Quẻ
+          </button>
+          <button
+            (click)="activeTab.set('numerology'); audioService.playClickSound()"
+            class="px-2.5 py-1 rounded-md font-bold transition-all cursor-pointer"
+            [ngClass]="{
+              'bg-theme-accent text-slate-950 shadow-sm': activeTab() === 'numerology',
+              'text-slate-300 hover:text-white': activeTab() !== 'numerology'
+            }"
+          >
+            🔮 Tử Vi & Thần Số
+          </button>
+        </div>
+
+        <button (click)="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer flex items-center justify-center">
+          <mat-icon class="!w-5 !h-5 !text-lg">close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable Body Content Container -->
+    <div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3 relative z-10 max-h-[calc(85vh-75px)] custom-scrollbar">
+
+      <!-- TAB 1: LUCKY FORTUNE DRAW (RÚT QUẺ CÁT TƯỜNG) -->
+      <div *ngIf="activeTab() === 'draw'" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+        <!-- Cylinder Shaker Box -->
+        <div class="sm:col-span-5 glass-card p-3 rounded-xl border border-white/10 flex flex-col items-center justify-between gap-2.5 text-center shrink-0">
+          <span class="text-[10px] uppercase font-bold tracking-wider text-amber-300">Linh Sơ Quẻ Điện</span>
+
+          <!-- Shaking Bamboo Cylinder -->
+          <div class="relative w-20 h-28 flex items-center justify-center my-0.5">
+            <div class="absolute -inset-1 rounded-xl bg-amber-500/20 blur-md animate-pulse"></div>
+            <div
+              class="relative w-18 h-24 rounded-lg bg-gradient-to-b from-amber-900 via-amber-950 to-slate-950 border border-amber-500/60 shadow-lg flex flex-col items-center justify-between p-1.5"
+              [ngClass]="{ 'animate-shake': isShaking() }"
+            >
+              <div class="w-6 h-6 rounded-full border border-amber-400/40 bg-amber-900/60 flex items-center justify-center text-amber-300 font-bold text-xs">
+                ☯️
+              </div>
+              <div class="flex items-end justify-center gap-0.5 -mt-2">
+                <div class="w-1 h-10 bg-amber-600 rounded-t border-t border-amber-300"></div>
+                <div class="w-1 h-12 bg-amber-500 rounded-t border-t border-amber-200"></div>
+                <div class="w-1 h-9 bg-amber-700 rounded-t border-t border-amber-400"></div>
+                <div class="w-1 h-11 bg-amber-500 rounded-t border-t border-amber-200"></div>
+              </div>
+              <span class="text-[8px] font-serif font-bold text-amber-300 tracking-wider border-t border-amber-500/40 pt-0.5 w-full text-center">
+                CÁT TƯỜNG QUẺ
+              </span>
+            </div>
+          </div>
+
+          <!-- Focus Selector & Draw Button -->
+          <div class="w-full flex flex-col gap-1.5">
+            <div class="grid grid-cols-2 gap-1 text-[10px]">
+              <button
+                (click)="drawFocus = 'su-nghiep'"
+                class="py-1 px-1.5 rounded-md border font-semibold transition-all cursor-pointer"
+                [ngClass]="{ 'border-amber-400 bg-amber-500/20 text-amber-300 font-bold': drawFocus === 'su-nghiep', 'border-white/10 bg-slate-950/60 text-slate-300': drawFocus !== 'su-nghiep' }"
+              >
+                🎯 Sự Nghiệp
+              </button>
+              <button
+                (click)="drawFocus = 'tai-loc'"
+                class="py-1 px-1.5 rounded-md border font-semibold transition-all cursor-pointer"
+                [ngClass]="{ 'border-amber-400 bg-amber-500/20 text-amber-300 font-bold': drawFocus === 'tai-loc', 'border-white/10 bg-slate-950/60 text-slate-300': drawFocus !== 'tai-loc' }"
+              >
+                💰 Tài Lộc
+              </button>
+            </div>
+
+            <button
+              (click)="drawFortuneSlip()"
+              [disabled]="isShaking()"
+              class="w-full py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold text-[11px] uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              <mat-icon class="!w-3.5 !h-3.5 !text-sm" [ngClass]="{ 'animate-spin': isShaking() }">
+                {{ isShaking() ? 'sync' : 'wb_twilight' }}
+              </mat-icon>
+              <span>{{ isShaking() ? 'Đang Lắc Quẻ...' : 'Lắc Hũ Rút Quẻ' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fortune Result Display -->
+        <div class="sm:col-span-7 flex flex-col justify-center">
+          <div *ngIf="!drawnFortune() && !isShaking()" class="glass-card p-4 rounded-xl border border-white/10 text-center flex flex-col items-center justify-center gap-2 h-full min-h-[220px]">
+            <div class="text-2xl">🔮</div>
+            <h3 class="text-xs font-bold text-white">Chưa Rút Quẻ</h3>
+            <p class="text-[11px] text-slate-400 max-w-xs leading-relaxed">Nhấn nút <strong>"Lắc Hũ Rút Quẻ"</strong> để mở quẻ giải mã thời vận cát tường hôm nay.</p>
+          </div>
+
+          <div *ngIf="isShaking()" class="glass-card p-4 rounded-xl border border-white/10 text-center flex flex-col items-center justify-center gap-2 h-full min-h-[220px]">
+            <div class="text-2xl animate-bounce">✨</div>
+            <h3 class="text-xs font-bold text-white">Đang Khai Cát Quẻ...</h3>
+            <p class="text-[11px] text-slate-400">Tiếng quẻ va chạm âm vang, vận mệnh sắp tỏ tường</p>
+          </div>
+
+          <div *ngIf="drawnFortune() && !isShaking()" class="glass-card p-3.5 rounded-xl border border-amber-500/50 shadow-lg flex flex-col gap-2.5 animate-fadeIn">
+            <div class="flex items-center justify-between border-b border-white/10 pb-1.5">
+              <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-extrabold text-[10px] border border-amber-500/40">
+                {{ drawnFortune()?.grade }}
+              </span>
+              <span class="text-[9px] text-slate-400 font-mono">Quẻ Linh Cát</span>
+            </div>
+
+            <h3 class="text-sm font-bold text-amber-300 text-center leading-snug">
+              {{ drawnFortune()?.hexagram }}
+            </h3>
+
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-amber-500/30 text-center flex flex-col gap-0.5 font-serif text-amber-200 text-[11px] italic leading-relaxed">
+              <p *ngFor="let line of drawnFortune()?.poem">{{ line }}</p>
+            </div>
+
+            <div class="flex flex-col gap-0.5 bg-slate-950/50 p-2 rounded-lg border border-white/5">
+              <span class="text-[9px] font-bold uppercase tracking-wider text-amber-400">Lời Thần Sơ Chỉ Dẫn:</span>
+              <p class="text-[11px] text-slate-200 leading-relaxed">{{ drawnFortune()?.oracleAdvice }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: NUMEROLOGY & ZODIAC (THẦN SỐ HỌC & TỬ VI) -->
+      <div *ngIf="activeTab() === 'numerology'" class="flex flex-col gap-3">
+        <!-- Input Form Section -->
+        <div *ngIf="!response() && !isLoading()" class="flex flex-col gap-3">
+          <p class="text-slate-300 text-[11px] leading-relaxed">
+            Nhập thông tin cá nhân của bạn để hệ thống luận giải thần số học, đường sự nghiệp, tài lộc và tính cách đặc trưng.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- Full Name -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Họ và tên đầy đủ *</label>
+              <input
+                type="text"
+                [(ngModel)]="formData.fullName"
+                placeholder="Ví dụ: Hoàng Trọng Tấn"
+                class="w-full px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/20 text-white placeholder-slate-500 text-xs focus:border-theme-accent focus:outline-none transition-all"
+              />
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Ngày tháng năm sinh *</label>
+              <input
+                type="date"
+                [(ngModel)]="formData.birthDate"
+                class="w-full px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/20 text-white text-xs focus:border-theme-accent focus:outline-none transition-all"
+              />
+            </div>
+
+            <!-- Birth Time -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Giờ sinh (Tùy chọn)</label>
+              <input
+                type="time"
+                [(ngModel)]="formData.birthTime"
+                class="w-full px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/20 text-white text-xs focus:border-theme-accent focus:outline-none transition-all"
+              />
+            </div>
+
+            <!-- Gender -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Giới tính</label>
+              <select
+                [(ngModel)]="formData.gender"
+                class="w-full px-3 py-1.5 rounded-lg bg-slate-950/80 border border-white/20 text-white text-xs focus:border-theme-accent focus:outline-none transition-all"
+              >
+                <option value="nam">Nam</option>
+                <option value="nu">Nữ</option>
+                <option value="khac">Khác</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Focus Area -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Khía cạnh luận giải sâu nhất</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              <button
+                *ngFor="let focus of focusOptions"
+                type="button"
+                (click)="formData.focusArea = focus.id; audioService.playClickSound()"
+                class="p-1.5 rounded-lg border text-[11px] font-bold transition-all text-center flex items-center justify-center gap-1 cursor-pointer"
+                [ngClass]="{
+                  'border-theme-accent bg-theme-accent/25 text-theme-accent shadow-sm': formData.focusArea === focus.id,
+                  'border-white/10 bg-slate-950/60 text-slate-300 hover:border-white/30': formData.focusArea !== focus.id
+                }"
+              >
+                <span>{{ focus.icon }}</span>
+                <span>{{ focus.label }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Submit Button -->
+          <button
+            (click)="submitFortune()"
+            [disabled]="!formData.fullName || !formData.birthDate"
+            class="mt-0.5 w-full py-2.5 rounded-lg font-extrabold text-[11px] uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+            [ngClass]="submitButtonClass"
+          >
+            <mat-icon class="!w-4 !h-4 !text-sm">stars</mat-icon>
+            <span>Luận Giải Vận Mệnh Thần Số Học</span>
+          </button>
+        </div>
+
+        <!-- Loading State Animation -->
+        <div *ngIf="isLoading()" class="flex flex-col items-center justify-center py-6 gap-2.5 text-center">
+          <div class="relative w-12 h-12 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-3 border-theme-accent/30 border-t-theme-accent animate-spin"></div>
+            <mat-icon class="text-xl text-theme-accent animate-pulse">{{ headerIcon }}</mat-icon>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Đang Quét Dữ Liệu Thần Số Học...</h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Đang tổng hợp lá số và phân tích triết lý vận mệnh</p>
+          </div>
+        </div>
+
+        <!-- Result View Section -->
+        <div *ngIf="response() && !isLoading()" class="flex flex-col gap-2.5">
+          <!-- Numerology Life Path Banner -->
+          <div class="glass-card p-3 !rounded-xl border border-theme-accent/50 bg-theme-accent/10 flex items-center justify-between gap-3">
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] uppercase font-bold text-theme-accent tracking-wider">Con Số Chủ Đạo Thần Số Học</span>
+              <p class="text-slate-200 text-[11px] leading-relaxed">{{ response()?.numerologySummary }}</p>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-theme-accent text-slate-950 font-black text-lg flex items-center justify-center shrink-0 shadow-[0_0_12px_var(--glow-color)]">
+              #{{ response()?.lifePathNumber }}
+            </div>
+          </div>
+
+          <!-- Personality Traits -->
+          <div class="glass-card p-3 !rounded-xl border border-white/10 bg-slate-950/60 flex flex-col gap-1.5">
+            <h4 class="text-[10px] font-bold text-theme-accent uppercase tracking-wider flex items-center gap-1">
+              <mat-icon class="!w-3.5 !h-3.5 !text-xs">psychology</mat-icon>
+              Tính Cách Đặc Trưng & Điểm Mạnh / Yếu
+            </h4>
+            <div class="flex flex-wrap gap-1">
+              <span *ngFor="let t of response()?.personality?.traits" class="px-2 py-0.5 rounded-md bg-slate-800 text-[11px] font-medium text-slate-200">
+                ✦ {{ t }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Career & Wealth -->
+          <div class="glass-card p-3 !rounded-xl border border-white/10 bg-slate-950/60 flex flex-col gap-1">
+            <h4 class="text-[10px] font-bold text-theme-accent uppercase tracking-wider flex items-center gap-1">
+              <mat-icon class="!w-3.5 !h-3.5 !text-xs">work_outline</mat-icon>
+              Sự Nghiệp & Con Đường Tài Lộc
+            </h4>
+            <p class="text-[11px] text-slate-200 leading-relaxed"><strong class="text-white">Sự nghiệp:</strong> {{ response()?.careerAndWealth?.careerOutlook }}</p>
+            <p class="text-[11px] text-slate-200 leading-relaxed"><strong class="text-white">Tài lộc:</strong> {{ response()?.careerAndWealth?.wealthOutlook }}</p>
+          </div>
+
+          <!-- Destiny Advice & Lucky Elements -->
+          <div class="glass-card p-3 !rounded-xl border border-amber-500/40 bg-amber-500/10 flex flex-col gap-1">
+            <h4 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1">
+              <mat-icon class="!w-3.5 !h-3.5 !text-xs">auto_stories</mat-icon>
+              Lời Khuyên Vận Mệnh & Yếu Tố May Mắn
+            </h4>
+            <p class="text-[11px] text-amber-100 italic leading-relaxed">"{{ response()?.destinyAdvice }}"</p>
+          </div>
+
+          <!-- Re-try Button -->
+          <button
+            (click)="response.set(null); audioService.playClickSound()"
+            class="w-full py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold text-[11px] uppercase tracking-wider transition-colors shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <mat-icon class="!w-3.5 !h-3.5 !text-xs">refresh</mat-icon>
+            <span>Luận Giải Người Khác / Nhập Lại</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

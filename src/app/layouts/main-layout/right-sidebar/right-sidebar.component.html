@@ -11,15 +11,15 @@
   <!-- Middle: Action Buttons List (Matching Left Sidebar style) -->
   <div class="flex flex-col items-center gap-4 my-auto">
     
-    <!-- Button 1: AI Fortune Oracle -->
+    <!-- Button 1: Fortune Oracle -->
     <button
       (click)="onFortuneClick()"
       (mouseenter)="audioService.playClickSound()"
-      matTooltip="Bói Vận Mệnh & Thần Số Học AI"
+      matTooltip="Bói Vận Mệnh & Thần Số Học"
       matTooltipPosition="left"
       class="w-12 h-12 rounded-full bg-slate-900/90 text-theme-accent border border-theme-accent/60 hover:scale-110 hover:border-theme-accent flex items-center justify-center transition-all shadow-lg cursor-pointer group"
     >
-      <mat-icon class="!w-6 !h-6 !text-xl group-hover:rotate-45 transition-transform">auto_awesome</mat-icon>
+      <mat-icon class="!w-6 !h-6 !text-xl group-hover:rotate-45 transition-transform">wb_twilight</mat-icon>
     </button>
 
     <!-- Button 2: Studio Theme & Style Selector -->
@@ -33,7 +33,18 @@
       <mat-icon class="!w-6 !h-6 !text-xl group-hover:rotate-180 transition-transform duration-500">palette</mat-icon>
     </button>
 
-    <!-- Button 3: Audio BGM Sound Toggle -->
+    <!-- Button 3: Todo List Board (Drag & Drop) -->
+    <button
+      (click)="onTodoListClick()"
+      (mouseenter)="audioService.playClickSound()"
+      matTooltip="Danh Sách Task & Todo List (Drag & Drop)"
+      matTooltipPosition="left"
+      class="w-12 h-12 rounded-full bg-slate-900/90 text-theme-accent border border-theme-accent/60 hover:scale-110 hover:border-theme-accent flex items-center justify-center transition-all shadow-lg cursor-pointer group"
+    >
+      <mat-icon class="!w-6 !h-6 !text-xl group-hover:scale-110 transition-transform">task_alt</mat-icon>
+    </button>
+
+    <!-- Button 4: Audio BGM Sound Toggle -->
     <button
       (click)="audioService.toggleSound()"
       (mouseenter)="audioService.playClickSound()"
@@ -65,16 +76,22 @@
       <toggle-theme />
     </div>
 
+    <!-- Todo List Menu Option -->
+    <button mat-menu-item (click)="onTodoListClick()">
+      <mat-icon class="text-theme-accent">task_alt</mat-icon>
+      <span>Quản lý Todo List (Drag & Drop)</span>
+    </button>
+
     <!-- Studio Customize Menu Option -->
     <button mat-menu-item (click)="onStudioClick()">
       <mat-icon class="text-theme-accent">palette</mat-icon>
       <span>Tùy chỉnh Studio (Themes & Modes)</span>
     </button>
 
-    <!-- Fortune AI Menu Option -->
+    <!-- Fortune Menu Option -->
     <button mat-menu-item (click)="onFortuneClick()">
-      <mat-icon class="text-theme-accent">auto_awesome</mat-icon>
-      <span>Bói Vận Mệnh AI Gemini</span>
+      <mat-icon class="text-theme-accent">wb_twilight</mat-icon>
+      <span>Linh Quẻ Cát Tường & Tử Vi</span>
     </button>
   </mat-menu>
 </div>

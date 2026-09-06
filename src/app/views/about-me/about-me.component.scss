@@ -68,8 +68,9 @@ $radiusPage: 5px;
         position: absolute;
         width: 100%;
         height: 100%;
-        padding: 80px 40px 20px 40px;
+        padding: 65px 35px 20px 35px;
         border-radius: 7px;
+        overflow: hidden;
         p {
           font-family: "Garamond", "Times New Roman", serif;
           color: #5C4033;
@@ -108,29 +109,36 @@ $radiusPage: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5em;
-    padding-top: 20px;
+    gap: 1rem;
+    padding-top: 24px;
+    width: 100%;
+
     .btn-book {
       .btn-item {
         cursor: pointer;
-        padding: 10px 20px;
+        padding: 10px 24px;
         border: 1px solid var(--border-color);
-        border-radius: 8px;
+        border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px var(--glow-color);
         background: var(--bg-card);
         color: var(--text-primary);
         font-weight: 700;
-        display: inline-block;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.2s ease;
+
         &:hover {
           background: var(--accent-color);
           color: #0f172a;
           border-color: var(--accent-color);
+          transform: translateY(-2px);
         }
         &:active {
           box-shadow: none;
-          transform: translateY(2px);
+          transform: translateY(1px);
         }
       }
     }

@@ -17,6 +17,8 @@ export const CHARACTER_STYLES = [
   { id: 'style-quantum', name: 'High-Tech / Quantum', icon: 'code', cursor: 'hologram' },
   { id: 'style-quan-van-truong', name: 'Quan Vân Trường / Võ Thượng Tướng', icon: 'shield', cursor: 'dragon-blade' },
   { id: 'style-cosmic', name: 'Cosmic / Galaxy Explorer', icon: 'auto_awesome', cursor: 'stardust' },
+  { id: 'style-sports', name: 'Thể Thao / Dynamic Sport', icon: 'bolt', cursor: 'speed-bolt' },
+  { id: 'style-horror', name: 'Kinh Dị / Dark Horror Shinigami', icon: 'skull', cursor: 'death-scythe' },
 ];
 
 export const WEATHER_MODES = [

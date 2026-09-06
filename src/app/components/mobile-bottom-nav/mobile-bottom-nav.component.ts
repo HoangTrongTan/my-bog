@@ -61,13 +61,13 @@ import { AudioService } from '../../services/audio.service';
           <span class="text-[10px] font-bold mt-0.5">Kỹ Năng</span>
         </a>
 
-        <!-- Button 5: Fortune Oracle Modal Trigger -->
+        <!-- Button 5: Fortune Slip Draw Modal Trigger -->
         <button
           (click)="onOpenFortune(); audioService.playClickSound()"
           class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-theme-accent hover:scale-105 transition-all group"
         >
-          <mat-icon class="!w-6 !h-6 !text-xl animate-pulse">auto_awesome</mat-icon>
-          <span class="text-[10px] font-extrabold mt-0.5 tracking-tight">Bói toán AI</span>
+          <mat-icon class="!w-6 !h-6 !text-xl animate-pulse">wb_twilight</mat-icon>
+          <span class="text-[10px] font-extrabold mt-0.5 tracking-tight">Rút Quẻ</span>
         </button>
 
       </div>

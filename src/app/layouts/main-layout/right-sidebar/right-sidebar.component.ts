@@ -21,6 +21,7 @@ export class RightSidebarComponent {
 
   @Output() openFortune = new EventEmitter<void>();
   @Output() openStudio = new EventEmitter<void>();
+  @Output() openTodoList = new EventEmitter<void>();
 
   public onFortuneClick() {
     this.openFortune.emit();
@@ -29,6 +30,11 @@ export class RightSidebarComponent {
 
   public onStudioClick() {
     this.openStudio.emit();
+    this.audioService.playClickSound();
+  }
+
+  public onTodoListClick() {
+    this.openTodoList.emit();
     this.audioService.playClickSound();
   }
 }
