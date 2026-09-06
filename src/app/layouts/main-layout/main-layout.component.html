@@ -17,14 +17,14 @@
   <!-- Backdrop overlay for mobile/desktop menu drawer -->
   <div 
     *ngIf="openMenu()" 
-    class="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[4990] transition-opacity duration-300" 
+    class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[9985] transition-opacity duration-300" 
     (click)="clickMenuOpen(false)"
   ></div>
 
   <!-- Slide-out Menu Drawer -->
   <div class="menu-bars glass-card border-r border-white/10" [ngClass]="({ expan: openMenu() })">
     <!-- Header Profile Section -->
-    <div class="drawer-header flex flex-col items-center pt-8 pb-6 px-4 border-b border-white/10 relative">
+    <div class="drawer-header flex flex-col items-center pt-8 pb-6 px-4 border-b border-white/10 relative shrink-0">
       <button 
         (click)="clickMenuOpen(false)" 
         class="absolute top-4 right-4 text-slate-400 hover:text-white p-1.5 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Navigation List -->
-    <div class="boxes-btn-list p-4 flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-220px)]">
+    <div class="boxes-btn-list p-4 flex flex-col gap-2 overflow-y-auto flex-1 pb-24 md:pb-6">
       @for (item of menu(); track $index) {
       <button 
         [routerLink]="['/', item.path]" 
@@ -61,7 +61,7 @@
     </div>
 
     <!-- Drawer Footer -->
-    <div class="drawer-footer mt-auto p-4 border-t border-white/10 text-center">
+    <div class="drawer-footer mt-auto p-4 border-t border-white/10 text-center shrink-0 pb-20 md:pb-4">
       <p class="text-[11px] text-slate-400 font-medium">TANTIENTI STUDIO © 2026</p>
     </div>
   </div>

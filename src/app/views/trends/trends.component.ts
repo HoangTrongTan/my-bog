@@ -160,4 +160,29 @@ export class TrendsComponent {
   public onDoubleTapImage(event: MouseEvent, trendId: string) {
     this.triggerTikTokHeart(event, trendId);
   }
+
+  public onImageError(event: Event, trendId: string): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      const fallbacks = [
+        '/access/imgs/trends/capybara.png',
+        '/access/imgs/trends/douyin_dance.png',
+        '/access/imgs/trends/meme_cat.png',
+        '/access/imgs/trends/latam_football.png',
+      ];
+      let hash = 0;
+      for (let i = 0; i < trendId.length; i++) {
+        hash = (hash << 5) - hash + trendId.charCodeAt(i);
+        hash |= 0;
+      }
+      target.src = fallbacks[Math.abs(hash) % fallbacks.length];
+    }
+  }
+
+  public onModalImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      target.src = '/access/imgs/trends/capybara.png';
+    }
+  }
 }

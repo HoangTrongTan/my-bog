@@ -18,6 +18,8 @@ export interface GenZTrendItem {
   category: TrendCategory;
   categoryLabel: string;
   imageUrl: string;
+  sourceUrl: string;
+  sourceName: string;
   viewsCount: string;
   likeCount: number;
   isLiked: boolean;
@@ -118,6 +120,9 @@ CẤU TRÚC MỖI BẢN TIN TRẢ VỀ TRONG MẢNG JSON:
 - "platformLabel": string (ví dụ: "TikTok", "Douyin", "Instagram Reels", "X / Threads", "YouTube Shorts")
 - "category": one of ["music", "parody", "meme", "challenge", "lifestyle"]
 - "categoryLabel": string (ví dụ: "Nhạc Hot", "Nhạc Chế Parody", "Meme Bựa", "Challenge Đỉnh", "Sống Trẻ")
+- "imageUrl": string (URL ảnh minh họa hot trend chất lượng cao từ Unsplash HTTPS hoặc HTTPS image link phù hợp)
+- "sourceUrl": string (Đường link URL dẫn trực tiếp đến nguồn tin/chủ đề hot như "https://www.tiktok.com", "https://www.douyin.com", "https://x.com", "https://www.instagram.com")
+- "sourceName": string (Tên kênh nguồn tin tức, ví dụ: "TikTok Viral Trend Hub", "Douyin Trending #1", "X (Twitter) Global Trends", "Instagram Reels Daily")
 - "viewsCount": string (ví dụ: "1.5B Views", "920M Views")
 - "likeCount": number (từ 200000 đến 900000)
 - "tags": array of 4 hashtag strings (ví dụ: ["#GenZTrend", "#TikTokViral", "#BuaBao", "#HotMusic"])
@@ -136,27 +141,38 @@ YÊU CẦU BẮT BUỘC: Trả về KẾT QUẢ ĐÚNG MẢNG JSON HỢP LỆ (K
       const parsed: any[] = JSON.parse(cleanJson);
 
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const formattedTrends: GenZTrendItem[] = parsed.map((item, idx) => ({
-          id: item.id || `trend_ai_${Date.now()}_${idx}`,
-          title: item.title || `🔥 Hot Trend Gen Z ${idx + 1}`,
-          shortSummary: item.shortSummary || '🔥 Trend cực hot đang gây bão mạng xã hội!',
-          detailContent: item.detailContent || 'Bản tin chi tiết đang được Gen Z bàn tán xôn xao.',
-          genzSlangBadge: item.genzSlangBadge || '🔥 AI HOT TREND',
-          region: item.region || 'global',
-          regionLabel: item.regionLabel || 'Toàn Cầu',
-          platform: item.platform || 'tiktok',
-          platformLabel: item.platformLabel || 'TikTok',
-          category: item.category || 'challenge',
-          categoryLabel: item.categoryLabel || 'Challenge Đỉnh',
-          imageUrl: this.IMAGE_POOL[idx % this.IMAGE_POOL.length],
-          viewsCount: item.viewsCount || '990M Views',
-          likeCount: item.likeCount || 350000 + idx * 50000,
-          isLiked: false,
-          tags: Array.isArray(item.tags) ? item.tags : ['#GenZTrend', '#AiGenerated'],
-          viralScore: item.viralScore || 98,
-          hotRank: idx + 1,
-          updatedAt: new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        }));
+        const formattedTrends: GenZTrendItem[] = parsed.map((item, idx) => {
+          let img = this.IMAGE_POOL[idx % this.IMAGE_POOL.length];
+          if (item.imageUrl && typeof item.imageUrl === 'string' && item.imageUrl.trim().startsWith('http')) {
+            img = item.imageUrl.trim();
+          }
+
+          const srcUrl = this.buildDeepSourceUrl(item);
+
+          return {
+            id: item.id || `trend_ai_${Date.now()}_${idx}`,
+            title: item.title || `🔥 Hot Trend Gen Z ${idx + 1}`,
+            shortSummary: item.shortSummary || '🔥 Trend cực hot đang gây bão mạng xã hội!',
+            detailContent: item.detailContent || 'Bản tin chi tiết đang được Gen Z bàn tán xôn xao.',
+            genzSlangBadge: item.genzSlangBadge || '🔥 AI HOT TREND',
+            region: item.region || 'global',
+            regionLabel: item.regionLabel || 'Toàn Cầu',
+            platform: item.platform || 'tiktok',
+            platformLabel: item.platformLabel || 'TikTok',
+            category: item.category || 'challenge',
+            categoryLabel: item.categoryLabel || 'Challenge Đỉnh',
+            imageUrl: img,
+            sourceUrl: srcUrl,
+            sourceName: item.sourceName || (item.platformLabel ? `${item.platformLabel} Trend Channel` : 'Nguồn Mạng Xã Hội'),
+            viewsCount: item.viewsCount || '990M Views',
+            likeCount: item.likeCount || 350000 + idx * 50000,
+            isLiked: false,
+            tags: Array.isArray(item.tags) ? item.tags : ['#GenZTrend', '#AiGenerated'],
+            viralScore: item.viralScore || 98,
+            hotRank: idx + 1,
+            updatedAt: new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          };
+        });
 
         this.saveTrendsToCache(formattedTrends, timestamp);
         this.isAiLoading.set(false);
@@ -223,5 +239,44 @@ YÊU CẦU BẮT BUỘC: Trả về KẾT QUẢ ĐÚNG MẢNG JSON HỢP LỆ (K
     }
 
     return updatedLikes;
+  }
+
+  private buildDeepSourceUrl(item: any): string {
+    const rawUrl = item?.sourceUrl;
+    if (rawUrl && typeof rawUrl === 'string' && rawUrl.trim().startsWith('http')) {
+      const trimmed = rawUrl.trim();
+      try {
+        const u = new URL(trimmed);
+        if (u.search.length > 0 || (u.pathname !== '/' && u.pathname !== '')) {
+          return trimmed;
+        }
+      } catch {
+        // Ignore invalid URL
+      }
+    }
+
+    const platform = item?.platform || 'tiktok';
+    const title = item?.title || 'Hot Trend Gen Z';
+    const tags: string[] = Array.isArray(item?.tags) ? item.tags : [];
+    const queryStr = encodeURIComponent(title.replace(/[^\w\s\u00C0-\u024F]/gi, ' ').trim());
+    const firstTag = tags[0] ? encodeURIComponent(tags[0].replace('#', '').trim()) : '';
+
+    if (platform === 'tiktok') {
+      return firstTag
+        ? `https://www.tiktok.com/tag/${firstTag}`
+        : `https://www.tiktok.com/search?q=${queryStr}`;
+    } else if (platform === 'douyin') {
+      return `https://www.douyin.com/search/${queryStr}`;
+    } else if (platform === 'instagram') {
+      return firstTag
+        ? `https://www.instagram.com/explore/tags/${firstTag}/`
+        : `https://www.google.com/search?q=site:instagram.com+${queryStr}`;
+    } else if (platform === 'x-threads') {
+      return `https://x.com/search?q=${queryStr}&src=typed_query`;
+    } else if (platform === 'youtube') {
+      return `https://www.youtube.com/results?search_query=${queryStr}`;
+    }
+
+    return `https://www.google.com/search?q=${queryStr}`;
   }
 }
