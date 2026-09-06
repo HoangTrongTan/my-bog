@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+.text-accent-gradient {
+  background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Custom TikTok Floating Heart Burst Keyframe Animation
+@keyframes tiktokHeart {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+  }
+  40% {
+    opacity: 0.95;
+    transform: translate(-50%, -100px) scale(1.3) rotate(-12deg);
+  }
+  80% {
+    opacity: 0.6;
+    transform: translate(-50%, -200px) scale(1.5) rotate(15deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -260px) scale(1.7) rotate(25deg);
+  }
+}
+
+.animate-tiktokHeart {
+  animation: tiktokHeart 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  filter: drop-shadow(0 0 12px rgba(244, 63, 94, 0.85));
+}

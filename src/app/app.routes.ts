@@ -64,6 +64,20 @@ export const routes: Routes = [
             (mod) => mod.TechKnowledgeComponent
           ),
       },
+      {
+        path: PATH_CONFIG.PRIZES,
+        loadComponent: () =>
+          import('./views/prizes/prizes.component').then(
+            (mod) => mod.PrizesComponent
+          ),
+      },
+      {
+        path: PATH_CONFIG.TRENDS,
+        loadComponent: () =>
+          import('./views/trends/trends.component').then(
+            (mod) => mod.TrendsComponent
+          ),
+      },
     ],
   },
   {

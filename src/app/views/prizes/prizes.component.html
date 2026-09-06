@@ -1,0 +1,242 @@
+<div class="relative min-h-screen p-4 md:p-8 flex flex-col gap-8 max-w-7xl mx-auto z-10 pb-24">
+
+  <!-- Header Banner -->
+  <div class="glass-card p-6 md:p-10 !rounded-3xl border-2 border-amber-500/40 relative overflow-hidden group">
+    <!-- Ambient Backdrop Light Glows -->
+    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl group-hover:bg-amber-500/25 transition-all duration-700"></div>
+    <div class="absolute -left-20 -top-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all duration-700"></div>
+
+    <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+      <div class="flex flex-col gap-3 max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/50 text-amber-400 text-xs font-bold uppercase tracking-wider">
+          <mat-icon class="!w-4 !h-4 !text-sm">emoji_events</mat-icon>
+          <span>Honors & Awards • Giải Thưởng & Thành Tích</span>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+          Giải Thưởng <span class="text-accent-gradient">Sáng Tạo KH&CN</span>
+        </h1>
+        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+          Tuyên dương các thành tựu nghiên cứu phần mềm di động và Đảm bảo chất lượng hệ thống (QA Testing) xuất sắc trong Cuộc thi "Sáng tạo Khoa học và Công nghệ" cấp Trường Đại học Sao Đỏ.
+        </p>
+      </div>
+
+      <!-- Quick Metrics Summary Box -->
+      <div class="grid grid-cols-2 gap-3 glass-card p-4 !rounded-2xl border-white/10 w-full lg:w-auto min-w-[280px]">
+        <div class="flex flex-col gap-1 p-2.5 rounded-xl bg-amber-950/30 border border-amber-500/30">
+          <div class="flex items-center gap-1.5 text-amber-400">
+            <mat-icon class="!w-4 !h-4 !text-sm">military_tech</mat-icon>
+            <span class="text-xs font-bold uppercase">Giải Thưởng</span>
+          </div>
+          <span class="text-xl md:text-2xl font-black text-white">02 <span class="text-xs font-normal text-amber-300/80">Giải</span></span>
+        </div>
+
+        <div class="flex flex-col gap-1 p-2.5 rounded-xl bg-cyan-950/30 border border-cyan-500/30">
+          <div class="flex items-center gap-1.5 text-cyan-400">
+            <mat-icon class="!w-4 !h-4 !text-sm">smartphone</mat-icon>
+            <span class="text-xs font-bold uppercase">Smartphone Tech</span>
+          </div>
+          <span class="text-xl md:text-2xl font-black text-white">100% <span class="text-xs font-normal text-cyan-300/80">Mobile</span></span>
+        </div>
+
+        <div class="col-span-2 flex items-center justify-between text-xs text-slate-400 border-t border-white/10 pt-2.5 mt-1 px-1">
+          <span class="flex items-center gap-1">
+            <mat-icon class="!w-4 !h-4 !text-sm text-amber-400">school</mat-icon>
+            Trường Đại Học Sao Đỏ
+          </span>
+          <span class="font-bold text-slate-300">Năm 2023</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Category Tabs -->
+  <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
+    <div class="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-white/10">
+      <button
+        (click)="setFilter('all')"
+        class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center gap-2"
+        [ngClass]="{ 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20': activeFilter() === 'all', 'text-slate-400 hover:text-white': activeFilter() !== 'all' }"
+      >
+        <mat-icon class="!w-4 !h-4 !text-sm">apps</mat-icon>
+        <span>Tất Cả ({{ prizes.length }})</span>
+      </button>
+
+      <button
+        (click)="setFilter('third')"
+        class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center gap-2"
+        [ngClass]="{ 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-400/20': activeFilter() === 'third', 'text-slate-400 hover:text-white': activeFilter() !== 'third' }"
+      >
+        <mat-icon class="!w-4 !h-4 !text-sm">military_tech</mat-icon>
+        <span>Giải Ba</span>
+      </button>
+
+      <button
+        (click)="setFilter('consolation')"
+        class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all flex items-center gap-2"
+        [ngClass]="{ 'bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-400/20': activeFilter() === 'consolation', 'text-slate-400 hover:text-white': activeFilter() !== 'consolation' }"
+      >
+        <mat-icon class="!w-4 !h-4 !text-sm">workspace_premium</mat-icon>
+        <span>Giải Khuyến Khích</span>
+      </button>
+    </div>
+
+    <span class="text-xs text-slate-400 font-medium flex items-center gap-1">
+      <mat-icon class="!w-4 !h-4 !text-sm text-amber-400">verified</mat-icon>
+      Đã chứng thực bởi Hội Đồng Khoa Học
+    </span>
+  </div>
+
+  <!-- Prize Showcase Cards Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 my-2">
+    @for (prize of filteredPrizes; track prize.id) {
+    <div 
+      (click)="openModal(prize)"
+      class="glass-card p-6 md:p-8 !rounded-3xl border-2 {{ prize.colorScheme.borderColor }} bg-gradient-to-br {{ prize.colorScheme.bgGradient }} relative overflow-hidden transition-all duration-500 hover:-translate-y-2 cursor-pointer group shadow-2xl flex flex-col justify-between"
+      [style.box-shadow]="'0 10px 30px ' + prize.colorScheme.glowColor"
+    >
+      <!-- Background Glowing Emblem -->
+      <div class="absolute -right-10 -top-10 w-44 h-44 opacity-15 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none flex items-center justify-center">
+        <mat-icon class="!w-44 !h-44 !text-[170px] text-white">emoji_events</mat-icon>
+      </div>
+
+      <div class="flex flex-col gap-5 relative z-10">
+        <!-- Top Award Ribbon & Date Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="px-4 py-1.5 rounded-full {{ prize.colorScheme.badgeBg }} font-black text-xs md:text-sm tracking-wider shadow-lg flex items-center gap-1.5">
+            <mat-icon class="!w-4 !h-4 !text-sm">{{ prize.icon }}</mat-icon>
+            <span>{{ prize.rank }}</span>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-300 bg-slate-950/60 px-3 py-1.5 rounded-full border border-white/10">
+            <mat-icon class="!w-4 !h-4 !text-sm text-amber-400">calendar_today</mat-icon>
+            <span>{{ prize.date }}</span>
+          </div>
+        </div>
+
+        <!-- Title & Organization -->
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2 text-xs font-semibold text-slate-400">
+            <mat-icon class="!w-4 !h-4 !text-sm text-cyan-400">school</mat-icon>
+            <span>{{ prize.institution }} • {{ prize.contest }}</span>
+          </div>
+          <h2 class="text-xl md:text-2xl font-black text-white leading-snug group-hover:text-amber-300 transition-colors">
+            {{ prize.title }}
+          </h2>
+        </div>
+
+        <!-- Description -->
+        <p class="text-slate-300 text-sm leading-relaxed line-clamp-4">
+          {{ prize.description }}
+        </p>
+
+        <!-- QA / Feature Highlights if available -->
+        <div *ngIf="prize.qaHighlights && prize.qaHighlights.length" class="glass-card p-3 !rounded-xl border-cyan-500/20 bg-slate-950/60 flex flex-col gap-1.5">
+          <span class="text-[11px] uppercase font-bold text-cyan-400 tracking-wider flex items-center gap-1">
+            <mat-icon class="!w-3.5 !h-3.5 !text-xs">verified_user</mat-icon>
+            Đặc Điểm Kiểm Thử & Chất Lượng (QA):
+          </span>
+          <ul class="text-xs text-slate-300 flex flex-col gap-1">
+            <li *ngFor="let qa of prize.qaHighlights" class="flex items-start gap-1.5">
+              <span class="text-cyan-400 font-bold">•</span>
+              <span>{{ qa }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Tech Stack Badges & Click Detail Button -->
+      <div class="mt-6 pt-4 border-t border-white/10 flex flex-col gap-4 relative z-10">
+        <div class="flex flex-wrap gap-2">
+          <span 
+            *ngFor="let tech of prize.techStack" 
+            class="px-2.5 py-1 rounded-lg bg-slate-900/80 border border-white/15 text-slate-200 text-xs font-medium"
+          >
+            {{ tech }}
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between text-xs font-bold {{ prize.colorScheme.textColor }} pt-1">
+          <span class="flex items-center gap-1">
+            <mat-icon class="!w-4 !h-4 !text-sm">visibility</mat-icon>
+            Nhấn để xem chi tiết giải thưởng
+          </span>
+          <mat-icon class="!w-4 !h-4 !text-sm group-hover:translate-x-1 transition-transform">arrow_forward</mat-icon>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Detail Modal Dialog -->
+  <div 
+    *ngIf="selectedPrize()" 
+    class="fixed inset-0 bg-black/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4"
+    (click)="closeModal()"
+  >
+    <div 
+      class="glass-card w-full max-w-2xl bg-slate-900/95 border-2 {{ selectedPrize()?.colorScheme?.borderColor }} p-6 md:p-8 !rounded-3xl shadow-2xl flex flex-col gap-6 max-h-[90vh] overflow-y-auto relative"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between border-b border-white/10 pb-4 gap-4">
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full {{ selectedPrize()?.colorScheme?.badgeBg }} font-black text-xs">
+              {{ selectedPrize()?.rank }}
+            </span>
+            <span class="text-xs text-slate-400 font-medium">Mốc thời gian: {{ selectedPrize()?.date }}</span>
+          </div>
+          <h2 class="text-2xl font-black text-white mt-1">{{ selectedPrize()?.title }}</h2>
+          <p class="text-xs text-amber-400 font-semibold">{{ selectedPrize()?.institution }} • {{ selectedPrize()?.contest }}</p>
+        </div>
+        <button (click)="closeModal()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="flex flex-col gap-4">
+        <div>
+          <h4 class="text-xs uppercase font-bold text-slate-400 tracking-wider mb-2">Mô tả tổng quan dự án:</h4>
+          <p class="text-slate-200 text-sm leading-relaxed">
+            {{ selectedPrize()?.description }}
+          </p>
+        </div>
+
+        <div class="glass-card p-4 !rounded-2xl border-white/10 bg-slate-950/70">
+          <h4 class="text-xs uppercase font-bold text-amber-400 tracking-wider mb-1 flex items-center gap-1.5">
+            <mat-icon class="!w-4 !h-4 !text-sm">star</mat-icon>
+            Đánh giá & Ý nghĩa giải thưởng:
+          </h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed">
+            {{ selectedPrize()?.impact }}
+          </p>
+        </div>
+
+        <div *ngIf="selectedPrize()?.qaHighlights?.length">
+          <h4 class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-2 flex items-center gap-1.5">
+            <mat-icon class="!w-4 !h-4 !text-sm">bug_report</mat-icon>
+            Quy trình Kiểm thử & Đảm bảo chất lượng (QA):
+          </h4>
+          <ul class="flex flex-col gap-2 text-xs md:text-sm text-slate-300">
+            <li *ngFor="let item of selectedPrize()?.qaHighlights" class="flex items-start gap-2">
+              <span class="text-cyan-400 font-bold">✓</span>
+              <span>{{ item }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tech Stack Badges -->
+      <div class="flex flex-col gap-2 border-t border-white/10 pt-4">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Công nghệ & Kỹ năng áp dụng:</h4>
+        <div class="flex flex-wrap gap-2">
+          <span *ngFor="let tech of selectedPrize()?.techStack" class="px-3 py-1.5 rounded-lg bg-slate-800 border border-white/10 text-xs text-white font-medium">
+            {{ tech }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -36,4 +36,9 @@ export const MENU = [
     icon: 'military_tech',
     toolltip: 'My Prizes',
   },
+  {
+    path: PATH_CONFIG.TRENDS,
+    icon: 'whatshot',
+    toolltip: 'Bản Tin Trends Gen Z',
+  },
 ];

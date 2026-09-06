@@ -7,11 +7,11 @@ $margin-show-cv: 40px;
   padding: 0 20px 0px 20px;
   animation: candy-bounce 1s ease-out 1.5s both;
   .header {
-    padding: 30px 50px;
+    padding: 16px 24px;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between;
     gap: 1em;
     .info {
       p:first-child {
@@ -41,7 +41,9 @@ $margin-show-cv: 40px;
     position: relative;
 
     .introduct {
-      height: 400px;
+      min-height: 500px;
+      height: auto;
+      padding-bottom: 30px;
       background-blend-mode: overlay;
       background-size: cover;
       display: flex;
@@ -611,5 +613,94 @@ $margin-show-cv: 40px;
   .footer {
     margin-bottom: 75px;
   }
+}
+
+/* ======================================================== */
+/* DYNAMIC SCROLL & ENTRANCE ANIMATIONS                     */
+/* ======================================================== */
+@keyframes flyIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes assemble {
+  0% {
+    opacity: 0;
+    transform: translateY(35px) rotate(-2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes scaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 12px var(--glow-color);
+  }
+  50% {
+    box-shadow: 0 0 25px var(--glow-color);
+  }
+}
+
+.animate-fly-in {
+  animation: flyIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-zoom-in {
+  animation: zoomIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-assemble {
+  animation: assemble 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-float-slow {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
 }
 

@@ -12,9 +12,10 @@
     <div class="online"></div>
   </div>
   <mat-menu #menu="matMenu" classList="avatar-menu">
-    <div mat-menu-item (click)="$event.stopPropagation()" class="mat-menu-toggle-theme">
-      <toggle-theme />
-    </div>
+    <button mat-menu-item (click)="onTodoListClick()">
+      <mat-icon class="text-amber-400">task_alt</mat-icon>
+      <span>Quản lý công việc (Todo List)</span>
+    </button>
     <button mat-menu-item (click)="onStudioClick()">
       <mat-icon class="text-theme-accent">palette</mat-icon>
       <span>Tùy chỉnh Studio (Themes & Modes)</span>

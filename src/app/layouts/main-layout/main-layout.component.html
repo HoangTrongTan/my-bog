@@ -8,7 +8,7 @@
 <div class="warpper main-bg relative z-10" #wrapperMainLayout>
   <app-left-sidebar />
   <div class="content">
-    <app-header-responsive ($clickMenu)="clickMenuOpen($event)" (openStudio)="openStudioSelector()" />
+    <app-header-responsive ($clickMenu)="clickMenuOpen($event)" (openStudio)="openStudioSelector()" (openTodoList)="openTodoListModal()" />
     <div class="body pb-20 md:pb-0">
       <router-outlet />
     </div>

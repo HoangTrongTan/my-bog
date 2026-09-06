@@ -3,14 +3,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
-import { ToggleThemeComponent } from '../../../components/toggle-theme/toggle-theme.component';
 import { AudioService } from '../../../services/audio.service';
 import { ThemeService } from '../../../services/theme.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-right-sidebar',
-  imports: [CommonModule, NgxImageZoomModule, MatMenuModule, MatIconModule, MatTooltipModule, ToggleThemeComponent],
+  imports: [CommonModule, NgxImageZoomModule, MatMenuModule, MatIconModule, MatTooltipModule],
   standalone: true,
   templateUrl: './right-sidebar.component.html',
   styleUrl: './right-sidebar.component.scss',

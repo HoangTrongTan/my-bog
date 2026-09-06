@@ -72,10 +72,6 @@
 
   <!-- Avatar Dropdown Menu -->
   <mat-menu #menu="matMenu" classList="avatar-menu">
-    <div mat-menu-item (click)="$event.stopPropagation()">
-      <toggle-theme />
-    </div>
-
     <!-- Todo List Menu Option -->
     <button mat-menu-item (click)="onTodoListClick()">
       <mat-icon class="text-theme-accent">task_alt</mat-icon>

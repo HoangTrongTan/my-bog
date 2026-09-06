@@ -1,41 +1,132 @@
-<div class="wrapper">
-  <div class="header">
-    <div class="info">
-      <p>TANTIENTI - BETTER EVERY DAY 🚀</p>
-      <p>software engineer</p>
+<div class="wrapper flex flex-col gap-8 pb-12">
+  <!-- Top Header Profile & Cyber Live Status Pill -->
+  <div class="header flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 rounded-2xl glass-card border border-white/10 shrink-0 shadow-xl relative overflow-hidden">
+    <!-- Left Cyber Status Widget (Far Left Aligned) -->
+    <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-start flex-1">
+      <!-- Live Status Badge -->
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/90 border border-emerald-500/40 text-emerald-400 text-xs font-mono font-bold shadow-[0_0_12px_rgba(16,185,129,0.25)]">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span>SYSTEM ONLINE • v2.4.0</span>
+      </div>
+
+      <!-- Quick Tech Badges -->
+      <div class="flex items-center gap-2 text-[11px] font-semibold text-slate-300 flex-wrap">
+        <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-cyan-300 flex items-center gap-1">
+          <mat-icon class="!w-3.5 !h-3.5 !text-xs">code</mat-icon>
+          Angular 18+
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-amber-300 flex items-center gap-1">
+          <mat-icon class="!w-3.5 !h-3.5 !text-xs">cloud</mat-icon>
+          AWS VPC
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-purple-300 flex items-center gap-1">
+          <mat-icon class="!w-3.5 !h-3.5 !text-xs">dns</mat-icon>
+          Node.js API
+        </span>
+      </div>
     </div>
-    <div class="my-img">
-      <img src="/access/imgs/signatral2.png" alt="err" />
+
+    <!-- Right Profile Info (Far Right Aligned) -->
+    <div class="flex items-center justify-between sm:justify-end gap-3 border-t sm:border-t-0 border-white/10 pt-3 sm:pt-0 shrink-0">
+      <div class="info text-right sm:text-right">
+        <p class="text-xs sm:text-sm font-extrabold text-white tracking-wide">HOÀNG TRỌNG TẤN 🚀</p>
+        <p class="text-[11px] text-theme-accent font-mono">Full-Stack & Cloud Software Engineer</p>
+      </div>
+      <div class="my-img shrink-0">
+        <img src="/access/imgs/signatral2.png" alt="Signature" class="w-9 h-9 rounded-full object-cover border border-theme-accent/50 shadow-[0_0_10px_var(--glow-color)]" />
+      </div>
     </div>
   </div>
-  <div class="card-intro">
-    <div class="introduct bg-home-page-img">
-      <div class="cmd">
-        <div class="dot-hacker" style="--dot: #ee3333"></div>
-        <div class="dot-hacker" style="--dot: #eeee00"></div>
-        <div class="dot-hacker" style="--dot: #00bb00"></div>
+
+  <!-- Hero Banner Card -->
+  <div class="card-intro relative">
+    <div class="introduct bg-home-page-img relative overflow-hidden rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl flex flex-col justify-between gap-6 min-h-[500px]">
+      <div class="cmd flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="dot-hacker w-3 h-3 rounded-full bg-red-500 shadow-md"></div>
+          <div class="dot-hacker w-3 h-3 rounded-full bg-amber-400 shadow-md"></div>
+          <div class="dot-hacker w-3 h-3 rounded-full bg-emerald-500 shadow-md"></div>
+          <span class="ml-2 text-[10px] font-mono text-slate-400 uppercase tracking-widest">Digital Terminal v2026</span>
+        </div>
+        <span class="hidden sm:inline-block text-[10px] font-mono text-theme-accent bg-theme-accent/10 px-2.5 py-0.5 rounded-full border border-theme-accent/30">
+          ⚡ ACTIVE SESSION
+        </span>
       </div>
-      <div class="info">
-        <div class="boxes">
-          <p>WELCOME TO MY BLOG! 🚀</p>
+
+      <div class="info relative z-10 max-w-2xl">
+        <div class="boxes flex flex-col gap-3">
+          <span class="inline-block px-3 py-1 rounded-full bg-theme-accent/20 border border-theme-accent/50 text-theme-accent font-mono text-xs font-bold w-fit animate-pulse-glow">
+            ⚡ Welcome To My Interactive Studio
+          </span>
+          <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            WELCOME TO MY DIGITAL WORLD! 🚀
+          </h1>
           <app-text-render [text]="textRuns" />
-          <div>
-            <button class="learn-more">
+
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-3 mt-3 flex-wrap">
+            <button class="learn-more cursor-pointer" [routerLink]="PATH.ABOUT_ME">
               <span class="circle" aria-hidden="true">
                 <span class="icon arrow"></span>
               </span>
-              <span class="button-text">ABOUT ME !</span>
+              <span class="button-text">GIỚI THIỆU !</span>
+            </button>
+            <button class="Btn flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card border border-white/10 text-white font-bold text-xs hover:border-theme-accent transition-all cursor-pointer" [routerLink]="PATH.VIEW_MY_CV">
+              <fa-icon [icon]="faEye" class="eye text-theme-accent"></fa-icon>
+              <span>XEM CV CÁ NHÂN</span>
             </button>
           </div>
+
+          <!-- Live Terminal Snippet & Tech Highlights (Fully Visible) -->
+          <div class="mt-3 p-3.5 rounded-2xl bg-slate-950/90 border border-theme-accent/30 font-mono text-xs text-slate-300 flex flex-col gap-2 shadow-2xl backdrop-blur-md max-w-lg">
+            <div class="flex items-center justify-between border-b border-white/10 pb-1.5 text-[10px]">
+              <span class="flex items-center gap-1.5 text-emerald-400 font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>CORE STACK STATUS: OPTIMIZED</span>
+              </span>
+              <span class="text-slate-400 font-mono">bash v5.2</span>
+            </div>
+
+            <div class="flex items-center gap-2 text-[11px]">
+              <span class="text-amber-400 font-bold">➜</span>
+              <span class="text-cyan-400 font-bold">~/portfolio</span>
+              <span class="text-slate-200">git status --short</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-[11px] pt-1 border-t border-white/5">
+              <div class="flex items-center gap-1.5">
+                <span class="text-cyan-400 font-bold">✦</span>
+                <span class="text-slate-300"><strong>Frontend:</strong> Angular 18+ Signals</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-purple-400 font-bold">✦</span>
+                <span class="text-slate-300"><strong>Backend:</strong> Node.js & ASP.NET</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-amber-400 font-bold">✦</span>
+                <span class="text-slate-300"><strong>Cloud:</strong> AWS VPC Architecture</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-emerald-400 font-bold">✦</span>
+                <span class="text-slate-300"><strong>Quality:</strong> 99.9% Clean Uptime</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
+
+    <!-- Social Links Floating Bar -->
     <div class="top-social flex-center">
       <div class="boxes-icons flex-center">
-        <div class="items-list">
+        <div class="items-list flex items-center gap-2">
           @for(item of icons; track $index){
           <div
-            class="item-icon"
+            class="item-icon hover:scale-110 transition-transform cursor-pointer"
             matTooltipPosition="below"
             [matTooltip]="item.name"
             [ngStyle]="{
@@ -49,33 +140,139 @@
         </div>
       </div>
     </div>
-    <div class="box-img-avartar">
-      <div class="my-img-border">
-      </div>
+
+    <!-- Floating Avatar Box -->
+    <div class="box-img-avartar animate-float-slow">
+      <div class="my-img-border"></div>
       <div class="my-img">
-        <img src="/access/imgs/me.png" alt="err" />
+        <img src="/access/imgs/me.png" alt="Hoang Trong Tan" />
       </div>
     </div>
   </div>
-  <!-- ------------------------------------------- -->
-  <div class="download-csv">
-    <button class="Btn" [routerLink]="PATH.VIEW_MY_CV">
-      <fa-icon [icon]="faEye" class="eye"></fa-icon>
-      <fa-icon [icon]="faFaceGrinHearts" class="face"></fa-icon>
-      <p>MY CV</p>
-    </button>
-  </div>
-  <!-- ------------------------------------------- -->
-  <div class="details-knolage">
+
+  <!-- SECTION 1: Metrics & Counters (Zoom In & Assemble Animation) -->
+  <div class="details-knolage grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
     @for(item of knolages; track $index){
-      <div class="knolage-card glass-card">
-        <div class="count-badge">{{ item.count }}</div>
-        <div class="label-text">{{ item.text }}</div>
+      <div class="knolage-card glass-card p-5 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center gap-1 hover:border-theme-accent transition-all duration-300 transform hover:-translate-y-1 shadow-lg animate-zoom-in">
+        <div class="count-badge text-2xl sm:text-3xl font-extrabold text-theme-accent tracking-tight drop-shadow-[0_0_12px_var(--glow-color)]">
+          {{ item.count }}
+        </div>
+        <div class="label-text text-xs font-bold text-slate-300 uppercase tracking-wider">
+          {{ item.text }}
+        </div>
       </div>
     }
   </div>
-  <!-- ------------------------------------------- -->
-  <div class="footer">
-    <p>© 2025 trong tan</p>
+
+  <!-- SECTION 2: Tech Stack & Superpowers Arsenal (Slide / Fly In Animation) -->
+  <div class="section-tech-stack flex flex-col gap-4 mt-4">
+    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-theme-accent/20 border border-theme-accent flex items-center justify-center text-theme-accent text-lg">
+          <mat-icon class="!w-5 !h-5 !text-lg">integration_instructions</mat-icon>
+        </div>
+        <div>
+          <span class="block text-[9px] uppercase font-bold text-theme-accent tracking-widest leading-none mb-0.5">🚀 Chuyên Môn Kỹ Thuật</span>
+          <h2 class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Kỹ Năng & Công Nghệ Cốt Lõi</h2>
+        </div>
+      </div>
+      <a [routerLink]="PATH.SKILLS" class="text-xs font-bold text-theme-accent hover:underline flex items-center gap-1">
+        <span>Xem Tất Cả</span>
+        <mat-icon class="!w-4 !h-4 !text-sm">arrow_forward</mat-icon>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for(tech of techStack; track tech.category; let idx = $index){
+        <div
+          class="tech-card glass-card p-5 rounded-2xl border bg-slate-950/60 flex flex-col gap-3 transition-all duration-300 hover:scale-[1.02] shadow-xl relative overflow-hidden group animate-fly-in"
+          [ngClass]="tech.gradient"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                <mat-icon class="!w-6 !h-6 !text-2xl">{{ tech.icon }}</mat-icon>
+              </div>
+              <h3 class="font-extrabold text-white text-base tracking-tight">{{ tech.category }}</h3>
+            </div>
+            <span class="text-[10px] font-mono opacity-60">0{{ idx + 1 }}</span>
+          </div>
+
+          <p class="text-xs text-slate-300 leading-relaxed">
+            {{ tech.description }}
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 pt-1">
+            @for(tag of tech.tags; track tag){
+              <span class="px-2.5 py-1 rounded-lg bg-white/10 text-[11px] font-semibold text-slate-200 border border-white/10">
+                ✦ {{ tag }}
+              </span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- SECTION 3: Core Engineering Philosophy (Assemble & Fly Up Animation) -->
+  <div class="section-philosophy flex flex-col gap-4 mt-4">
+    <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+      <div class="w-8 h-8 rounded-lg bg-theme-accent/20 border border-theme-accent flex items-center justify-center text-theme-accent text-lg">
+        <mat-icon class="!w-5 !h-5 !text-lg">psychology</mat-icon>
+      </div>
+      <div>
+        <span class="block text-[9px] uppercase font-bold text-theme-accent tracking-widest leading-none mb-0.5">🧠 Triết Lý Làm Việc</span>
+        <h2 class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Nguyên Tắc Phát Triển Phần Mềm</h2>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      @for(item of philosophies; track item.title){
+        <div class="philosophy-card glass-card p-4 rounded-2xl border bg-slate-950/50 flex flex-col gap-2 transition-all duration-300 hover:-translate-y-1.5 shadow-lg group animate-assemble" [ngClass]="item.color">
+          <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-lg group-hover:rotate-12 transition-transform">
+            <mat-icon class="!w-5 !h-5 !text-xl">{{ item.icon }}</mat-icon>
+          </div>
+          <h4 class="font-extrabold text-white text-sm tracking-tight">{{ item.title }}</h4>
+          <p class="text-[11px] text-slate-300 leading-relaxed">{{ item.desc }}</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- SECTION 4: Interactive Quick Action Tools (Nở To / Interactive Grid) -->
+  <div class="section-quick-tools flex flex-col gap-4 mt-4">
+    <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+      <div class="w-8 h-8 rounded-lg bg-theme-accent/20 border border-theme-accent flex items-center justify-center text-theme-accent text-lg">
+        <mat-icon class="!w-5 !h-5 !text-lg">widgets</mat-icon>
+      </div>
+      <div>
+        <span class="block text-[9px] uppercase font-bold text-theme-accent tracking-widest leading-none mb-0.5">⚡ Công Cụ & Tiện Ích Phím Tắt</span>
+        <h2 class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Trải Nghiệm Tương Tác Trực Tiếp</h2>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      @for(tool of featuredTools; track tool.title){
+        <div class="tool-card glass-card p-5 rounded-2xl border bg-slate-950/70 flex flex-col justify-between gap-4 transition-all duration-300 hover:scale-[1.02] shadow-xl group animate-scale-up" [ngClass]="tool.color">
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <h3 class="font-extrabold text-white text-base tracking-tight">{{ tool.title }}</h3>
+              <mat-icon class="!w-5 !h-5 !text-xl opacity-70 group-hover:scale-125 transition-transform">{{ tool.icon }}</mat-icon>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">{{ tool.desc }}</p>
+          </div>
+
+          <a [routerLink]="tool.path" class="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-theme-accent hover:text-slate-950 text-white font-bold text-xs transition-all text-center cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
+            <span>{{ tool.btnText }}</span>
+            <mat-icon class="!w-4 !h-4 !text-sm">arrow_forward</mat-icon>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer mt-6 text-center border-t border-white/10 pt-4">
+    <p class="text-xs text-slate-400 font-mono">© 2026 Hoàng Trọng Tấn • Studio Portfolio Angular 18</p>
   </div>
 </div>

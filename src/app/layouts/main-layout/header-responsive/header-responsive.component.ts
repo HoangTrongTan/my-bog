@@ -5,11 +5,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars, faHouseChimneyWindow } from '@fortawesome/free-solid-svg-icons';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
 import { MatIconModule } from '@angular/material/icon';
-import { ToggleThemeComponent } from "../../../components/toggle-theme/toggle-theme.component";
-
 @Component({
   selector: 'app-header-responsive',
-  imports: [FontAwesomeModule, CommonModule, RouterLink, MatMenu, MatMenuItem, ToggleThemeComponent, MatMenuTrigger, MatIconModule],
+  imports: [FontAwesomeModule, CommonModule, RouterLink, MatMenu, MatMenuItem, MatMenuTrigger, MatIconModule],
   standalone: true,
   templateUrl: './header-responsive.component.html',
   styleUrl: './header-responsive.component.scss'
@@ -17,6 +15,7 @@ import { ToggleThemeComponent } from "../../../components/toggle-theme/toggle-th
 export class HeaderResponsiveComponent {
   $clickMenu = output<boolean>();
   @Output() openStudio = new EventEmitter<void>();
+  @Output() openTodoList = new EventEmitter<void>();
 
   icons = {
     faBars,
@@ -33,5 +32,9 @@ export class HeaderResponsiveComponent {
 
   onStudioClick(){
     this.openStudio.emit();
+  }
+
+  onTodoListClick(){
+    this.openTodoList.emit();
   }
 }

@@ -7,5 +7,6 @@ export const PATH_CONFIG = {
   EXPRESSION: 'expression',
   TECH_KNOWLEDGE: 'tech-knowledge',
   PRIZES: 'prizes',
+  TRENDS: 'trends',
   VIEW_MY_CV: 'view-my-cv',
 };
