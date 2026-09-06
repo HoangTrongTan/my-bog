@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { getGeminiApiKey } from '../configs/api.config';
+import { getGeminiApiKey, callGeminiAiApi } from '../configs/api.config';
 
 export type TrendRegion = 'all' | 'asia' | 'europe' | 'nam-my' | 'bac-my' | 'vietnam' | 'global';
 export type TrendPlatform = 'all' | 'tiktok' | 'douyin' | 'instagram' | 'x-threads' | 'youtube';
@@ -39,12 +39,11 @@ export class TrendService {
   public isMissingKey = signal<boolean>(false);
   public lastCacheTime = signal<string>('');
 
-  private readonly AI_MODELS = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b'];
   private readonly IMAGE_POOL = [
     '/access/imgs/trends/capybara.png',
     '/access/imgs/trends/douyin_dance.png',
     '/access/imgs/trends/meme_cat.png',
-    '/access/imgs/trends/latam_football.png'
+    '/access/imgs/trends/latam_football.png',
   ];
 
   constructor() {
@@ -99,7 +98,7 @@ export class TrendService {
     if (!apiKey) {
       this.isAiLoading.set(false);
       this.isMissingKey.set(true);
-      this.aiError.set('Chưa tìm thấy Gemini API Key trên Vercel / Trình duyệt. Vui lòng nhập API Key để gọi AI!');
+      this.aiError.set('Chưa tìm thấy Gemini API Key trên Vercel / Trình duyệt. Vui lòng kiểm tra biến môi trường AUTH_API_KEY!');
       return;
     }
 
@@ -128,69 +127,53 @@ CẤU TRÚC MỖI BẢN TIN TRẢ VỀ TRONG MẢNG JSON:
 YÊU CẦU BẮT BUỘC: Trả về KẾT QUẢ ĐÚNG MẢNG JSON HỢP LỆ (Không bọc trong markdown code block \`\`\`json, không thêm bất kỳ văn bản thừa nào).
 `;
 
-    for (const model of this.AI_MODELS) {
-      try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-          }),
-        });
+    try {
+      const rawText = await callGeminiAiApi(prompt);
+      const cleanJson = rawText
+        .replace(/```json/g, '')
+        .replace(/```/g, '')
+        .trim();
+      const parsed: any[] = JSON.parse(cleanJson);
 
-        if (res.ok) {
-          const data = await res.json();
-          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (rawText) {
-            const cleanJson = rawText
-              .replace(/```json/g, '')
-              .replace(/```/g, '')
-              .trim();
-            const parsed: any[] = JSON.parse(cleanJson);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const formattedTrends: GenZTrendItem[] = parsed.map((item, idx) => ({
+          id: item.id || `trend_ai_${Date.now()}_${idx}`,
+          title: item.title || `🔥 Hot Trend Gen Z ${idx + 1}`,
+          shortSummary: item.shortSummary || '🔥 Trend cực hot đang gây bão mạng xã hội!',
+          detailContent: item.detailContent || 'Bản tin chi tiết đang được Gen Z bàn tán xôn xao.',
+          genzSlangBadge: item.genzSlangBadge || '🔥 AI HOT TREND',
+          region: item.region || 'global',
+          regionLabel: item.regionLabel || 'Toàn Cầu',
+          platform: item.platform || 'tiktok',
+          platformLabel: item.platformLabel || 'TikTok',
+          category: item.category || 'challenge',
+          categoryLabel: item.categoryLabel || 'Challenge Đỉnh',
+          imageUrl: this.IMAGE_POOL[idx % this.IMAGE_POOL.length],
+          viewsCount: item.viewsCount || '990M Views',
+          likeCount: item.likeCount || 350000 + idx * 50000,
+          isLiked: false,
+          tags: Array.isArray(item.tags) ? item.tags : ['#GenZTrend', '#AiGenerated'],
+          viralScore: item.viralScore || 98,
+          hotRank: idx + 1,
+          updatedAt: new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        }));
 
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              const formattedTrends: GenZTrendItem[] = parsed.map((item, idx) => ({
-                id: item.id || `trend_ai_${Date.now()}_${idx}`,
-                title: item.title || `🔥 Hot Trend Gen Z ${idx + 1}`,
-                shortSummary: item.shortSummary || '🔥 Trend cực hot đang gây bão mạng xã hội!',
-                detailContent: item.detailContent || 'Bản tin chi tiết đang được Gen Z bàn tán xôn xao.',
-                genzSlangBadge: item.genzSlangBadge || '🔥 AI HOT TREND',
-                region: item.region || 'global',
-                regionLabel: item.regionLabel || 'Toàn Cầu',
-                platform: item.platform || 'tiktok',
-                platformLabel: item.platformLabel || 'TikTok',
-                category: item.category || 'challenge',
-                categoryLabel: item.categoryLabel || 'Challenge Đỉnh',
-                imageUrl: this.IMAGE_POOL[idx % this.IMAGE_POOL.length],
-                viewsCount: item.viewsCount || '990M Views',
-                likeCount: item.likeCount || 350000 + idx * 50000,
-                isLiked: false,
-                tags: Array.isArray(item.tags) ? item.tags : ['#GenZTrend', '#AiGenerated'],
-                viralScore: item.viralScore || 98,
-                hotRank: idx + 1,
-                updatedAt: new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              }));
-
-              this.saveTrendsToCache(formattedTrends, timestamp);
-              this.isAiLoading.set(false);
-              this.isMissingKey.set(false);
-              return;
-            }
-          }
-        } else if (res.status === 403) {
-          this.isAiLoading.set(false);
-          this.isMissingKey.set(true);
-          this.aiError.set('Lỗi 403 PERMISSION_DENIED: Gemini API Key không hợp lệ hoặc bị từ chối.');
-          return;
-        }
-      } catch (err) {
-        console.warn(`Gemini AI Model ${model} failed, trying next model...`, err);
+        this.saveTrendsToCache(formattedTrends, timestamp);
+        this.isAiLoading.set(false);
+        this.isMissingKey.set(false);
+        return;
       }
+    } catch (err: any) {
+      console.error('Gemini AI Trends generation error:', err);
+      if (err?.message === 'MISSING_API_KEY') {
+        this.isMissingKey.set(true);
+        this.aiError.set('Chưa cấu hình API Key trên Vercel / Trình duyệt.');
+      } else {
+        this.aiError.set('Không thể kết nối tới Google Gemini AI. Vui lòng kiểm tra lại kết nối hoặc API Key!');
+      }
+    } finally {
+      this.isAiLoading.set(false);
     }
-
-    this.isAiLoading.set(false);
-    this.aiError.set('Không thể kết nối tới Google Gemini AI. Vui lòng kiểm tra lại kết nối hoặc API Key!');
   }
 
 

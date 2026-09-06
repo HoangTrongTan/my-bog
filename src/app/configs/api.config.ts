@@ -8,6 +8,9 @@ import { GENERATED_AUTH_API_KEY } from './env.generated';
 
 declare const process: any;
 
+export { GEMINI_AI_MODELS, GEMINI_API_BASE_URL } from '../constants/ai.constants';
+export { getGeminiApiUrl, callGeminiAiApi } from '../utils/ai.utils';
+
 export const getGeminiApiKey = (): string => {
   // 1. Check build-time injected environment variable from Vercel / CI
   if (typeof GENERATED_AUTH_API_KEY === 'string' && GENERATED_AUTH_API_KEY.trim().length > 0) {

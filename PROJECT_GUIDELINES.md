@@ -87,9 +87,35 @@ Canvas particle weather system controlled by `ParticleWeatherComponent`:
 
 ---
 
-## 🔒 6. Critical Rules for Future AI Agents
+## 🤖 6. Centralized Gemini AI Architecture & Environment Security
+All AI-powered features (Gen Z Hot Trends, Thần Số Học & Tử Vi, Rút Quẻ Cát Tường, CV AI Assistant) consume a **single centralized AI layer**:
+
+- **Constants File**: `src/app/constants/ai.constants.ts` (Defines `GEMINI_AI_MODELS` fallback array and `GEMINI_API_BASE_URL`).
+- **Utility Helpers**: `src/app/utils/ai.utils.ts`
+  - `getGeminiApiUrl(model, apiKey, action)`: Assembles Gemini API URLs dynamically with model parameters.
+  - `callGeminiAiApi(prompt, models)`: Executes API requests with automatic model fallback.
+- **Config & Vercel API Key Resolution**: `src/app/configs/api.config.ts`
+  - `getGeminiApiKey()`: Resolves `AUTH_API_KEY` injected at build-time by `scripts/set-env.js` on Vercel into `env.generated.ts`.
+  - Re-exports all AI constants and utilities for 100% backward compatibility across services (`TrendService`, `FortuneService`, `ViewMyCvComponent`).
+
+---
+
+## 📰 7. New Pages & Interactive Features
+- **🔥 Gen Z Trends Page (`/trends`)**:
+  - Dynamic AI news generator via `TrendService` (`src/app/services/trend.service.ts`).
+  - 24-hour `localStorage` cache (`genz_trends_ai_only_v4`).
+  - TikTok-style particle heart burst animation on double-tap image or like button.
+  - Filterable by 5 Regions (Vietnam, Asia/Douyin, Europe/US, LATAM, Global), 5 Platforms (TikTok, Douyin, Instagram, X/Threads, YouTube), and 5 Categories.
+- **🏆 Honors & Awards Page (`/prizes`)**:
+  - Highlights national/university software awards (`PrizesComponent` at `src/app/views/prizes/prizes.component.ts`).
+  - Interactive glassmorphism detail modal dialogs.
+
+---
+
+## 🔒 8. Critical Rules for Future AI Agents
 1. **Light Mode High Contrast**: NEVER use hardcoded `#fff`, `#efeff1`, or white text colors without scoping or using `var(--text-primary)` / `body.light-mode` overrides. Light Mode text MUST ALWAYS render in high-contrast dark slate (`#0f172a`).
 2. **Cursor Layering**: Custom cursor elements must keep `pointer-events-none` and high `z-index` so clicks pass through seamlessly to underlying UI components.
 3. **Theme Service Compatibility**: Preserve signal getters/setters and legacy method signatures in `ThemeService` (`loadTheme()`, `getTheme()`, `setTheme()`, `getColorPreset()`).
 4. **Mobile Navigation**: Keep studio customization triggers inside the top avatar dropdown on mobile to prevent blocking mobile bottom nav buttons.
-5. **Build Verification**: ALWAYS run `npm run build` using `run_command` after writing code to ensure 100% clean compilation.
+5. **Centralized AI Service Calls**: NEVER call Gemini AI endpoints directly using ad-hoc `fetch()` loops. ALWAYS import and use `callGeminiAiApi(prompt)` or `getGeminiApiUrl(model)` from `src/app/configs/api.config` or `src/app/utils/ai.utils`.
+6. **Build Verification**: ALWAYS run `npm run build` using `run_command` after writing code to ensure 100% clean compilation.

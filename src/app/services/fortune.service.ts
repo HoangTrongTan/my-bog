@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getGeminiApiKey } from '../configs/api.config';
+import { callGeminiAiApi } from '../configs/api.config';
 
 export interface FortuneRequest {
   fullName: string;
@@ -33,11 +33,8 @@ export interface FortuneResponse {
 
 @Injectable({ providedIn: 'root' })
 export class FortuneService {
-  private readonly MODELS = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b'];
-
   public async generateFortune(req: FortuneRequest): Promise<FortuneResponse> {
     const lifePath = this.calculateLifePathNumber(req.birthDate);
-    const apiKey = getGeminiApiKey();
 
     const prompt = `
 Bạn là một Thầy Bói Toán, Chuyên Gia Thần Số Học & Tử Vi Tướng Số cao cấp hàng đầu Việt Nam.
@@ -72,34 +69,15 @@ YÊU CẦU: Trả về KẾT QUẢ ĐÚNG ĐỊNH DẠNG JSON duy nhất (không
 }
 `;
 
-    // Try Gemini API models
-    for (const model of this.MODELS) {
-      try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }]
-          })
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (rawText) {
-            const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-            const parsed = JSON.parse(cleanJson);
-            return parsed as FortuneResponse;
-          }
-        }
-      } catch (err) {
-        console.warn(`Model ${model} call failed, trying fallback...`, err);
-      }
+    try {
+      const rawText = await callGeminiAiApi(prompt);
+      const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+      return parsed as FortuneResponse;
+    } catch (err) {
+      console.warn('Gemini AI Fortune call failed, using fallback fortune:', err);
+      return this.generateFallbackFortune(req, lifePath);
     }
-
-    // Fallback Numerology Generator if API is unreachable
-    return this.generateFallbackFortune(req, lifePath);
   }
 
   public calculateLifePathNumber(birthDate: string): number {

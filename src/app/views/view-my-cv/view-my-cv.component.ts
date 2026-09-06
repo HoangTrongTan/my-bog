@@ -13,14 +13,10 @@ import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { GoogleGenAI } from '@google/genai';
 import { ButtonCustomComponent } from '../../components/button-custom/button-custom.component';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MyCvDialogCp } from './dialogListCv/dialog-ls-cv';
-
-const ai = new GoogleGenAI({
-  apiKey: 'AIzaSyDiqrEuUpNl-K5hUPCiyICx3svEEQ8q344',
-});
+import { callGeminiAiApi } from '../../configs/api.config';
 
 @Component({
   selector: 'app-view-my-cv',
@@ -33,25 +29,21 @@ const ai = new GoogleGenAI({
     MatFormFieldModule,
     ButtonCustomComponent,
     MatDialogModule,
-],
+  ],
   templateUrl: './view-my-cv.component.html',
   styleUrl: './view-my-cv.component.scss',
 })
-
-// docs:https://ai.google.dev/gemini-api/docs/text-generation?hl=vi#javascript
-// https://console.cloud.google.com/apis/credentials
 export class ViewMyCvComponent {
   async Res() {
-    const reponse = await ai.models.generateContent({
-      model: 'gemini-2.5-pro-exp-03-25',
-      contents: 'từ này xấu hay tốt "yêu lắm" bạn trả lời ngắn thôi nhé"',
-    });
+    try {
+      const text = await callGeminiAiApi('từ này xấu hay tốt "yêu lắm" bạn trả lời ngắn thôi nhé');
+      console.log(text);
+    } catch (err) {
+      console.warn('CV AI Test call failed:', err);
+    }
+  }
 
-    console.log(reponse.text);
-  }
-  constructor(private dialogMyCv: MatDialog) {
-    this.Res();
-  }
+  constructor(private dialogMyCv: MatDialog) {}
 
 
 
