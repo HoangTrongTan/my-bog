@@ -31,8 +31,98 @@ export interface FortuneResponse {
   };
 }
 
+export interface FortuneSlip {
+  grade: '🌟 ĐẠI CÁT' | '💫 TRUNG CÁT' | '🌸 TIỂU CÁT' | '🍀 CÁT TƯỜNG';
+  hexagram: string;
+  poem: string[];
+  oracleAdvice: string;
+  luckyColors: string[];
+  luckyNumbers: number[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class FortuneService {
+  /**
+   * Generates a 100% dynamic AI Fortune Slip (Quẻ Xăm Cát Tường) using Gemini AI API.
+   */
+  public async drawFortuneSlipAi(
+    focusArea: 'su-nghiep' | 'tai-loc' | 'tinh-duyen' | 'tong-quan' | 'than-so-hoc' = 'su-nghiep',
+    fullName?: string,
+    birthDate?: string
+  ): Promise<FortuneSlip> {
+    const focusLabel =
+      focusArea === 'su-nghiep'
+        ? 'Sự Nghiệp & Công Danh'
+        : focusArea === 'tai-loc'
+        ? 'Tài Lộc & Tiền Bạc'
+        : focusArea === 'tinh-duyen'
+        ? 'Tình Duyên & Gia Đạo'
+        : 'Vận Mệnh & Thần Số Học';
+
+    const userStr = fullName ? `người dùng tên "${fullName}"` : 'Quý Khách Cát Tường';
+    const birthStr = birthDate ? `ngày sinh ${birthDate}` : '';
+
+    const prompt = `
+Bạn là một Thầy Bói Toán, Chuyên Gia Tử Vi & Thần Kê Thơ Phú cao cấp hàng đầu Việt Nam.
+Hãy gieo một Quẻ Xăm Cát Tường linh ứng, sáng tạo độc đáo dành riêng cho ${userStr} ${birthStr} tập trung vào khía cạnh [${focusLabel}].
+
+YÊU CẦU ĐỊNH DẠNG JSON (Không bọc markdown code block, trả về duy nhất 1 JSON hợp lệ):
+{
+  "grade": "🌟 ĐẠI CÁT" (hoặc "💫 TRUNG CÁT", "🌸 TIỂU CÁT", "🍀 CÁT TƯỜNG"),
+  "hexagram": "Quẻ Tên Quẻ (Mô tả ngắn thời vận 4-6 từ, ví dụ: 'Quẻ Số 18: Càn Vi Thiên (Vận Hội Hanh Thông)')",
+  "poem": [
+    "Câu thơ thất ngôn 1 (7 chữ, có vần điệu thơ Hán Nôm / Lục bát / Thất ngôn)",
+    "Câu thơ thất ngôn 2 (7 chữ)",
+    "Câu thơ thất ngôn 3 (7 chữ)",
+    "Câu thơ thất ngôn 4 (7 chữ)"
+  ],
+  "oracleAdvice": "Lời khuyên giải quẻ triết lý, ngắn gọn, súc tích, truyền cảm hứng và hướng dẫn cụ thể (2-3 câu, chứa emoji).",
+  "luckyColors": ["Màu may mắn 1", "Màu may mắn 2"],
+  "luckyNumbers": [3, 8, 9]
+}
+`;
+
+    try {
+      const rawText = await callGeminiAiApi(prompt);
+      const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+
+      return {
+        grade: parsed.grade || '🌟 ĐẠI CÁT',
+        hexagram: parsed.hexagram || 'Quẻ Linh Sơ Thần Sổ (Thời Vận Hanh Thông)',
+        poem:
+          Array.isArray(parsed.poem) && parsed.poem.length >= 4
+            ? parsed.poem
+            : [
+                'Càn Khôn Vũ Trụ Ngút Trời Mây,',
+                'Sự Nghiệp Công Danh Vẫn Vững Dày.',
+                'Kiên Trì Khai Lối Rồng Rẽ Sóng,',
+                'Cát Tường Như Ý Vượng Lộc Này.',
+              ],
+        oracleAdvice:
+          parsed.oracleAdvice ||
+          'Thời vận hội tụ, quý nhân trợ lực. Hãy tự tin thực hiện các kế hoạch dự án lớn!',
+        luckyColors: Array.isArray(parsed.luckyColors) ? parsed.luckyColors : ['Cyan', 'Emerald'],
+        luckyNumbers: Array.isArray(parsed.luckyNumbers) ? parsed.luckyNumbers : [6, 8, 9],
+      };
+    } catch (err) {
+      console.warn('Gemini AI Fortune Slip call failed, using fallback:', err);
+      return {
+        grade: '🌟 ĐẠI CÁT',
+        hexagram: 'Quẻ Số 08: Càn Vi Thiên (Khai Sơn Lập Địa)',
+        poem: [
+          'Rồng Vàng Vươn Cánh Vượt Mây Xanh,',
+          'Sự Nghiệp Hanh Thông Chí Lớn Thành.',
+          'Tài Lộc Đong Đầy Theo Giáp Tý,',
+          'Vạn Sự Cát Tường Bình An Nhanh.',
+        ],
+        oracleAdvice:
+          'Thời vận hội tụ, quý nhân trợ lực. Hãy tự tin thực hiện các kế hoạch dự án lớn, thành công rực rỡ đang chờ đón bạn.',
+        luckyColors: ['Xanh Cyan', 'Vàng Hoàng Kim'],
+        luckyNumbers: [6, 8, 9],
+      };
+    }
+  }
   public async generateFortune(req: FortuneRequest): Promise<FortuneResponse> {
     const lifePath = this.calculateLifePathNumber(req.birthDate);
 

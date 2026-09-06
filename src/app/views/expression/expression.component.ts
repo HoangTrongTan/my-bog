@@ -89,43 +89,15 @@ export class ExpressionComponent {
 
     // Simulate shaking cylinder delay
     setTimeout(async () => {
-      const req: FortuneRequest = {
-        fullName: this.userNameInput() || 'Quý Khách Cát Tường',
-        birthDate: this.userBirthInput() || '2000-01-01',
-        gender: 'nam',
-        focusArea: this.fortuneFocus() === 'su-nghiep' ? 'su-nghiep' : this.fortuneFocus() === 'tai-loc' ? 'tai-loc' : 'tong-quan'
-      };
-
       try {
-        const res: FortuneResponse = await this.fortuneService.generateFortune(req);
-
-        this.drawnFortune.set({
-          grade: res.lifePathNumber >= 8 ? '🌟 ĐẠI CÁT' : res.lifePathNumber >= 5 ? '💫 TRUNG CÁT' : '🌸 TIỂU CÁT',
-          hexagram: `Quẻ Số ${res.lifePathNumber}: Linh Sơ Thần Sổ (Đường Đời Hanh Thông)`,
-          poem: [
-            'Càn Khôn Vũ Trụ Ngút Trời Mây,',
-            'Sự Nghiệp Công Danh Vẫn Vững Dày.',
-            'Kiên Trì Khai Lối Rồng Rẽ Sóng,',
-            'Cát Tường Như Ý Vượng Lộc Này.'
-          ],
-          oracleAdvice: res.destinyAdvice || res.numerologySummary,
-          luckyColors: res.luckyElements?.luckyColors || ['Cyan', 'Emerald'],
-          luckyNumbers: res.luckyElements?.luckyNumbers || [3, 8, 9]
-        });
-      } catch {
-        this.drawnFortune.set({
-          grade: '🌟 ĐẠI CÁT',
-          hexagram: 'Quẻ Số 08: Càn Vi Thiên (Khai Sơn Lập Địa)',
-          poem: [
-            'Rồng Vàng Vươn Cánh Vượt Mây Xanh,',
-            'Sự Nghiệp Hanh Thông Chí Lớn Thành.',
-            'Tài Lộc Đong Đầy Theo Giáp Tý,',
-            'Vạn Sự Cát Tường Bình An Nhanh.'
-          ],
-          oracleAdvice: 'Thời vận hội tụ, quý nhân trợ lực. Hãy tự tin thực hiện các kế hoạch dự án lớn, thành công rực rỡ đang chờ đón bạn.',
-          luckyColors: ['Xanh Cyan', 'Vàng Hoàng Kim'],
-          luckyNumbers: [6, 8, 9]
-        });
+        const result = await this.fortuneService.drawFortuneSlipAi(
+          this.fortuneFocus(),
+          this.userNameInput(),
+          this.userBirthInput()
+        );
+        this.drawnFortune.set(result);
+      } catch (err) {
+        console.error('Draw fortune slip error:', err);
       } finally {
         this.isShaking.set(false);
         this.audioService.playClickSound();
