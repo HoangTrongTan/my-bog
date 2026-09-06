@@ -1,30 +1,16 @@
 @use "./app/styles/index" as *;
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use "@angular/material" as mat;
 
-/* ============================= */
-/* 1. DEFINE LIGHT THEME */
-/* ============================= */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-$light-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: (
-      plain-family: "Roboto, sans-serif",
-    ),
-  )
-);
+/* Custom Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
-/* ============================= */
-/* 2. DEFINE DARK THEME */
-/* ============================= */
-
+/* ======================================================== */
+/* ANGULAR MATERIAL THEME CONFIG                            */
+/* ======================================================== */
 $dark-theme: mat.define-theme(
   (
     color: (
@@ -33,22 +19,17 @@ $dark-theme: mat.define-theme(
       tertiary: mat.$blue-palette,
     ),
     typography: (
-      plain-family: "Roboto, sans-serif",
+      plain-family: "'Outfit', 'Plus Jakarta Sans', sans-serif",
     ),
   )
 );
 
-/* ============================= */
-/* 3. APPLY THEMES */
-/* ============================= */
-
-/* Light mặc định */
 html {
   @include mat.all-component-themes($dark-theme);
+  scroll-behavior: smooth;
 }
 
-/* Dark override khi có class */
-.dark-mode {
+body.dark-mode {
   @include mat.all-component-colors($dark-theme);
 }
 
@@ -58,141 +39,134 @@ html {
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.ng2-pdf-viewer-container {
-  overflow-y: scroll !important;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: 1px;
-  scrollbar-color: #8c8c8e transparent;
-  scrollbar-gutter: stable;
-}
-.mat-mdc-text-field-wrapper {
-  height: auto !important;
-}
-
-.t-center {
-  text-align: center;
-}
-
-.mdc-tab__text-label {
-  color: #f0f0f0 !important;
-}
-
-.mat-mdc-tab-body-wrapper {
-  height: 100%;
-}
-.mat-mdc-tab-body-content {
-  display: flex;
-  position: relative;
-}
-.mat-mdc-tab-header-pagination-chevron {
-  border-color: #fff !important;
-}
-
-.lightboxOverlay {
-  width: 100% !important;
-  height: 100% !important;
-}
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.mdc-linear-progress__bar-inner {
-  border-color: #ffc107 !important;
-}
-
-@keyframes candy-bounce {
-  0% {
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-    transform: translateY(0) scaleX(1) scaleY(1);
-  }
-  20% {
-    transform: translateY(-100px) scaleX(0.8) scaleY(1.2);
-  }
-  40% {
-    transform: translateY(0) scaleX(1.3) scaleY(0.7);
-  }
-  60% {
-    transform: translateY(-50px) scaleX(0.9) scaleY(1.1);
-  }
-  80% {
-    transform: translateY(0) scaleX(1.1) scaleY(0.9);
-  }
-  100% {
-    transform: translateY(0) scaleX(1) scaleY(1);
-  }
-}
-
-@keyframes left-2right-candy-bounce {
-  0% {
-    opacity: 0;
-    transform: translateX(-100%) scaleX(1) scaleY(1);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(50px) scaleX(1) scaleY(1);
-  }
-  70% {
-    transform: translateX(100px) scaleX(0.7) scaleY(1.3);
-  }
-  80% {
-    transform: translateX(100px) scaleX(1.2) scaleY(0.8);
-  }
-  100% {
-    transform: translateX(100px) scaleX(1) scaleY(1);
-  }
-}
-
-.card {
-  background-color: var(--bg-card);
-}
-
-.page {
+  width: 100%;
+  overflow-x: hidden;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
   background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.card-box {
-  background-color: var(--bg-box);
+/* Hide native cursor when custom cursor component is active */
+body.custom-cursor-active, body.custom-cursor-active * {
+  cursor: none !important;
 }
 
-.card-sidebar {
-  background-color: var(--bg-sidebar);
-}
+/* Light Mode Global Text Contrast Fix */
+body.light-mode {
+  color: #0f172a;
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: rgba(15, 23, 42, 0.15);
+    color: #0f172a;
+  }
 
-// màu button và color text
-.button-bg {
-  button {
-    background-color: var(--list-btn-bg);
-    color: var(--text-light-in-button);
+  /* Ensure card headings and paragraphs turn crisp slate in light mode */
+  .glass-card p, .glass-card h1, .glass-card h2, .glass-card h3, .glass-card h4, .glass-card h5, .glass-card span {
+    &:not(.text-theme-accent):not(.text-accent-gradient):not(.bg-amber-500):not(.bg-theme-accent):not(.text-emerald-400):not(.text-cyan-400):not(.text-purple-400) {
+      color: inherit;
+    }
+  }
+
+  .main-bg {
+    background-color: #f1f5f9 !important;
   }
 }
 
-.main-bg {
-  background: var(--bg-main);
-  background-blend-mode: var(--bg-blend-mode);
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-
-// background image ở trang home
-.bg-home-page-img {
-  background: var(--bg-img-home-page);
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
 }
 
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--glow-color);
+}
 
-//header màu responsive
-.header-bg-responsive {
-  background-color: var(--header-bg-responsive);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* Glassmorphism & Utility Cards */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-color);
+  box-shadow: 0 12px 40px 0 var(--glow-color);
+}
+
+/* Glowing text & border utilities */
+.text-glow {
+  text-shadow: 0 0 12px var(--glow-color), 0 0 24px var(--accent-color);
+}
+
+.border-glow {
+  box-shadow: 0 0 15px var(--glow-color);
+  border-color: var(--accent-color);
+}
+
+.bg-accent-gradient {
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+}
+
+.text-accent-gradient {
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 3D Tilt Card Base */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
+}
+
+/* Floating animation */
+@keyframes floatAnimation {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.animate-float {
+  animation: floatAnimation 5s ease-in-out infinite;
+}
+
+/* Drag and Drop styling for menu */
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px var(--glow-color);
+  background: var(--bg-sidebar) !important;
+  backdrop-filter: blur(12px);
+  z-index: 1000 !important;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

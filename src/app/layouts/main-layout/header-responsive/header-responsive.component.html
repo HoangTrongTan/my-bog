@@ -1,24 +1,23 @@
 <div class="header-menu header-bg-responsive">
   <div class="menu-toggle">
-    <div
-      class="icon-menu-bar"
-      tabindex="0"
-      (blur)="onBlur()"
-      (click)="clickOpenMenu()"
-    >
+    <div class="icon-menu-bar" tabindex="0" (blur)="onBlur()" (click)="clickOpenMenu()">
       <fa-icon [icon]="icons.faBars"></fa-icon>
     </div>
     <div class="icon-home" [routerLink]="['/']">
       <fa-icon [icon]="icons.faHouseChimneyWindow"></fa-icon>
     </div>
   </div>
-  <div class="avatar" [matMenuTriggerFor]="menu">
-    <img src="/access/imgs/me.jpg" alt="err" width="100%" height="100%" />
+  <div class="avatar cursor-pointer" [matMenuTriggerFor]="menu">
+    <img src="/access/imgs/me.jpg" alt="Hoang Trong Tan Avatar" width="100%" height="100%" />
     <div class="online"></div>
   </div>
   <mat-menu #menu="matMenu" classList="avatar-menu">
     <div mat-menu-item (click)="$event.stopPropagation()" class="mat-menu-toggle-theme">
       <toggle-theme />
     </div>
+    <button mat-menu-item (click)="onStudioClick()">
+      <mat-icon class="text-theme-accent">palette</mat-icon>
+      <span>Tùy chỉnh Studio (Themes & Modes)</span>
+    </button>
   </mat-menu>
 </div>

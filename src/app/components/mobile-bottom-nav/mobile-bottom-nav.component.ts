@@ -1,0 +1,94 @@
+import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ThemeService } from '../../services/theme.service';
+import { AudioService } from '../../services/audio.service';
+
+@Component({
+  selector: 'app-mobile-bottom-nav',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive, MatIconModule, MatTooltipModule],
+  template: `
+    <!-- Fixed Mobile Bottom Bar (Visible only on mobile devices max-width 768px) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-[9980] p-2 bg-slate-950/90 backdrop-blur-xl border-t border-white/10 shadow-[0_-10px_25px_rgba(0,0,0,0.5)]">
+      <div class="grid grid-cols-5 gap-1 items-center max-w-md mx-auto">
+        
+        <!-- Button 1: Home -->
+        <a
+          routerLink="/"
+          routerLinkActive="active-nav"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="audioService.playClickSound()"
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-slate-400 hover:text-white transition-all group"
+        >
+          <mat-icon class="!w-6 !h-6 !text-xl group-hover:scale-110 transition-transform">home</mat-icon>
+          <span class="text-[10px] font-bold mt-0.5">Trang Chủ</span>
+        </a>
+
+        <!-- Button 2: About Me -->
+        <a
+          routerLink="/about-me"
+          routerLinkActive="active-nav"
+          (click)="audioService.playClickSound()"
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-slate-400 hover:text-white transition-all group"
+        >
+          <mat-icon class="!w-6 !h-6 !text-xl group-hover:scale-110 transition-transform">person</mat-icon>
+          <span class="text-[10px] font-bold mt-0.5">Giới Thiệu</span>
+        </a>
+
+        <!-- Button 3: Projects -->
+        <a
+          routerLink="/projects"
+          routerLinkActive="active-nav"
+          (click)="audioService.playClickSound()"
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-slate-400 hover:text-white transition-all group relative"
+        >
+          <mat-icon class="!w-6 !h-6 !text-xl group-hover:scale-110 transition-transform text-amber-400">memory</mat-icon>
+          <span class="text-[10px] font-bold mt-0.5">Dự Án</span>
+          <span class="absolute -top-1 right-2 w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        </a>
+
+        <!-- Button 4: Skills -->
+        <a
+          routerLink="/skills"
+          routerLinkActive="active-nav"
+          (click)="audioService.playClickSound()"
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-slate-400 hover:text-white transition-all group"
+        >
+          <mat-icon class="!w-6 !h-6 !text-xl group-hover:scale-110 transition-transform">psychology</mat-icon>
+          <span class="text-[10px] font-bold mt-0.5">Kỹ Năng</span>
+        </a>
+
+        <!-- Button 5: Fortune Oracle Modal Trigger -->
+        <button
+          (click)="onOpenFortune(); audioService.playClickSound()"
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-theme-accent hover:scale-105 transition-all group"
+        >
+          <mat-icon class="!w-6 !h-6 !text-xl animate-pulse">auto_awesome</mat-icon>
+          <span class="text-[10px] font-extrabold mt-0.5 tracking-tight">Bói toán AI</span>
+        </button>
+
+      </div>
+    </div>
+  `,
+  styles: [`
+    .active-nav {
+      color: var(--accent-color) !important;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 12px var(--glow-color);
+    }
+  `]
+})
+export class MobileBottomNavComponent {
+  public themeService = inject(ThemeService);
+  public audioService = inject(AudioService);
+
+  @Output() openFortune = new EventEmitter<void>();
+
+  public onOpenFortune() {
+    this.openFortune.emit();
+  }
+}

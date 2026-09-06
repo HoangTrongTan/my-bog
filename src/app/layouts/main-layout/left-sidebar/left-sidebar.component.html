@@ -1,25 +1,64 @@
-<div class="wrapper card-sidebar" [ngClass]="({ expanWidth: openMenu() })">
+<div class="wrapper card-sidebar transition-all duration-300 glass-card !rounded-2xl shadow-2xl border border-theme-border" [ngClass]="({ expanWidth: openMenu() })">
+  <!-- Top Bar / Toggle Button -->
   <div class="boxes-btn button-bg">
-    <button tabindex="0" (blur)="onBlur()">
-      <icon-bar-toggle (toggle)="onClick()" [active]="openMenu()" />
+    <button tabindex="0" (blur)="onBlur()" (click)="onClick()" class="hover:scale-105 transition-transform">
+      <icon-bar-toggle [active]="openMenu()" />
     </button>
   </div>
-  <div class="routes">
-    <div class="boxes-btn button-bg boxes-btn-list card" [ngClass]="({ expan: openMenu })">
-      @for (item of menu(); track $index) {
-      <button
-        [routerLink]="['/', item.path]"
-        matTooltipPosition="right"
-        [matTooltip]="item.toolltip"
+
+  <!-- Routes Menu with Drag and Drop -->
+  <div class="routes my-2">
+    <div 
+      cdkDropList 
+      (cdkDropListDropped)="drop($event)"
+      class="boxes-btn button-bg boxes-btn-list card flex flex-col gap-2 p-1" 
+      [ngClass]="({ expan: openMenu() })"
+    >
+      @for (item of menu(); track item.path) {
+      <div 
+        cdkDrag 
+        class="group relative flex items-center w-full rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing hover:bg-white/10"
       >
-        <mat-icon>{{ item.icon }}</mat-icon>
-        <p><span>{{ item.toolltip }}</span></p>
-      </button>
+        <!-- Drag Handle Icon -->
+        <div cdkDragHandle class="absolute left-1 opacity-0 group-hover:opacity-60 text-slate-400 cursor-grab p-1">
+          <mat-icon class="!w-4 !h-4 !text-sm">drag_indicator</mat-icon>
+        </div>
+
+        <button
+          [routerLink]="['/', item.path]"
+          (mouseenter)="audioService.playClickSound()"
+          matTooltipPosition="right"
+          [matTooltip]="item.toolltip + ' (Kéo thả để đổi thứ tự)'"
+          class="w-full flex items-center gap-3 p-3 text-left border-none bg-transparent hover:text-theme-accent transition-colors"
+        >
+          <mat-icon class="text-theme-accent group-hover:scale-110 transition-transform">{{ item.icon }}</mat-icon>
+          <p class="font-medium text-sm transition-all duration-200 overflow-hidden whitespace-nowrap">
+            <span>{{ item.toolltip }}</span>
+          </p>
+        </button>
+
+        <!-- Character Style Icon Badge Detail -->
+        <div class="absolute right-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          @if (themeService.activeCharacterStyle() === 'style-ninja') {
+            <span class="text-xs text-red-500 font-bold">🥷</span>
+          } @else if (themeService.activeCharacterStyle() === 'style-robot') {
+            <span class="text-xs text-cyan-400 font-bold">🤖</span>
+          } @else if (themeService.activeCharacterStyle() === 'style-quantum') {
+            <span class="text-xs text-purple-400 font-bold">⚡</span>
+          } @else if (themeService.activeCharacterStyle() === 'style-quan-van-truong') {
+            <span class="text-xs text-emerald-400 font-bold">🐉</span>
+          } @else if (themeService.activeCharacterStyle() === 'style-cosmic') {
+            <span class="text-xs text-pink-400 font-bold">🌌</span>
+          }
+        </div>
+      </div>
       }
     </div>
   </div>
+
+  <!-- Home Link Button -->
   <div class="boxes-btn button-bg">
-    <button tabindex="0" [routerLink]="path.HOME">
+    <button tabindex="0" [routerLink]="path.HOME" (mouseenter)="audioService.playClickSound()" class="hover:scale-105 transition-transform text-theme-accent">
       <fa-icon [icon]="faHouseChimney"></fa-icon>
     </button>
   </div>

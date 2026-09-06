@@ -10,7 +10,8 @@
   .title {
     padding: 20px 0;
     font-size: 20px;
-    color: #f0f0f0;
+    color: var(--text-primary);
+    font-weight: 700;
     letter-spacing: 3px;
   }
   .menu-taps {

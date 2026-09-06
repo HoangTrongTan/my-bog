@@ -83,3 +83,9 @@ testem.log
 Thumbs.db
 
 config.bat
+
+# Environment & API Key Secrets
+.env
+.env.*
+!.env.example
+src/environments/environment*.ts

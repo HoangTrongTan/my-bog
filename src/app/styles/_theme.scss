@@ -1,63 +1,142 @@
+/* Design System Theme Tokens & Presets */
+
 :root {
-  --bg-page: #ffffff;
-  --bg-card: #f5f5f5;
-  --text-primary: #222;
-  --text-secondary: #666;
-  --bg-box: #f5f5f5; 
-  --text-light-in-button: #fff;
+  --bg-page: #0d0f17;
+  --bg-card: rgba(22, 27, 38, 0.75);
+  --bg-card-hover: rgba(30, 38, 54, 0.85);
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --bg-box: rgba(31, 41, 55, 0.6);
+  --text-light-in-button: #ffffff;
+  --bg-main: #0a0c14;
+  --bg-blend-mode: normal;
+  --bg-sidebar: rgba(15, 23, 42, 0.85);
+  --list-btn-bg: rgba(30, 41, 59, 0.9);
+  --header-bg-responsive: rgba(15, 23, 42, 0.9);
 
-  // background chính
-  --bg-main: #fff;
-  --bg-blend-mode: overlay;
-  --bg-sidebar: rgb(180 181 182 / 51%);
+  /* Color Presets Defaults (Preset 1: Cyberpunk Neon) */
+  --accent-color: #00f3ff;
+  --accent-secondary: #ff007f;
+  --glow-color: rgba(0, 243, 255, 0.4);
+  --border-color: rgba(0, 243, 255, 0.25);
+  --bg-gradient-1: #0d0f17;
+  --bg-gradient-2: #161b26;
 
-  // màu các button trong list
-  --list-btn-bg: #191919; 
-  --bg-img-home-page: url("/access/imgs/hinh-nen-vu-tru-2.jpg") no-repeat, #2425277d;
-
-  --header-bg-responsive: transparent;
+  /* Character Style Accents */
+  --cursor-trail-color: #00f3ff;
+  --font-family-primary: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-.dark-mode {
-  --bg-page: #1f1f1f;
-  --bg-card: black;
-  --text-primary: #ffffff;
-  --text-secondary: #aaaaaa;
-  --bg-main: no-repeat center url(/access/imgs/hinh-nen-vu-tru-2.jpg), #242527;
-  --bg-blend-mode: overlay;
-  --bg-sidebar: #24252781;
-  --text-light-in-button: #8c8c8e;
-
-  // màu các button trong list
-  --list-btn-bg: #191919;
-
-  --bg-img-home-page: url("/access/imgs/hinh-nen-vu-tru-2.jpg") no-repeat, #2425277d;
-
-  --header-bg-responsive: #131414d2;
+/* Base Light Mode Override */
+body.light-mode {
+  --bg-page: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --bg-card-hover: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --bg-box: #e2e8f0;
+  --text-light-in-button: #ffffff;
+  --bg-main: #f8fafc;
+  --bg-sidebar: rgba(255, 255, 255, 0.92);
+  --list-btn-bg: #1e293b;
+  --header-bg-responsive: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(15, 23, 42, 0.15);
 }
 
-.light-mode {
-  // White: #ffffff
-  // Rose: #9b1c31
-  // Rose hover: #c72c48
-  // Light rose: #f6d6dc
-  // Text: #1f1f1f
-  --bg-box: #f5f5f5; 
-  --bg-page: #d7d3d3;
-  --bg-card: #fff;
-  --text-primary: #222;
-  --text-secondary: #666;
-  --bg-main: no-repeat center url("/access/imgs/hinh-nen-vu-tru-2-light.png"), #242527;
-  --bg-blend-mode: none;
-  --bg-sidebar: rgb(180 181 182 / 51%);
+/* ======================================================== */
+/* CHARACTER STYLE PRESETS (Base theme per character)       */
+/* ======================================================== */
 
-  --text-light-in-button: #fff;
+/* Style 1: Ninja / Shadow Shinobi */
+body.style-ninja {
+  --accent-color: #ef4444;
+  --accent-secondary: #991b1b;
+  --glow-color: rgba(239, 68, 68, 0.5);
+  --border-color: rgba(239, 68, 68, 0.35);
+  --cursor-trail-color: #ef4444;
+}
 
-  // màu các button trong list
-  --list-btn-bg: #191919;
+/* Style 2: Robot / Sci-Fi Mecha */
+body.style-robot {
+  --accent-color: #06b6d4;
+  --accent-secondary: #3b82f6;
+  --glow-color: rgba(6, 182, 212, 0.5);
+  --border-color: rgba(6, 182, 212, 0.35);
+  --cursor-trail-color: #06b6d4;
+}
 
+/* Style 3: High-Tech / Quantum */
+body.style-quantum {
+  --accent-color: #a855f7;
+  --accent-secondary: #06b6d4;
+  --glow-color: rgba(168, 85, 247, 0.5);
+  --border-color: rgba(168, 85, 247, 0.35);
+  --cursor-trail-color: #a855f7;
+}
 
-  --bg-img-home-page: url("/access/imgs/hinh-nen-vu-tru-2-light.png") no-repeat, #2425277d;
+/* Style 4: Quan Van Truong / Guan Yu Dragon War */
+body.style-quan-van-truong {
+  --accent-color: #10b981;
+  --accent-secondary: #eab308;
+  --glow-color: rgba(16, 185, 129, 0.6);
+  --border-color: rgba(234, 179, 8, 0.4);
+  --cursor-trail-color: #10b981;
+}
 
-  --header-bg-responsive: transparent;
+/* Style 5: Cosmic / Galaxy Explorer */
+body.style-cosmic {
+  --accent-color: #ec4899;
+  --accent-secondary: #8b5cf6;
+  --glow-color: rgba(236, 72, 153, 0.5);
+  --border-color: rgba(139, 92, 246, 0.35);
+  --cursor-trail-color: #ec4899;
+}
+
+/* ======================================================== */
+/* 5 CUSTOM COLOR PRESETS (Override accent colors directly)   */
+/* ======================================================== */
+
+/* Preset 1: Cyberpunk Neon */
+body.preset-cyberpunk {
+  --accent-color: #00f3ff !important;
+  --accent-secondary: #ff007f !important;
+  --glow-color: rgba(0, 243, 255, 0.4) !important;
+  --border-color: rgba(0, 243, 255, 0.3) !important;
+  --cursor-trail-color: #00f3ff !important;
+}
+
+/* Preset 2: Emerald Aurora */
+body.preset-emerald {
+  --accent-color: #10b981 !important;
+  --accent-secondary: #34d399 !important;
+  --glow-color: rgba(16, 185, 129, 0.4) !important;
+  --border-color: rgba(16, 185, 129, 0.3) !important;
+  --cursor-trail-color: #10b981 !important;
+}
+
+/* Preset 3: Sunset Rose Gold */
+body.preset-sunset {
+  --accent-color: #f43f5e !important;
+  --accent-secondary: #fb923c !important;
+  --glow-color: rgba(244, 63, 94, 0.4) !important;
+  --border-color: rgba(244, 63, 94, 0.3) !important;
+  --cursor-trail-color: #f43f5e !important;
+}
+
+/* Preset 4: Deep Midnight Sapphire */
+body.preset-sapphire {
+  --accent-color: #3b82f6 !important;
+  --accent-secondary: #8b5cf6 !important;
+  --glow-color: rgba(59, 130, 246, 0.4) !important;
+  --border-color: rgba(59, 130, 246, 0.3) !important;
+  --cursor-trail-color: #3b82f6 !important;
+}
+
+/* Preset 5: Solar Flare Gold */
+body.preset-solar {
+  --accent-color: #eab308 !important;
+  --accent-secondary: #f97316 !important;
+  --glow-color: rgba(234, 179, 8, 0.4) !important;
+  --border-color: rgba(234, 179, 8, 0.3) !important;
+  --cursor-trail-color: #eab308 !important;
 }

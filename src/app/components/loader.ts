@@ -1,405 +1,78 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ThemeService } from '../services/theme.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
   selector: 'loader',
-  styles: [
-    `
-      /* From Uiverse.io by Nawsome */
-      .wheel-and-hamster {
-        --dur: 1s;
-        position: relative;
-        width: 12em;
-        height: 12em;
-        font-size: 14px;
-      }
-      .rotate {
-        position: absolute;
-        transform: rotateY(180deg);
-        inset: 0;
-      }
-      .wheel,
-      .hamster,
-      .hamster div,
-      .spoke {
-        position: absolute;
-      }
-
-      .wheel,
-      .spoke {
-        border-radius: 50%;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      .wheel {
-        background: radial-gradient(
-          100% 100% at center,
-          hsla(0, 0%, 60%, 0) 47.8%,
-          hsl(0, 0%, 60%) 48%
-        );
-        z-index: 2;
-      }
-
-      .hamster {
-        animation: hamster var(--dur) ease-in-out infinite;
-        top: 50%;
-        left: calc(50% - 3.5em);
-        width: 7em;
-        height: 3.75em;
-        transform: rotate(4deg) translate(-0.8em, 1.85em);
-        transform-origin: 50% 0;
-        z-index: 1;
-      }
-
-      .hamster__head {
-        animation: hamsterHead var(--dur) ease-in-out infinite;
-        background: hsl(30, 90%, 55%);
-        border-radius: 70% 30% 0 100% / 40% 25% 25% 60%;
-        box-shadow: 0 -0.25em 0 hsl(30, 90%, 80%) inset,
-          0.75em -1.55em 0 hsl(30, 90%, 90%) inset;
-        top: 0;
-        left: -2em;
-        width: 2.75em;
-        height: 2.5em;
-        transform-origin: 100% 50%;
-      }
-
-      .hamster__ear {
-        animation: hamsterEar var(--dur) ease-in-out infinite;
-        background: hsl(0, 90%, 85%);
-        border-radius: 50%;
-        box-shadow: -0.25em 0 hsl(30, 90%, 55%) inset;
-        top: -0.25em;
-        right: -0.25em;
-        width: 0.75em;
-        height: 0.75em;
-        transform-origin: 50% 75%;
-      }
-
-      .hamster__eye {
-        animation: hamsterEye var(--dur) linear infinite;
-        background-color: hsl(0, 0%, 0%);
-        border-radius: 50%;
-        top: 0.375em;
-        left: 1.25em;
-        width: 0.5em;
-        height: 0.5em;
-      }
-
-      .hamster__nose {
-        background: hsl(0, 90%, 75%);
-        border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
-        top: 0.75em;
-        left: 0;
-        width: 0.2em;
-        height: 0.25em;
-      }
-
-      .hamster__body {
-        animation: hamsterBody var(--dur) ease-in-out infinite;
-        background: hsl(30, 90%, 90%);
-        border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
-        box-shadow: 0.1em 0.75em 0 hsl(30, 90%, 55%) inset,
-          0.15em -0.5em 0 hsl(30, 90%, 80%) inset;
-        top: 0.25em;
-        left: 2em;
-        width: 4.5em;
-        height: 3em;
-        transform-origin: 17% 50%;
-        transform-style: preserve-3d;
-      }
-
-      .hamster__limb--fr,
-      .hamster__limb--fl {
-        clip-path: polygon(0 0, 100% 0, 70% 80%, 60% 100%, 0% 100%, 40% 80%);
-        top: 2em;
-        left: 0.5em;
-        width: 1em;
-        height: 1.5em;
-        transform-origin: 50% 0;
-      }
-
-      .hamster__limb--fr {
-        animation: hamsterFRLimb var(--dur) linear infinite;
-        background: linear-gradient(
-          hsl(30, 90%, 80%) 80%,
-          hsl(0, 90%, 75%) 80%
-        );
-        transform: rotate(15deg) translateZ(-1px);
-      }
-
-      .hamster__limb--fl {
-        animation: hamsterFLLimb var(--dur) linear infinite;
-        background: linear-gradient(
-          hsl(30, 90%, 90%) 80%,
-          hsl(0, 90%, 85%) 80%
-        );
-        transform: rotate(15deg);
-      }
-
-      .hamster__limb--br,
-      .hamster__limb--bl {
-        border-radius: 0.75em 0.75em 0 0;
-        clip-path: polygon(
-          0 0,
-          100% 0,
-          100% 30%,
-          70% 90%,
-          70% 100%,
-          30% 100%,
-          40% 90%,
-          0% 30%
-        );
-        top: 1em;
-        left: 2.8em;
-        width: 1.5em;
-        height: 2.5em;
-        transform-origin: 50% 30%;
-      }
-
-      .hamster__limb--br {
-        animation: hamsterBRLimb var(--dur) linear infinite;
-        background: linear-gradient(
-          hsl(30, 90%, 80%) 90%,
-          hsl(0, 90%, 75%) 90%
-        );
-        transform: rotate(-25deg) translateZ(-1px);
-      }
-
-      .hamster__limb--bl {
-        animation: hamsterBLLimb var(--dur) linear infinite;
-        background: linear-gradient(
-          hsl(30, 90%, 90%) 90%,
-          hsl(0, 90%, 85%) 90%
-        );
-        transform: rotate(-25deg);
-      }
-
-      .hamster__tail {
-        animation: hamsterTail var(--dur) linear infinite;
-        background: hsl(0, 90%, 85%);
-        border-radius: 0.25em 50% 50% 0.25em;
-        box-shadow: 0 -0.2em 0 hsl(0, 90%, 75%) inset;
-        top: 1.5em;
-        right: -0.5em;
-        width: 1em;
-        height: 0.5em;
-        transform: rotate(30deg) translateZ(-1px);
-        transform-origin: 0.25em 0.25em;
-      }
-
-      .spoke {
-        animation: spoke var(--dur) linear infinite;
-        background: radial-gradient(
-            100% 100% at center,
-            hsl(0, 0%, 60%) 4.8%,
-            hsla(0, 0%, 60%, 0) 5%
-          ),
-          linear-gradient(
-              hsla(0, 0%, 55%, 0) 46.9%,
-              hsl(0, 0%, 65%) 47% 52.9%,
-              hsla(0, 0%, 65%, 0) 53%
-            )
-            50% 50% / 99% 99% no-repeat;
-      }
-
-      /* Animations */
-      @keyframes hamster {
-        from,
-        to {
-          transform: rotate(4deg) translate(-0.8em, 1.85em);
-        }
-
-        50% {
-          transform: rotate(0) translate(-0.8em, 1.85em);
-        }
-      }
-
-      @keyframes hamsterHead {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(0);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(8deg);
-        }
-      }
-
-      @keyframes hamsterEye {
-        from,
-        90%,
-        to {
-          transform: scaleY(1);
-        }
-
-        95% {
-          transform: scaleY(0);
-        }
-      }
-
-      @keyframes hamsterEar {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(0);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(12deg);
-        }
-      }
-
-      @keyframes hamsterBody {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(0);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(-2deg);
-        }
-      }
-
-      @keyframes hamsterFRLimb {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(50deg) translateZ(-1px);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(-30deg) translateZ(-1px);
-        }
-      }
-
-      @keyframes hamsterFLLimb {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(-30deg);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(50deg);
-        }
-      }
-
-      @keyframes hamsterBRLimb {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(-60deg) translateZ(-1px);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(20deg) translateZ(-1px);
-        }
-      }
-
-      @keyframes hamsterBLLimb {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(20deg);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(-60deg);
-        }
-      }
-
-      @keyframes hamsterTail {
-        from,
-        25%,
-        50%,
-        75%,
-        to {
-          transform: rotate(30deg) translateZ(-1px);
-        }
-
-        12.5%,
-        37.5%,
-        62.5%,
-        87.5% {
-          transform: rotate(10deg) translateZ(-1px);
-        }
-      }
-
-      @keyframes spoke {
-        from {
-          transform: rotate(0);
-        }
-
-        to {
-          transform: rotate(1turn);
-        }
-      }
-    `,
-  ],
-  template: ` <div
-    aria-label="Orange and tan hamster running in a metal wheel"
-    role="img"
-    class="wheel-and-hamster"
-  >
-    <div class="wheel"></div>
-    <div class="rotate">
-      <div class="hamster">
-        <div class="hamster__body">
-          <div class="hamster__head">
-            <div class="hamster__ear"></div>
-            <div class="hamster__eye"></div>
-            <div class="hamster__nose"></div>
+  imports: [CommonModule, MatIconModule],
+  template: `
+    <div class="flex items-center justify-center p-8">
+      
+      <!-- 🥷 Style 1: Ninja / Shadow Shinobi Shuriken Loader -->
+      <ng-container *ngIf="themeService.activeCharacterStyle() === 'style-ninja'">
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative w-20 h-20 flex items-center justify-center animate-spin">
+            <svg class="w-16 h-16 text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.9)]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+            </svg>
+            <div class="absolute inset-0 rounded-full border-2 border-dashed border-red-600/60 animate-ping"></div>
           </div>
-          <div class="hamster__limb hamster__limb--fr"></div>
-          <div class="hamster__limb hamster__limb--fl"></div>
-          <div class="hamster__limb hamster__limb--br"></div>
-          <div class="hamster__limb hamster__limb--bl"></div>
-          <div class="hamster__tail"></div>
+          <span class="text-xs font-black tracking-widest text-red-500 uppercase animate-pulse">🥷 SHINOBI SHADOW SCANNING...</span>
         </div>
-      </div>
+      </ng-container>
+
+      <!-- 🤖 Style 2: Robot / Sci-Fi Mecha HUD Radar Scanner Loader -->
+      <ng-container *ngIf="themeService.activeCharacterStyle() === 'style-robot'">
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative w-20 h-20 rounded-full border-2 border-cyan-500/40 p-1 flex items-center justify-center drop-shadow-[0_0_20px_rgba(6,182,212,0.8)]">
+            <div class="w-full h-full rounded-full border-2 border-cyan-400 border-t-transparent animate-spin"></div>
+            <div class="absolute w-3 h-3 rounded-full bg-cyan-400 animate-ping"></div>
+            <mat-icon class="absolute text-cyan-400 !w-8 !h-8 !text-3xl">smart_toy</mat-icon>
+          </div>
+          <span class="text-xs font-black tracking-widest text-cyan-400 uppercase animate-pulse">🤖 MECHA SYSTEM LOADING...</span>
+        </div>
+      </ng-container>
+
+      <!-- ⚡ Style 3: High-Tech / Quantum Code Matrix Loader -->
+      <ng-container *ngIf="themeService.activeCharacterStyle() === 'style-quantum'">
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative w-20 h-20 flex items-center justify-center">
+            <div class="w-14 h-14 rotate-45 border-2 border-purple-500 bg-purple-500/10 animate-spin flex items-center justify-center drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
+              <div class="w-6 h-6 border-2 border-cyan-400 rotate-45"></div>
+            </div>
+            <mat-icon class="absolute text-purple-400 !w-6 !h-6 !text-2xl animate-pulse">code</mat-icon>
+          </div>
+          <span class="text-xs font-black tracking-widest text-purple-400 uppercase animate-pulse">⚡ QUANTUM CODE INITIALIZING...</span>
+        </div>
+      </ng-container>
+
+      <!-- 🐉 Style 4: Quan Vân Trường / Guan Yu Dragon Blade Loader -->
+      <ng-container *ngIf="themeService.activeCharacterStyle() === 'style-quan-van-truong'">
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative w-20 h-20 rounded-full border-2 border-emerald-500/50 p-2 flex items-center justify-center drop-shadow-[0_0_25px_rgba(16,185,129,0.9)]">
+            <div class="w-full h-full rounded-full border-4 border-emerald-400 border-b-amber-400 animate-spin"></div>
+            <mat-icon class="absolute text-emerald-400 !w-8 !h-8 !text-3xl">shield</mat-icon>
+          </div>
+          <span class="text-xs font-black tracking-widest text-emerald-400 uppercase animate-pulse">🐉 BÁT QUÁI LONG VŨ Đang Quét...</span>
+        </div>
+      </ng-container>
+
+      <!-- 🌌 Style 5: Cosmic / Galaxy Stardust Portal Loader -->
+      <ng-container *ngIf="themeService.activeCharacterStyle() === 'style-cosmic'">
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative w-20 h-20 rounded-full border-2 border-dashed border-pink-500 animate-spin flex items-center justify-center drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]">
+            <div class="w-12 h-12 rounded-full border-2 border-violet-400 border-t-pink-500 animate-spin"></div>
+            <mat-icon class="absolute text-pink-400 !w-6 !h-6 !text-2xl">auto_awesome</mat-icon>
+          </div>
+          <span class="text-xs font-black tracking-widest text-pink-400 uppercase animate-pulse">🌌 COSMIC STARDUST LOADING...</span>
+        </div>
+      </ng-container>
+
     </div>
-    <div class="spoke"></div>
-  </div>`,
+  `
 })
-export class LoaderComponent {}
+export class LoaderComponent {
+  public themeService = inject(ThemeService);
+}

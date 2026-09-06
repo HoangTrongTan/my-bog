@@ -16,13 +16,13 @@ $margin-show-cv: 40px;
     .info {
       p:first-child {
         font-weight: bold;
-        color: #fff;
+        color: var(--text-primary);
         font-size: 12px;
       }
       p:last-child {
         font-weight: bold;
         font-size: 11px;
-        color: #8c8c8e;
+        color: var(--text-secondary);
         text-align: end;
         margin-top: 3px;
       }
@@ -78,7 +78,7 @@ $margin-show-cv: 40px;
             font-weight: 500;
             font-style: normal;
             font-size: 30px;
-            color: #fff;
+            color: var(--text-primary);
             margin: 10px 0;
           }
           button {
@@ -150,7 +150,7 @@ $margin-show-cv: 40px;
             bottom: 0;
             padding: 0.75rem 0;
             margin: 0 0 0 1.85rem;
-            color: #282936;
+            color: var(--text-primary);
             font-weight: 700;
             line-height: 1.6;
             text-align: center;
@@ -180,7 +180,8 @@ $margin-show-cv: 40px;
       width: 270px;
       height: 43px;
       border-radius: 50px;
-      background-color: #f0f0f4;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
       z-index: 100;
       .boxes-icons {
         .items-list {
@@ -191,16 +192,15 @@ $margin-show-cv: 40px;
             padding: 10px;
             cursor: pointer;
             border-radius: 10px;
-            border: 1px solid #85858564;
+            border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
-            // background-color: ;
             .icon-social {
-              color: #8c8c8e82;
+              color: var(--text-secondary);
               z-index: 1;
             }
             &:hover .icon-social {
-              color: #fff;
+              color: var(--accent-color);
               z-index: 100;
             }
             &:hover .overlay {
@@ -223,7 +223,7 @@ $margin-show-cv: 40px;
       @include border-img;
       width: 270px;
       height: 270px;
-      background-color: #f0f0f4;
+      background-color: var(--bg-card);
       bottom: -30px;
       right: 19.2%;
       overflow: hidden;
@@ -293,14 +293,14 @@ $margin-show-cv: 40px;
 
     .Btn {
       cursor: pointer;
-      background: #282936;
-      border: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
       outline: none;
       display: flex;
       gap: 1em;
       padding: 10px 15px;
       border-radius: 10px;
-      color: #fff;
+      color: var(--text-primary);
       transition: all 0.2s linear;
       position: relative;
       overflow: hidden;
@@ -313,7 +313,8 @@ $margin-show-cv: 40px;
         top: -20px;
       }
       &:hover {
-        box-shadow: 0 0 5px 1px #5a5a5a99, inset 0 0 5px 1px #5a5a5a99;
+        box-shadow: 0 0 5px 1px var(--glow-color);
+        border-color: var(--accent-color);
       }
       &:hover .face {
         top: 50%;
@@ -342,12 +343,11 @@ $margin-show-cv: 40px;
       p:nth-child(1) {
         text-align: left;
         font-weight: bold;
-        color: #ffc107;
+        color: var(--accent-color);
         min-width: 30px;
       }
       p:nth-child(2) {
-        color: #ffc107;
-        color: #efeff1;
+        color: var(--text-primary);
         min-width: 160px;
       }
     }
@@ -356,9 +356,10 @@ $margin-show-cv: 40px;
     margin-top: 10px;
     p {
       padding: 10px;
-      background: #8c8c8e3f;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
       border-radius: 10px;
-      color: rgb(140, 140, 142);
+      color: var(--text-secondary);
     }
   }
 }

@@ -1,17 +1,80 @@
-<div class="wrapper card-sidebar">
-  <!-- #biến="exportAsName" -->
-  <div class="boxes-img" [matMenuTriggerFor]="menu">
-      <div class="avatar">
-        <img src="/access/imgs/me.jpg" alt="err" width="100%" height="100%">
-        <div class="online"></div>
-      </div>
+<div class="wrapper card-sidebar glass-card !rounded-2xl shadow-2xl border border-theme-border flex flex-col items-center justify-between p-4 w-[100px] h-full">
+  
+  <!-- Top: Avatar Box & Menu -->
+  <div class="boxes-img cursor-pointer transition-transform hover:scale-105" [matMenuTriggerFor]="menu" (mouseenter)="audioService.playClickSound()">
+    <div class="avatar relative group">
+      <img src="/access/imgs/me.jpg" alt="Hoang Trong Tan Avatar" width="100%" height="100%" class="rounded-full border-2 border-theme-accent shadow-lg group-hover:border-theme-accent transition-all">
+      <div class="online"></div>
+    </div>
   </div>
+
+  <!-- Middle: Action Buttons List (Matching Left Sidebar style) -->
+  <div class="flex flex-col items-center gap-4 my-auto">
+    
+    <!-- Button 1: AI Fortune Oracle -->
+    <button
+      (click)="onFortuneClick()"
+      (mouseenter)="audioService.playClickSound()"
+      matTooltip="Bói Vận Mệnh & Thần Số Học AI"
+      matTooltipPosition="left"
+      class="w-12 h-12 rounded-full bg-slate-900/90 text-theme-accent border border-theme-accent/60 hover:scale-110 hover:border-theme-accent flex items-center justify-center transition-all shadow-lg cursor-pointer group"
+    >
+      <mat-icon class="!w-6 !h-6 !text-xl group-hover:rotate-45 transition-transform">auto_awesome</mat-icon>
+    </button>
+
+    <!-- Button 2: Studio Theme & Style Selector -->
+    <button
+      (click)="onStudioClick()"
+      (mouseenter)="audioService.playClickSound()"
+      matTooltip="Tùy chỉnh Giao diện & Phong cách"
+      matTooltipPosition="left"
+      class="w-12 h-12 rounded-full bg-slate-900/90 text-theme-accent border border-theme-accent/60 hover:scale-110 hover:border-theme-accent flex items-center justify-center transition-all shadow-lg cursor-pointer group"
+    >
+      <mat-icon class="!w-6 !h-6 !text-xl group-hover:rotate-180 transition-transform duration-500">palette</mat-icon>
+    </button>
+
+    <!-- Button 3: Audio BGM Sound Toggle -->
+    <button
+      (click)="audioService.toggleSound()"
+      (mouseenter)="audioService.playClickSound()"
+      [matTooltip]="audioService.soundEnabled() ? 'Tắt Nhạc Nền Synthesizer' : 'Bật Nhạc Nền Synthesizer'"
+      matTooltipPosition="left"
+      class="w-12 h-12 rounded-full bg-slate-900/90 border transition-all flex items-center justify-center shadow-lg cursor-pointer"
+      [ngClass]="{ 'border-theme-accent text-theme-accent bg-theme-accent/20': audioService.soundEnabled(), 'border-white/20 text-slate-400 hover:text-white': !audioService.soundEnabled() }"
+    >
+      <mat-icon class="!w-6 !h-6 !text-xl">{{ audioService.soundEnabled() ? 'volume_up' : 'volume_off' }}</mat-icon>
+    </button>
+
+  </div>
+
+  <!-- Bottom: Mode Theme Indicator Pill -->
+  <div class="flex items-center justify-center p-2">
+    <div 
+      (click)="themeService.toggleDarkMode()"
+      matTooltip="Chuyển Dark / Light Mode"
+      matTooltipPosition="left"
+      class="w-10 h-10 rounded-full bg-slate-900/80 border border-white/20 hover:border-theme-accent text-theme-accent flex items-center justify-center cursor-pointer transition-transform hover:scale-110 shadow-md"
+    >
+      <mat-icon class="!w-5 !h-5 !text-lg">{{ themeService.isDarkMode() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+    </div>
+  </div>
+
+  <!-- Avatar Dropdown Menu -->
   <mat-menu #menu="matMenu" classList="avatar-menu">
     <div mat-menu-item (click)="$event.stopPropagation()">
       <toggle-theme />
     </div>
-    <button mat-menu-item>
-      <span>Disable alerts</span>
+
+    <!-- Studio Customize Menu Option -->
+    <button mat-menu-item (click)="onStudioClick()">
+      <mat-icon class="text-theme-accent">palette</mat-icon>
+      <span>Tùy chỉnh Studio (Themes & Modes)</span>
+    </button>
+
+    <!-- Fortune AI Menu Option -->
+    <button mat-menu-item (click)="onFortuneClick()">
+      <mat-icon class="text-theme-accent">auto_awesome</mat-icon>
+      <span>Bói Vận Mệnh AI Gemini</span>
     </button>
   </mat-menu>
 </div>

@@ -1,12 +1,18 @@
-<div class="warpper main-bg" #wrapperMainLayout>
+<app-particle-weather />
+<app-custom-cursor />
+<app-theme-character-selector #studioSelector />
+<app-fortune-modal #fortuneModal />
+<app-mobile-bottom-nav (openFortune)="openFortuneModal()" />
+
+<div class="warpper main-bg relative z-10" #wrapperMainLayout>
   <app-left-sidebar />
   <div class="content">
-    <app-header-responsive ($clickMenu)="clickMenuOpen($event)" />
-    <div class="body">
+    <app-header-responsive ($clickMenu)="clickMenuOpen($event)" (openStudio)="openStudioSelector()" />
+    <div class="body pb-20 md:pb-0">
       <router-outlet />
     </div>
   </div>
-  <app-right-sidebar />
+  <app-right-sidebar (openFortune)="openFortuneModal()" (openStudio)="openStudioSelector()" />
   <div class="menu-bars" [ngClass]="({ expan: openMenu() })">
     <div class="header-img">
       <img src="/access/imgs/myImg1.jpg" alt="">

@@ -1,59 +1,107 @@
-# PersonalProfileAngular
+# 🚀 Hoàng Trọng Tấn - Personal Profile & Interactive Portfolio (Angular 19)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.1.
+Welcome to the personal profile & portfolio website of **Hoàng Trọng Tấn** — Frontend / Fullstack Developer specializing in **Angular**, **React/Next.js**, **ASP.NET Core**, **Three.js**, **Docker**, **Kubernetes (K8s)**, and **AWS**.
 
-## Development server
+---
 
-To start a local development server, run:
+## ✨ Outstanding Features & Design Innovations
 
-```bash
-ng serve
-```
+### 1. 🎨 Dynamic Theme System & 5 Color Presets
+- **Base Modes**: Light Mode & Dark Mode with smooth transition tokens.
+- **5 Custom Color Presets**:
+  - 💎 **Cyberpunk Neon**: Neon Cyan (`#00f3ff`) & Pink Accent (`#ff007f`).
+  - 🌿 **Emerald Aurora**: Emerald Green (`#10b981`) & Mint (`#34d399`).
+  - 🌅 **Sunset Rose Gold**: Rose (`#f43f5e`) & Warm Orange (`#fb923c`).
+  - 🌌 **Midnight Sapphire**: Royal Sapphire Blue (`#3b82f6`) & Violet (`#8b5cf6`).
+  - ☀️ **Solar Flare Gold**: Solar Gold (`#eab308`) & Orange Flare (`#f97316`).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+### 2. 🎭 5 Character Style Presets ("Phong Cách Nhân Vật")
+Interactive character presets accessible via the floating Studio control panel. Each style alters the custom mouse cursor, loading style, Web Audio synth ambient music, and decorative UI badges:
+- 🥷 **Ninja / Shadow Shinobi**: Dark crimson shadow vibe, Kunai shadow cursor, smoke particles, pentatonic audio synth.
+- 🤖 **Robot / Sci-Fi Mecha**: Cyan HUD theme, Laser crosshair cursor, digital grid particles, mecha audio synth.
+- ⚡ **High-Tech / Quantum Code**: Holographic diamond cursor, binary code stream particles, purple quantum theme, futuristic audio synth.
+- 🐉 **Quan Vân Trường / Võ Thượng Tướng**: Green Dragon Blade (*Thanh Long Yển Nguyệt Đao*) cursor, dragon aura & flame particles, jade & gold theme, war drum audio synth.
+- 🌌 **Cosmic / Galaxy Explorer**: Stardust vortex cursor, nebula stardust particles, galaxy pink & violet theme, space ambient audio synth.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+### 3. ❄️ Interactive Weather Canvas Overlay & Mouse Particle Trail
+- Canvas background animation system supporting:
+  - ❄️ **Snowfall**: Swaying snowflakes with mouse repulsion physics.
+  - 🌧️ **Cyber Rain**: Rain streaks with splash ripples.
+  - ☀️ **Sunbeam Flare**: Lens flare radial glow with ambient golden specks.
+  - ✨ **Stardust**: Twinkling cosmic particles.
+  - 🖱️ **Particle Trail**: Dynamic particle sparks reacting to mouse movement (`mousemove`).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+### 4. 🤹 Draggable Navigation Sidebar (`@angular/cdk/drag-drop`)
+- Side navigation menu equipped with Angular CDK Drag & Drop (`cdkDropList`, `cdkDrag`, `moveItemInArray`).
+- Allows users to drag and re-order menu items dynamically with smooth layout animations.
 
-## Building
+---
 
-To build the project run:
+### 5. 🛠️ Redesigned Projects Timeline Page (`/projects`)
+- **Stage-by-Stage Interactive Timeline**: Visual 3D perspective timeline tracing career progression across 4 major milestones.
+- **Categorized Sections**: Filter between *Real-World Industry Projects (Dự án thực tế)* and *Academic / University Projects (Dự án ở trường)*.
+- **Enterprise NAO Spotlight**: Features **Landbase 360 - Bất động sản 360** (`landbase-web`) at **Enterprise NAO** (`https://enterprisenao.com/vi`, path `E:\ID_PTS\ENAO\landbase-web`) featuring 360 VR virtual tours, GIS map layers, and Cloud infrastructure.
+- **Cloud & DevOps Integration**: Highlighting skills in **Docker**, **Kubernetes (K8s)**, and **AWS**.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🛠️ Technology Stack
 
-## Running unit tests
+- **Frontend Core**: Angular 19 (Standalone Components, Signals, RxJS)
+- **Styling**: SCSS Design System + Tailwind CSS v3 + Angular Material
+- **Drag & Drop**: Angular CDK (`@angular/cdk/drag-drop`)
+- **3D & Graphics**: Three.js, HTML5 Canvas, Web Audio API Synthesizer
+- **Icons**: Angular Material Icons, FontAwesome Icons (`@fortawesome/angular-fontawesome`)
+- **Backend & Cloud Integration**: ASP.NET Core Web API, Node.js, Docker, Kubernetes (K8s), AWS (S3, EC2, ECS, CloudFront)
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## 💻 Getting Started Locally
 
-## Running end-to-end tests
+### Prerequisites
+- Node.js version 18.x or higher
+- Angular CLI 19.x (`npm install -g @angular/cli`)
 
-For end-to-end (e2e) testing, run:
+### Installation & Run
 
-```bash
-ng e2e
-```
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/HoangTrongTan/personal-profile-angular.git
+   cd personal-profile-angular
+   ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-## Additional Resources
+3. **Start the local dev server**:
+   ```bash
+   npm start
+   # or
+   ng serve
+   ```
+   Navigate to `http://localhost:4200/` in your browser.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+4. **Production Build**:
+   ```bash
+   npm run build
+   # or
+   ng build
+   ```
+   Build output will be generated in `dist/personal-profile-angular`.
+
+---
+
+## 👤 Author
+
+- **Hoàng Trọng Tấn** — Frontend & Fullstack Developer
+- **Email**: hoangtrongtan15112002@gmail.com
+- **Phone**: 0397346930
+- **Location**: Hà Nội, Việt Nam
