@@ -207,6 +207,26 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Helper to accurately calculate which dish slice is currently positioned under the TOP pointer arrow (12 o'clock / 270 deg).
+   */
+  public getActiveSliceIndex(): number {
+    const currentDishes = this.dishes();
+    const count = currentDishes.length;
+    if (count === 0) return 0;
+
+    const sliceAngle = (2 * Math.PI) / count;
+    const pointerAngle = 1.5 * Math.PI; // 270 degrees (Top center pointer arrow)
+
+    // Calculate angle on wheel relative to top pointer
+    let relAngle = (pointerAngle - (this.currentAngle % (2 * Math.PI))) % (2 * Math.PI);
+    if (relAngle < 0) {
+      relAngle += 2 * Math.PI;
+    }
+
+    return Math.floor(relAngle / sliceAngle) % count;
+  }
+
+  /**
    * Spin Lucky Wheel Physics Engine with custom initial velocity
    */
   public spinWheel(initialVel?: number): void {
@@ -238,11 +258,8 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
       this.currentAngle += currentSpeed;
       this.drawWheel();
 
-      // Check tick sound on slice crossing
-      const sliceAngle = (2 * Math.PI) / currentDishes.length;
-      // Pointer is located at TOP (3PI/2 or 270 deg)
-      const normalizedAngle = (2 * Math.PI - (this.currentAngle % (2 * Math.PI))) % (2 * Math.PI);
-      const activeSliceIndex = Math.floor(normalizedAngle / sliceAngle);
+      // Check tick sound on slice crossing under TOP pointer
+      const activeSliceIndex = this.getActiveSliceIndex();
 
       if (activeSliceIndex !== this.lastTickIndex) {
         this.lastTickIndex = activeSliceIndex;
@@ -252,9 +269,10 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
       if (progress < 1 && currentSpeed > 0.002) {
         this.animFrameId = requestAnimationFrame(animate);
       } else {
-        // Wheel stopped! Determine winner
+        // Wheel stopped! Determine winner under TOP pointer
         this.isSpinning.set(false);
-        const winner = currentDishes[activeSliceIndex % currentDishes.length];
+        const finalActiveIndex = this.getActiveSliceIndex();
+        const winner = currentDishes[finalActiveIndex];
         this.winningDish.set(winner);
         this.showResultModal.set(true);
         this.audioService.playWinFanfareSound();
@@ -312,9 +330,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
       // Tick audio during drag
       const currentDishes = this.dishes();
       if (currentDishes.length > 0) {
-        const sliceAngle = (2 * Math.PI) / currentDishes.length;
-        const normalizedAngle = (2 * Math.PI - (this.currentAngle % (2 * Math.PI))) % (2 * Math.PI);
-        const activeSliceIndex = Math.floor(normalizedAngle / sliceAngle);
+        const activeSliceIndex = this.getActiveSliceIndex();
         if (activeSliceIndex !== this.lastTickIndex) {
           this.lastTickIndex = activeSliceIndex;
           this.audioService.playWheelTickSound();
