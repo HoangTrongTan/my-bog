@@ -133,6 +133,11 @@ The Food Wheel & Smart Meal Planner tool (`src/app/views/food-wheel/`) combines 
   - Stores global weather state in Angular `signal<WeatherData>` accessible across the application.
 - **AI Food Suggestion & Meal Planner Service**: `src/app/services/food-ai.service.ts`
   - Leverages `callGeminiAiApi` to analyze special events of today (holidays, weekend vibes, season) & current weather context to generate 10 optimal dishes + 7-day meal plan (Sáng, Trưa, Tối, Ăn vặt).
+- **Mobile Responsiveness & Touch Physics**:
+  - **Touch Gesture Physics**: Direct touch drag & flick controls (`touchstart`, `touchmove`, `touchend`) allowing mobile users to grab and spin/flick the wheel with finger/thumb.
+  - **Mobile Day Filtering**: Quick day filter chip bar (T2..CN / Tất cả) for 7-day meal plan cards.
+  - **Mobile Sticky Action Bar**: Bottom floating CTA bar on mobile screens with quick spin & sound toggle.
+  - **Haptic Feedback**: Mobile vibration (`navigator.vibrate`) on slice ticks, spins, and fanfare wins.
 - **Theme Adaptation**: Wheel pointer, outer glow, slice color palettes, and tick/fanfare audio synthesize dynamically according to `ThemeService.activeCharacterStyle()` (`CHARACTER_STYLES` in `src/app/configs/theme.ts`).
 
 ---

@@ -4,6 +4,7 @@ import {
   OnDestroy,
   ViewChild,
   ElementRef,
+  HostListener,
   inject,
   signal,
   computed,
@@ -51,7 +52,10 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   public weeklyPlan = signal<DailyMealPlan[]>([]);
   public aiEventNote = signal<string>('');
 
-  // Wheel Animation State
+  // Mobile Planner Day Filter State (-1 = All Days, 0..6 = Monday..Sunday)
+  public selectedPlannerDay = signal<number>(-1);
+
+  // Wheel Animation & Touch Drag State
   public isSpinning = signal<boolean>(false);
   public winningDish = signal<FoodItem | null>(null);
   public showResultModal = signal<boolean>(false);
@@ -61,6 +65,14 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   private spinVelocity = 0;
   private animFrameId: number | null = null;
   private lastTickIndex = -1;
+
+  // Touch Gesture Drag & Flick Variables
+  private isDragging = false;
+  private touchStartAngle = 0;
+  private initialAngleOnTouch = 0;
+  private lastTouchTime = 0;
+  private lastAngleForVelocity = 0;
+  private touchVelocity = 0;
 
   // Particle systems for win fireworks
   private particles: { x: number; y: number; vx: number; vy: number; color: string; radius: number; alpha: number }[] = [];
@@ -89,6 +101,11 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
     }
   });
 
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.drawWheel();
+  }
+
   ngOnInit(): void {
     // Generate initial AI food suggestions & weekly plan based on current weather
     this.fetchAiSuggestions();
@@ -101,6 +118,19 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit(): void {
     setTimeout(() => this.drawWheel(), 100);
+  }
+
+  /**
+   * Helper to trigger haptic vibration on mobile
+   */
+  public triggerHaptic(pattern: number | number[] = 15): void {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate(pattern);
+      } catch (e) {
+        // Ignore if restricted
+      }
+    }
   }
 
   /**
@@ -131,6 +161,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   public loadPreset(presetId: string): void {
     this.selectedPresetId.set(presetId);
     this.audioService.playClickSound();
+    this.triggerHaptic(10);
 
     if (presetId === 'ai') {
       this.fetchAiSuggestions();
@@ -157,9 +188,28 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Spin Lucky Wheel Physics Engine
+   * Randomize dish colors & emojis for tab 3 quick action
    */
-  public spinWheel(): void {
+  public randomizeDishes(): void {
+    const list = [...this.dishes()];
+    const emojis = ['🍜', '🍲', '🍱', '🍔', '🍕', '🍣', '🥩', '🍗', '🥗', '🍦', '🍩', '🧋', '🥓', '🥘', '🍤'];
+    const colors = ['#f43f5e', '#ec4899', '#d946ef', '#a855f7', '#8b5cf6', '#6366f1', '#3b82f6', '#0ea5e9', '#06b6d4', '#14b8a6', '#10b981', '#22c55e', '#84cc16', '#eab308', '#f59e0b', '#f97316', '#ef4444'];
+
+    list.forEach((dish, idx) => {
+      dish.emoji = emojis[(idx * 3 + Math.floor(Math.random() * emojis.length)) % emojis.length];
+      dish.color = colors[(idx * 2 + Math.floor(Math.random() * colors.length)) % colors.length];
+    });
+
+    this.dishes.set(list);
+    this.audioService.playClickSound();
+    this.triggerHaptic(15);
+    this.drawWheel();
+  }
+
+  /**
+   * Spin Lucky Wheel Physics Engine with custom initial velocity
+   */
+  public spinWheel(initialVel?: number): void {
     if (this.isSpinning()) return;
     const currentDishes = this.dishes();
     if (!currentDishes || currentDishes.length === 0) return;
@@ -168,9 +218,10 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
     this.showResultModal.set(false);
     this.winningDish.set(null);
     this.audioService.playClickSound();
+    this.triggerHaptic([20, 30, 20]);
 
-    // Initial spin speed (radians per frame): 0.35 to 0.55 rad/frame (~ 20-30 RPM)
-    this.spinVelocity = Math.random() * 0.2 + 0.35;
+    // Initial spin speed (radians per frame): 0.35 to 0.55 rad/frame (~ 20-30 RPM) unless flicked
+    this.spinVelocity = initialVel ? Math.min(Math.max(initialVel, 0.25), 0.75) : Math.random() * 0.2 + 0.38;
     this.lastTickIndex = -1;
 
     let totalDecelerationDuration = Math.random() * 2000 + 3500; // 3.5s - 5.5s
@@ -214,8 +265,77 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
     this.animFrameId = requestAnimationFrame(animate);
   }
 
+  // --- TOUCH & MOUSE DRAG FLICK PHYSICS CONTROLS ---
+
+  private getAngleFromPoint(clientX: number, clientY: number): number {
+    if (!this.wheelCanvas) return 0;
+    const rect = this.wheelCanvas.nativeElement.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    return Math.atan2(clientY - cy, clientX - cx);
+  }
+
+  public onPointerStart(event: TouchEvent | MouseEvent): void {
+    if (this.isSpinning()) return;
+    this.isDragging = true;
+
+    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+
+    this.touchStartAngle = this.getAngleFromPoint(clientX, clientY);
+    this.initialAngleOnTouch = this.currentAngle;
+    this.lastTouchTime = performance.now();
+    this.lastAngleForVelocity = this.currentAngle;
+    this.touchVelocity = 0;
+  }
+
+  public onPointerMove(event: TouchEvent | MouseEvent): void {
+    if (!this.isDragging || this.isSpinning()) return;
+
+    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+
+    const currentTouchAngle = this.getAngleFromPoint(clientX, clientY);
+    let deltaAngle = currentTouchAngle - this.touchStartAngle;
+
+    this.currentAngle = this.initialAngleOnTouch + deltaAngle;
+    this.drawWheel();
+
+    const now = performance.now();
+    const dt = now - this.lastTouchTime;
+    if (dt > 16) {
+      const dAngle = this.currentAngle - this.lastAngleForVelocity;
+      this.touchVelocity = dAngle / (dt / 16); // rad per 60fps frame
+      this.lastAngleForVelocity = this.currentAngle;
+      this.lastTouchTime = now;
+
+      // Tick audio during drag
+      const currentDishes = this.dishes();
+      if (currentDishes.length > 0) {
+        const sliceAngle = (2 * Math.PI) / currentDishes.length;
+        const normalizedAngle = (2 * Math.PI - (this.currentAngle % (2 * Math.PI))) % (2 * Math.PI);
+        const activeSliceIndex = Math.floor(normalizedAngle / sliceAngle);
+        if (activeSliceIndex !== this.lastTickIndex) {
+          this.lastTickIndex = activeSliceIndex;
+          this.audioService.playWheelTickSound();
+          this.triggerHaptic(5);
+        }
+      }
+    }
+  }
+
+  public onPointerEnd(): void {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+
+    // If user flicked with noticeable velocity, trigger physics spin!
+    if (Math.abs(this.touchVelocity) > 0.04) {
+      this.spinWheel(Math.abs(this.touchVelocity) * 1.5);
+    }
+  }
+
   /**
-   * Draw Wheel on HTML5 Canvas
+   * Draw Wheel on HTML5 Canvas (Responsive font & text scaling)
    */
   public drawWheel(): void {
     if (!this.wheelCanvas) return;
@@ -226,7 +346,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
     const size = canvas.width;
     const center = size / 2;
     const outerRadius = size / 2 - 15;
-    const innerRadius = 35;
+    const innerRadius = Math.round(size * 0.08); // Responsive inner radius
     const list = this.dishes();
     const count = list.length;
     if (count === 0) return;
@@ -281,14 +401,16 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
 
       ctx.textAlign = 'right';
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 13px system-ui, sans-serif';
+      const fontSize = Math.max(11, Math.round(outerRadius * 0.062));
+      ctx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`;
       ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
       ctx.shadowBlur = 4;
 
       // Truncate long dish name
-      const maxTextLen = 14;
+      const maxTextLen = size < 400 ? 11 : 14;
       const displayName = item.name.length > maxTextLen ? item.name.substring(0, maxTextLen) + '...' : item.name;
-      ctx.fillText(`${item.emoji || '🍲'} ${displayName}`, outerRadius - 20, 5);
+      const textOffset = outerRadius - Math.round(outerRadius * 0.08);
+      ctx.fillText(`${item.emoji || '🍲'} ${displayName}`, textOffset, fontSize / 3);
 
       ctx.restore();
     }
@@ -312,7 +434,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
     // Center Emoji or Icon
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = '20px sans-serif';
+    ctx.font = `${Math.round(innerRadius * 0.6)}px sans-serif`;
     ctx.fillText('🍱', center, center);
     ctx.restore();
   }
