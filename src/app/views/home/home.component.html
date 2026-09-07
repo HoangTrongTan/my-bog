@@ -26,6 +26,18 @@
           <mat-icon class="!w-3.5 !h-3.5 !text-xs">dns</mat-icon>
           Node.js API
         </span>
+
+        <!-- Open-Meteo Live Weather Badge -->
+        @let w = weatherService.weatherSignal();
+        <a 
+          [routerLink]="PATH.FOOD_WHEEL"
+          class="px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
+          [matTooltip]="'Thời tiết Hà Nội hôm nay: ' + w.temperature + '°C - ' + w.conditionText + '. Bấm để mở Vòng Quay Đồ Ăn AI!'"
+        >
+          <mat-icon class="!w-3.5 !h-3.5 !text-xs text-amber-400">{{ w.icon }}</mat-icon>
+          <span class="font-bold font-mono">{{ w.temperature }}°C</span>
+          <span class="text-[10px] text-slate-300 font-normal hidden md:inline">({{ w.conditionText }})</span>
+        </a>
       </div>
     </div>
 

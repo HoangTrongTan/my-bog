@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TextRenderComponent } from '../../components/text-render/text-render.component';
 import { PATH_CONFIG } from '../../configs/path';
+import { WeatherService } from '../../services/weather.service';
 import {
   faGitAlt,
   faFacebookMessenger,
@@ -31,6 +32,8 @@ import { faEye, faFaceGrinHearts } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  public weatherService = inject(WeatherService);
+
   textRuns = [
     "FULL-STACK SOFTWARE ENGINEER !",
     `I AM ${new Date().getFullYear() - 2002} YEARS OLD 🔥.`,
@@ -116,6 +119,30 @@ export class HomeComponent {
   ];
 
   featuredTools = [
+    {
+      title: '🍕 Vòng Quay Đồ Ăn & Thực Đơn AI',
+      desc: 'Vòng quay may mắn chọn món ngon + AI tự động phân tích thời tiết Open-Meteo & lập lịch ăn 7 ngày.',
+      path: PATH_CONFIG.FOOD_WHEEL,
+      btnText: 'Quay Món Ngon',
+      icon: 'restaurant',
+      color: 'border-rose-500/40 text-rose-300 hover:border-rose-400'
+    },
+    {
+      title: '💌 Sổ Tay Góp Ý & Lời Chúc',
+      desc: 'Nơi lưu giữ lời chúc & đóng góp ý kiến đồng bộ Google Apps Script Database siêu tiện lợi.',
+      path: PATH_CONFIG.EXPRESSION,
+      btnText: 'Gửi Lời Chúc',
+      icon: 'rate_review',
+      color: 'border-emerald-500/40 text-emerald-300 hover:border-emerald-400'
+    },
+    {
+      title: '🔥 Bản Tin Gen Z Trends AI',
+      desc: 'Cập nhật các trào lưu hot nhất với AI Gemini phân tích bài viết & trích xuất link gốc chuẩn.',
+      path: PATH_CONFIG.TRENDS,
+      btnText: 'Xem Trends Ngay',
+      icon: 'whatshot',
+      color: 'border-amber-500/40 text-amber-300 hover:border-amber-400'
+    },
     {
       title: '⛩️ Rút Quẻ May Mắn',
       desc: 'Công cụ lắc hũ rút quẻ linh cát tường & giải mã tử vi thần số học.',
