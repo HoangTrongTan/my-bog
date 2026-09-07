@@ -112,24 +112,37 @@ All AI-powered features (Gen Z Hot Trends, Thần Số Học & Tử Vi, Rút Qu�
 
 ---
 
-## 📊 8. Google Apps Script Web App (Database Integration for Feedback)
-The Wish Book & Feedback page (`/expression`) connects to a **Google Apps Script Web App Database** for persistent storage:
+## 📊 8. Google Apps Script Web App & Admin Sanctuary (`/expression` & `/admin-feedback`)
+The Wish Book & Feedback system connects to a **Google Apps Script Web App Database** for persistent storage:
 
-- **Types Index**: `src/app/views/expression/types/index.ts` (`FeedbackItem`, `CreateFeedbackPayload`, `ApiResponse`).
-- **Constants**: `src/app/views/expression/constants/feedback.constants.ts` (`FEEDBACK_API_BASE_URL`).
-- **Service API Layer**: `src/app/views/expression/services/feedback.service.ts`
-  - Encapsulates 5 CRUD endpoints: `getAllFeedback()`, `getFeedbackById(id)`, `createFeedback(payload)`, `deleteFeedback(id)`, `multiDeleteFeedback(ids)`.
-- **Utils**: `src/app/views/expression/utils/feedback.utils.ts` (`formatRelativeTime`).
+- **Public View (`/expression`)**: Clean view-only & submission interface. Deletion buttons are REMOVED from the public page to prevent unauthorized data removal.
+- **Admin Sanctuary (`/admin-feedback`)**:
+  - Accessible ONLY from the Header Avatar Dropdown Menu (NOT listed in the left sidebar menu).
+  - **Password Protection**: Requires password `TrongTanDev` to unlock administrative capabilities.
+  - **Admin Features**: Single item deletion, batch multi-selection deletion, live search & category/rating filters, CSV export, and statistical counters.
 - **CRITICAL GOOGLE APPS SCRIPT CORS & REDIRECT REQUIREMENT**:
   All requests (GET/POST) sent to Google Apps Script Web App SHOULD specify `redirect: 'follow'`, and POST requests MUST use header `Content-Type: text/plain;charset=utf-8` and `JSON.stringify()` payload to handle 302 redirects cleanly and prevent browser preflight CORS OPTIONS failures.
 
 ---
 
-## 🔒 9. Critical Rules for Future AI Agents
+## 🍲 10. Vòng Quay Đồ Ăn AI, Open-Meteo Weather Service & Lịch Ăn Tuần (`/food-wheel`)
+The Food Wheel & Smart Meal Planner tool (`src/app/views/food-wheel/`) combines Open-Meteo live weather data, Gemini AI personalized menu generation, HTML5 2D Canvas wheel physics, and character theme adaptation:
+
+- **Global Weather Service**: `src/app/services/weather.service.ts`
+  - Fetches real-time Hanoi weather (Temp °C, Humidity %, Wind speed, Weather Code) via Open-Meteo API (`https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542...`).
+  - Stores global weather state in Angular `signal<WeatherData>` accessible across the application.
+- **AI Food Suggestion & Meal Planner Service**: `src/app/services/food-ai.service.ts`
+  - Leverages `callGeminiAiApi` to analyze special events of today (holidays, weekend vibes, season) & current weather context to generate 10 optimal dishes + 7-day meal plan (Sáng, Trưa, Tối, Ăn vặt).
+- **Theme Adaptation**: Wheel pointer, outer glow, slice color palettes, and tick/fanfare audio synthesize dynamically according to `ThemeService.activeCharacterStyle()` (`CHARACTER_STYLES` in `src/app/configs/theme.ts`).
+
+---
+
+## 🔒 11. Critical Rules for Future AI Agents
 1. **Light Mode High Contrast**: NEVER use hardcoded `#fff`, `#efeff1`, or white text colors without scoping or using `var(--text-primary)` / `body.light-mode` overrides. Light Mode text MUST ALWAYS render in high-contrast dark slate (`#0f172a`).
 2. **Cursor Layering**: Custom cursor elements must keep `pointer-events-none` and high `z-index` so clicks pass through seamlessly to underlying UI components.
 3. **Theme Service Compatibility**: Preserve signal getters/setters and legacy method signatures in `ThemeService` (`loadTheme()`, `getTheme()`, `setTheme()`, `getColorPreset()`).
 4. **Mobile Navigation**: Keep studio customization triggers inside the top avatar dropdown on mobile to prevent blocking mobile bottom nav buttons.
 5. **Centralized AI Service Calls**: NEVER call Gemini AI endpoints directly using ad-hoc `fetch()` loops. ALWAYS import and use `callGeminiAiApi(prompt)` or `getGeminiApiUrl(model)` from `src/app/configs/api.config` or `src/app/utils/ai.utils`.
 6. **Google Apps Script Web App Calls**: ALWAYS set `redirect: 'follow'`, and for POST requests set `Content-Type: text/plain;charset=utf-8` with `JSON.stringify()` body to handle Google 302 redirects and avoid preflight CORS errors.
-7. **Build Verification**: ALWAYS run `npm run build` using `run_command` after writing code to ensure 100% clean compilation.
+7. **Global Weather State**: ALWAYS access or update weather via `WeatherService.weatherSignal()` in `src/app/services/weather.service.ts`.
+8. **Build Verification**: ALWAYS run `npm run build` using `run_command` after writing code to ensure 100% clean compilation.

@@ -16,6 +16,14 @@
       <mat-icon class="text-amber-400">task_alt</mat-icon>
       <span>Quản lý công việc (Todo List)</span>
     </button>
+    <button mat-menu-item [routerLink]="['/food-wheel']">
+      <mat-icon class="text-amber-400">restaurant</mat-icon>
+      <span>Vòng Quay Đồ Ăn & Thực Đơn AI</span>
+    </button>
+    <button mat-menu-item [routerLink]="['/admin-feedback']">
+      <mat-icon class="text-rose-400">admin_panel_settings</mat-icon>
+      <span>Quản lý Góp Ý & Lời Chúc (Admin)</span>
+    </button>
     <button mat-menu-item (click)="onStudioClick()">
       <mat-icon class="text-theme-accent">palette</mat-icon>
       <span>Tùy chỉnh Studio (Themes & Modes)</span>

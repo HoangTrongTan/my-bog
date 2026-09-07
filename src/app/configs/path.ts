@@ -8,5 +8,8 @@ export const PATH_CONFIG = {
   TECH_KNOWLEDGE: 'tech-knowledge',
   PRIZES: 'prizes',
   TRENDS: 'trends',
+  FOOD_WHEEL: 'food-wheel',
+  ADMIN_FEEDBACK: 'admin-feedback',
   VIEW_MY_CV: 'view-my-cv',
 };
+

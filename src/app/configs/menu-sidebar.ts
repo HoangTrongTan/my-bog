@@ -41,4 +41,10 @@ export const MENU = [
     icon: 'whatshot',
     toolltip: 'Bản Tin Trends Gen Z',
   },
+  {
+    path: PATH_CONFIG.FOOD_WHEEL,
+    icon: 'restaurant',
+    toolltip: 'Vòng Quay Đồ Ăn & Thực Đơn AI',
+  },
 ];
+

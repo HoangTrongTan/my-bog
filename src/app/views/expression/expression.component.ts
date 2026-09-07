@@ -9,10 +9,12 @@ import { FeedbackService } from './services/feedback.service';
 import { FeedbackItem } from './types';
 import { formatRelativeTime } from './utils/feedback.utils';
 
+import { RouterLink } from '@angular/router';
+
 @Component({
   selector: 'app-expression',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule, RouterLink],
   templateUrl: './expression.component.html',
   styleUrl: './expression.component.scss',
 })

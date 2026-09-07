@@ -1,0 +1,482 @@
+<div class="food-wheel-page text-slate-100 min-h-screen p-4 md:p-8 space-y-6">
+  <!-- Toast Notification -->
+  @if (copiedToast()) {
+    <div class="fixed top-6 right-6 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-bounce">
+      <mat-icon class="text-white">check_circle</mat-icon>
+      <span class="font-medium text-sm">Đã sao chép Thực Đơn Tuần thành công!</span>
+    </div>
+  }
+
+  <!-- Header Banner & Weather Widget Card -->
+  <div class="header-weather-card relative overflow-hidden rounded-3xl p-6 md:p-8 backdrop-blur-xl border border-white/10 shadow-2xl bg-gradient-to-r from-slate-900/90 via-slate-800/80 to-slate-900/90">
+    <div class="absolute -top-24 -right-24 w-72 h-72 bg-gradient-to-br from-amber-500/20 via-rose-500/20 to-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+      
+      <!-- Title & AI Event Context -->
+      <div class="space-y-3 max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider">
+          <mat-icon class="text-sm text-amber-400">auto_awesome</mat-icon>
+          AI Food Wheel & Smart Meal Planner
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-rose-300 to-indigo-300">
+          Vòng Quay Món Ngon & Thực Đơn Thông Minh
+        </h1>
+
+        @if (aiEventNote()) {
+          <p class="text-sm md:text-base text-slate-300 leading-relaxed bg-slate-950/40 p-3.5 rounded-2xl border border-white/5">
+            💡 <strong class="text-amber-300">Gợi Ý Hôm Nay:</strong> {{ aiEventNote() }}
+          </p>
+        }
+      </div>
+
+      <!-- Live Open-Meteo Weather Badge Widget -->
+      <div class="weather-badge w-full lg:w-auto bg-slate-950/60 p-4 md:p-5 rounded-2xl border border-white/10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-5 shadow-inner">
+        @let weather = weatherService.weatherSignal();
+        
+        <div class="flex items-center gap-4">
+          <div class="weather-icon-box w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500/20 to-blue-600/30 border border-sky-400/30 flex items-center justify-center text-sky-300 shadow-md">
+            <mat-icon class="text-3xl">{{ weather.icon }}</mat-icon>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-2xl md:text-3xl font-black text-white">{{ weather.temperature }}°C</span>
+              <span class="text-xs px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30 font-medium">
+                {{ weather.conditionText }}
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1 flex items-center gap-3">
+              <span>💧 {{ weather.humidity }}% Độ ẩm</span>
+              <span>💨 {{ weather.windSpeed }} km/h Gió</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end mt-2 sm:mt-0">
+          <button 
+            mat-icon-button 
+            (click)="refreshWeather()" 
+            [matTooltip]="'Cập nhật thời tiết Hà Nội từ Open-Meteo'" 
+            class="text-slate-400 hover:text-white transition-colors"
+          >
+            <mat-icon [class.animate-spin]="weather.isLoading">refresh</mat-icon>
+          </button>
+          
+          <button 
+            (click)="fetchAiSuggestions()" 
+            [disabled]="foodAiService.isAiLoading()"
+            class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-semibold text-xs flex items-center gap-2 shadow-lg hover:shadow-amber-500/25 transition-all disabled:opacity-50"
+          >
+            <mat-icon class="text-sm" [class.animate-spin]="foodAiService.isAiLoading()">smart_toy</mat-icon>
+            <span>{{ foodAiService.isAiLoading() ? 'AI Đang Phân Tích...' : '🤖 AI Gợi Ý Món' }}</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="flex items-center justify-between border-b border-white/10 pb-2">
+    <div class="flex items-center gap-2 overflow-x-auto">
+      <button 
+        (click)="activeTab.set('wheel')"
+        [class]="activeTab() === 'wheel' 
+          ? 'bg-amber-500 text-slate-950 font-bold shadow-lg shadow-amber-500/20' 
+          : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'"
+        class="px-5 py-2.5 rounded-2xl text-sm transition-all flex items-center gap-2 whitespace-nowrap"
+      >
+        <mat-icon class="text-base">donut_large</mat-icon>
+        <span>🎯 Vòng Quay Đồ Ăn</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('planner')"
+        [class]="activeTab() === 'planner' 
+          ? 'bg-amber-500 text-slate-950 font-bold shadow-lg shadow-amber-500/20' 
+          : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'"
+        class="px-5 py-2.5 rounded-2xl text-sm transition-all flex items-center gap-2 whitespace-nowrap"
+      >
+        <mat-icon class="text-base">calendar_month</mat-icon>
+        <span>📅 Thực Đơn Tuần AI</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('dishes')"
+        [class]="activeTab() === 'dishes' 
+          ? 'bg-amber-500 text-slate-950 font-bold shadow-lg shadow-amber-500/20' 
+          : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'"
+        class="px-5 py-2.5 rounded-2xl text-sm transition-all flex items-center gap-2 whitespace-nowrap"
+      >
+        <mat-icon class="text-base">tune</mat-icon>
+        <span>⚙️ Tùy Chỉnh 10 Món</span>
+      </button>
+    </div>
+
+    <!-- Theme Style Badge -->
+    <div class="hidden md:flex items-center gap-2 text-xs text-slate-400 bg-slate-900/60 px-3 py-1.5 rounded-full border border-white/5">
+      <mat-icon class="text-sm text-amber-400">{{ characterPointer().icon }}</mat-icon>
+      <span>Phong cách: <strong class="text-white">{{ characterPointer().name }}</strong></span>
+    </div>
+  </div>
+
+  <!-- TAB 1: LUCKY FOOD WHEEL VIEW -->
+  @if (activeTab() === 'wheel') {
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Canvas Wheel Box (Left Column) -->
+      <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-900/60 p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl relative">
+        
+        <!-- Pointer Arrow styled by Active Theme -->
+        <div class="wheel-pointer-container absolute top-4 z-20 flex flex-col items-center">
+          <div 
+            class="pointer-badge px-3 py-1 rounded-full text-xs font-bold text-slate-950 shadow-lg flex items-center gap-1.5 mb-1"
+            [style.backgroundColor]="characterPointer().color"
+          >
+            <mat-icon class="text-sm">{{ characterPointer().icon }}</mat-icon>
+            <span>{{ characterPointer().name }}</span>
+          </div>
+          <div 
+            class="w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-t-[28px] drop-shadow-xl"
+            [style.borderTopColor]="characterPointer().color"
+          ></div>
+        </div>
+
+        <!-- HTML5 Canvas Wheel -->
+        <div class="relative mt-8">
+          <canvas 
+            #wheelCanvas 
+            width="460" 
+            height="460" 
+            class="max-w-full h-auto drop-shadow-[0_0_35px_rgba(245,158,11,0.25)] rounded-full transition-transform duration-300 hover:scale-[1.01]"
+          ></canvas>
+        </div>
+
+        <!-- Spin Action Button -->
+        <div class="mt-8 flex flex-col items-center gap-3 w-full max-w-xs">
+          <button 
+            (click)="spinWheel()" 
+            [disabled]="isSpinning()"
+            class="spin-btn w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-500 hover:from-amber-600 hover:to-indigo-600 text-slate-950 font-black text-lg md:text-xl uppercase tracking-wider shadow-2xl hover:shadow-amber-500/40 transition-all transform hover:-translate-y-1 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          >
+            <mat-icon class="text-2xl" [class.animate-spin]="isSpinning()">casino</mat-icon>
+            <span>{{ isSpinning() ? 'Đang Quay...' : 'QUAY NGAY!' }}</span>
+          </button>
+          <span class="text-xs text-slate-400">Ấn phím hoặc click nút để tìm món ăn may mắn hôm nay</span>
+        </div>
+
+      </div>
+
+      <!-- Presets & Dish Preview (Right Column) -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- Preset Menu Quick Selectors -->
+        <div class="bg-slate-900/60 p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+          <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+            <mat-icon class="text-amber-400">restaurant_menu</mat-icon>
+            Chọn Thực Đơn Mẫu (10 Món)
+          </h3>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button 
+              (click)="loadPreset('ai')"
+              [class]="selectedPresetId() === 'ai' 
+                ? 'bg-amber-500/20 border-amber-500 text-amber-300 font-bold' 
+                : 'bg-slate-800/50 border-white/5 text-slate-400 hover:text-slate-200'"
+              class="p-3 rounded-2xl border text-xs text-left transition-all flex items-center gap-2.5"
+            >
+              <mat-icon class="text-amber-400">smart_toy</mat-icon>
+              <span class="truncate">🤖 AI Thời Tiết & Sự Kiện</span>
+            </button>
+
+            @for (preset of presetMenus; track preset.id) {
+              <button 
+                (click)="loadPreset(preset.id)"
+                [class]="selectedPresetId() === preset.id 
+                  ? 'bg-amber-500/20 border-amber-500 text-amber-300 font-bold' 
+                  : 'bg-slate-800/50 border-white/5 text-slate-400 hover:text-slate-200'"
+                class="p-3 rounded-2xl border text-xs text-left transition-all flex items-center gap-2.5"
+              >
+                <mat-icon class="text-amber-400">{{ preset.icon }}</mat-icon>
+                <span class="truncate">{{ preset.name }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- 10 Dishes Quick List Preview -->
+        <div class="bg-slate-900/60 p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+              <mat-icon class="text-rose-400">format_list_bulleted</mat-icon>
+              Danh Sách 10 Món Trong Vòng Quay
+            </h3>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-amber-400 border border-amber-400/20">
+              10 Món
+            </span>
+          </div>
+
+          <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
+            @for (dish of dishes(); track dish.id; let idx = $index) {
+              <div class="p-3 rounded-2xl bg-slate-950/50 border border-white/5 flex items-center justify-between gap-3 hover:border-amber-500/30 transition-all">
+                <div class="flex items-center gap-3 min-w-0">
+                  <span 
+                    class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-slate-950 shrink-0"
+                    [style.backgroundColor]="dish.color || '#3b82f6'"
+                  >
+                    {{ idx + 1 }}
+                  </span>
+                  <span class="text-lg shrink-0">{{ dish.emoji || '🍲' }}</span>
+                  <div class="min-w-0">
+                    <p class="text-sm font-semibold text-white truncate">{{ dish.name }}</p>
+                    <p class="text-[11px] text-slate-400 truncate">{{ dish.reason || dish.category }}</p>
+                  </div>
+                </div>
+
+                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 font-mono shrink-0 border border-white/5">
+                  🔥 {{ dish.calories }} kcal
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  }
+
+  <!-- TAB 2: WEEKLY MEAL PLANNER VIEW -->
+  @if (activeTab() === 'planner') {
+    <div class="space-y-6">
+      
+      <!-- Planner Actions Bar -->
+      <div class="bg-slate-900/60 p-6 rounded-3xl border border-white/10 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <mat-icon class="text-amber-400">calendar_month</mat-icon>
+            Lịch Ăn Cả Tuần (7 Ngày) Tối Ưu Dinh Dưỡng
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">AI cá nhân hóa thực đơn bữa Sáng - Trưa - Tối - Ăn vặt theo thời tiết và năng lượng hoạt động</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button 
+            (click)="fetchAiSuggestions()"
+            [disabled]="foodAiService.isAiLoading()"
+            class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg transition-all"
+          >
+            <mat-icon class="text-sm" [class.animate-spin]="foodAiService.isAiLoading()">auto_awesome</mat-icon>
+            <span>Tạo Lịch Tuần Mới Về AI</span>
+          </button>
+
+          <button 
+            (click)="copyWeeklyPlanToClipboard()"
+            class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center gap-2 border border-white/10 transition-all"
+          >
+            <mat-icon class="text-sm text-slate-300">content_copy</mat-icon>
+            <span>Sao Chép Lịch Tuần</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 7 Days Grid Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        @for (day of weeklyPlan(); track day.dayName) {
+          <div class="day-card bg-slate-900/60 p-5 rounded-3xl border border-white/10 shadow-xl space-y-4 hover:border-amber-500/40 transition-all">
+            
+            <div class="flex items-center justify-between border-b border-white/5 pb-3">
+              <h3 class="text-base font-extrabold text-amber-300 flex items-center gap-2">
+                <mat-icon class="text-sm text-amber-400">today</mat-icon>
+                {{ day.dayName }}
+              </h3>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-white/5 font-mono">
+                {{ day.dateStr }}
+              </span>
+            </div>
+
+            <!-- Meals List -->
+            <div class="space-y-2.5 text-xs">
+              <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/5">
+                <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-0.5">🌅 Bữa Sáng</span>
+                <p class="font-semibold text-slate-200">{{ day.breakfast }}</p>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/5">
+                <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block mb-0.5">☀️ Bữa Trưa</span>
+                <p class="font-semibold text-slate-200">{{ day.lunch }}</p>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/5">
+                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider block mb-0.5">🌙 Bữa Tối</span>
+                <p class="font-semibold text-slate-200">{{ day.dinner }}</p>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/5">
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-0.5">🍡 Ăn Vặt / Xế</span>
+                <p class="font-semibold text-slate-200">{{ day.snack }}</p>
+              </div>
+            </div>
+
+            <!-- Health Tip -->
+            <div class="pt-2 border-t border-white/5 text-[11px] text-slate-400 flex items-start gap-1.5">
+              <span class="shrink-0 text-amber-400">💡</span>
+              <p class="italic leading-snug">{{ day.healthTip }}</p>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>
+  }
+
+  <!-- TAB 3: DISHES CUSTOMIZATION EDIT VIEW -->
+  @if (activeTab() === 'dishes') {
+    <div class="bg-slate-900/60 p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl space-y-6">
+      
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <mat-icon class="text-amber-400">edit_note</mat-icon>
+            Chỉnh Sửa 10 Món Ăn Trong Vòng Quay
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Nhập trực tiếp 10 món ăn yêu thích của bạn hoặc tùy chỉnh tên món, calories, icon</p>
+        </div>
+
+        <button 
+          (click)="activeTab.set('wheel'); drawWheel()"
+          class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg transition-all"
+        >
+          <mat-icon class="text-sm">check_circle</mat-icon>
+          <span>Lưu & Mở Vòng Quay</span>
+        </button>
+      </div>
+
+      <!-- 10 Dishes Input Table -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @for (dish of dishes(); track dish.id; let idx = $index) {
+          <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/10 space-y-3">
+            
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-slate-800 text-amber-400 border border-amber-400/20">
+                Món số {{ idx + 1 }}
+              </span>
+              
+              <div class="flex items-center gap-2">
+                <label class="text-[11px] text-slate-400">Màu sắc:</label>
+                <input 
+                  type="color" 
+                  [ngModel]="dish.color" 
+                  (ngModelChange)="updateDish(idx, 'color', $event)"
+                  class="w-7 h-7 rounded-lg bg-transparent cursor-pointer border-0"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-2">
+              <div class="col-span-3">
+                <label class="text-[10px] text-slate-400 block mb-1">Emoji Icon</label>
+                <input 
+                  type="text" 
+                  [ngModel]="dish.emoji" 
+                  (ngModelChange)="updateDish(idx, 'emoji', $event)"
+                  class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-center text-white font-emoji focus:border-amber-500 focus:outline-none"
+                />
+              </div>
+
+              <div class="col-span-9">
+                <label class="text-[10px] text-slate-400 block mb-1">Tên Món Ăn</label>
+                <input 
+                  type="text" 
+                  [ngModel]="dish.name" 
+                  (ngModelChange)="updateDish(idx, 'name', $event)"
+                  placeholder="Nhập tên món ăn..."
+                  class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:border-amber-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-2">
+              <div class="col-span-7">
+                <label class="text-[10px] text-slate-400 block mb-1">Lý Do / Mô Tả</label>
+                <input 
+                  type="text" 
+                  [ngModel]="dish.reason" 
+                  (ngModelChange)="updateDish(idx, 'reason', $event)"
+                  placeholder="Lý do chọn..."
+                  class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-slate-300 focus:border-amber-500 focus:outline-none"
+                />
+              </div>
+
+              <div class="col-span-5">
+                <label class="text-[10px] text-slate-400 block mb-1">Calo (kcal)</label>
+                <input 
+                  type="number" 
+                  [ngModel]="dish.calories" 
+                  (ngModelChange)="updateDish(idx, 'calories', $event)"
+                  class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>
+  }
+
+  <!-- RESULT WINNING DISH MODAL DIALOG -->
+  @if (showResultModal() && winningDish()) {
+    @let winner = winningDish()!;
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+      
+      <!-- Fireworks Confetti Canvas Layer -->
+      <canvas #confettiCanvas class="absolute inset-0 pointer-events-none z-10"></canvas>
+
+      <div class="relative z-20 w-full max-w-lg bg-slate-900 border border-amber-500/40 rounded-3xl p-6 md:p-8 shadow-[0_0_50px_rgba(245,158,11,0.3)] space-y-6 text-center transform animate-scaleUp">
+        
+        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center text-4xl shadow-xl animate-bounce">
+          {{ winner.emoji || '🍲' }}
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            🎉 MÓN ĂN HÔM NAY CỦA BẠN!
+          </span>
+          <h2 class="text-3xl font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-rose-300 to-indigo-300">
+            {{ winner.name }}
+          </h2>
+          <p class="text-sm text-slate-300 leading-relaxed bg-slate-950/50 p-4 rounded-2xl border border-white/5">
+            {{ winner.reason || 'Món ăn tuyệt vời được AI gợi ý cực kỳ phù hợp với tiết trời ngày hôm nay!' }}
+          </p>
+        </div>
+
+        <div class="flex items-center justify-center gap-4 text-xs text-slate-400">
+          <span class="px-3 py-1.5 rounded-xl bg-slate-800 border border-white/5">🔥 {{ winner.calories }} kcal</span>
+          <span class="px-3 py-1.5 rounded-xl bg-slate-800 border border-white/5">🍱 {{ winner.category || 'Món chính' }}</span>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 pt-2">
+          <button 
+            (click)="applyWinningToToday()"
+            class="px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-slate-950 font-bold text-sm shadow-lg hover:shadow-amber-500/30 transition-all flex items-center gap-2"
+          >
+            <mat-icon class="text-base">add_circle</mat-icon>
+            <span>Thêm Vào Thực Đơn Hôm Nay</span>
+          </button>
+
+          <button 
+            (click)="showResultModal.set(false)"
+            class="px-5 py-3 rounded-2xl bg-slate-800 text-slate-300 font-semibold text-sm hover:bg-slate-700 transition-all"
+          >
+            Đóng
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+</div>

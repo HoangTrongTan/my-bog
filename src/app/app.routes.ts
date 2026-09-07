@@ -78,6 +78,20 @@ export const routes: Routes = [
             (mod) => mod.TrendsComponent
           ),
       },
+      {
+        path: PATH_CONFIG.FOOD_WHEEL,
+        loadComponent: () =>
+          import('./views/food-wheel/food-wheel.component').then(
+            (mod) => mod.FoodWheelComponent
+          ),
+      },
+      {
+        path: PATH_CONFIG.ADMIN_FEEDBACK,
+        loadComponent: () =>
+          import('./views/admin-feedback/admin-feedback.component').then(
+            (mod) => mod.AdminFeedbackComponent
+          ),
+      },
     ],
   },
   {

@@ -1,0 +1,99 @@
+.food-wheel-page {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  .custom-scrollbar {
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(245, 158, 11, 0.4);
+      border-radius: 10px;
+      &:hover {
+        background: rgba(245, 158, 11, 0.7);
+      }
+    }
+  }
+
+  /* Spin Button Glowing Pulse Effect */
+  .spin-btn {
+    position: relative;
+    overflow: hidden;
+    &::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.25),
+        transparent
+      );
+      transform: rotate(45deg);
+      transition: all 0.5s;
+    }
+    &:hover::after {
+      left: 100%;
+    }
+  }
+
+  /* Keyframe Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleUp {
+    from {
+      opacity: 0;
+      transform: scale(0.85) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-scaleUp {
+    animation: scaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+/* Character Styles Dynamic Overrides */
+body.style-ninja .food-wheel-page {
+  .header-weather-card {
+    border-color: rgba(236, 72, 153, 0.3);
+  }
+}
+
+body.style-robot .food-wheel-page {
+  .header-weather-card {
+    border-color: rgba(6, 182, 212, 0.3);
+  }
+}
+
+body.style-quan-van-truong .food-wheel-page {
+  .header-weather-card {
+    border-color: rgba(234, 179, 8, 0.3);
+  }
+}
+
+body.style-cosmic .food-wheel-page {
+  .header-weather-card {
+    border-color: rgba(168, 85, 247, 0.3);
+  }
+}
