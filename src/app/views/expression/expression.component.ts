@@ -1,41 +1,25 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AudioService } from '../../services/audio.service';
-import { FortuneService, FortuneRequest, FortuneResponse } from '../../services/fortune.service';
-
-export interface UserFeedback {
-  id: string;
-  name: string;
-  avatar: string;
-  category: 'gop-y' | 'loi-chuc' | 'hop-tac';
-  rating: number;
-  message: string;
-  createdAt: string;
-  likes: number;
-}
-
-export interface FortuneSlip {
-  grade: '🌟 ĐẠI CÁT' | '💫 TRUNG CÁT' | '🌸 TIỂU CÁT' | '🍀 CÁT TƯỜNG';
-  hexagram: string;
-  poem: string[];
-  oracleAdvice: string;
-  luckyColors: string[];
-  luckyNumbers: number[];
-}
+import { FortuneService, FortuneSlip } from '../../services/fortune.service';
+import { FeedbackService } from './services/feedback.service';
+import { FeedbackItem } from './types';
+import { formatRelativeTime } from './utils/feedback.utils';
 
 @Component({
   selector: 'app-expression',
   standalone: true,
   imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule],
   templateUrl: './expression.component.html',
-  styleUrl: './expression.component.scss'
+  styleUrl: './expression.component.scss',
 })
-export class ExpressionComponent {
+export class ExpressionComponent implements OnInit {
   public audioService = inject(AudioService);
   public fortuneService = inject(FortuneService);
+  public feedbackService = inject(FeedbackService);
 
   public activeTab = signal<'fortune' | 'feedback'>('fortune');
 
@@ -48,32 +32,17 @@ export class ExpressionComponent {
 
   // Feedback Form State
   public feedbackName = signal<string>('');
+  public feedbackEmail = signal<string>('');
   public feedbackCategory = signal<'gop-y' | 'loi-chuc' | 'hop-tac'>('gop-y');
   public feedbackRating = signal<number>(5);
   public feedbackMessage = signal<string>('');
 
-  public feedbackList = signal<UserFeedback[]>([
-    {
-      id: 'fb-1',
-      name: 'Nguyễn Văn Minh',
-      avatar: '/access/imgs/me.jpg',
-      category: 'loi-chuc',
-      rating: 5,
-      message: 'Giao diện portfolio cực đỉnh! Các hiệu ứng 3D và tùy chỉnh phong cách nhân vật làm mình rất ấn tượng. Chúc Tấn ngày càng phát triển thành công 🚀',
-      createdAt: ' Vừa xong',
-      likes: 12
-    },
-    {
-      id: 'fb-2',
-      name: 'Trần Thị Thu Hà',
-      avatar: '/access/imgs/myImg1.jpg',
-      category: 'gop-y',
-      rating: 5,
-      message: 'Rút quẻ cát tường chuẩn và hay lắm bạn ơi! Trải nghiệm mượt mà, màu sắc Light/Dark mode nhìn rất rõ ràng chuyên nghiệp.',
-      createdAt: '10 phút trước',
-      likes: 8
-    }
-  ]);
+  public formatTime = formatRelativeTime;
+
+  ngOnInit() {
+    // Load live feedback items from Google Apps Script Database
+    this.feedbackService.getAllFeedback();
+  }
 
   public setTab(tab: 'fortune' | 'feedback') {
     this.activeTab.set(tab);
@@ -105,30 +74,30 @@ export class ExpressionComponent {
     }, 1200);
   }
 
-  public submitFeedback() {
+  public async submitFeedback() {
     const msg = this.feedbackMessage().trim();
-    if (!msg) return;
+    const name = this.feedbackName().trim();
+    if (!msg || !name) return;
 
-    const newFb: UserFeedback = {
-      id: 'fb-' + Date.now(),
-      name: this.feedbackName().trim() || 'Người Dùng Ẩn Danh',
-      avatar: '/access/imgs/me.jpg',
-      category: this.feedbackCategory(),
-      rating: this.feedbackRating(),
-      message: msg,
-      createdAt: ' Vừa xong',
-      likes: 1
-    };
+    try {
+      await this.feedbackService.createFeedback({
+        fullName: name,
+        email: this.feedbackEmail().trim() || '',
+        category: this.feedbackCategory(),
+        rating: this.feedbackRating(),
+        content: msg,
+      });
 
-    this.feedbackList.update(list => [newFb, ...list]);
-    this.feedbackMessage.set('');
-    this.audioService.playClickSound();
+      this.feedbackMessage.set('');
+      this.audioService.playClickSound();
+    } catch (err) {
+      console.error('Submit feedback error:', err);
+    }
   }
 
-  public likeFeedback(id: string) {
-    this.feedbackList.update(list =>
-      list.map(item => (item.id === id ? { ...item, likes: item.likes + 1 } : item))
-    );
+  public async deleteFeedbackItem(id: string, event: MouseEvent) {
+    event.stopPropagation();
     this.audioService.playClickSound();
+    await this.feedbackService.deleteFeedback(id);
   }
 }

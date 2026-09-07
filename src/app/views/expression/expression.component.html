@@ -26,12 +26,23 @@
 
       <div class="flex flex-col gap-3 text-xs">
         <div>
-          <label class="text-slate-400 font-semibold mb-1 block">Họ và Tên của bạn:</label>
+          <label class="text-slate-400 font-semibold mb-1 block">Họ và Tên của bạn: <span class="text-rose-400">*</span></label>
           <input
             type="text"
             [ngModel]="feedbackName()"
             (ngModelChange)="feedbackName.set($event)"
             placeholder="Nhập tên của bạn..."
+            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-white/10 focus:border-theme-accent outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="text-slate-400 font-semibold mb-1 block">Email liên hệ (tùy chọn):</label>
+          <input
+            type="email"
+            [ngModel]="feedbackEmail()"
+            (ngModelChange)="feedbackEmail.set($event)"
+            placeholder="example@domain.com"
             class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 text-white placeholder-slate-500 border border-white/10 focus:border-theme-accent outline-none"
           />
         </div>
@@ -54,6 +65,7 @@
           <div class="flex items-center gap-2">
             <button
               *ngFor="let s of [1, 2, 3, 4, 5]"
+              type="button"
               (click)="feedbackRating.set(s)"
               class="text-lg transition-transform hover:scale-125 cursor-pointer"
             >
@@ -63,7 +75,7 @@
         </div>
 
         <div>
-          <label class="text-slate-400 font-semibold mb-1 block">Nội dung góp ý / lời chúc:</label>
+          <label class="text-slate-400 font-semibold mb-1 block">Nội dung góp ý / lời chúc: <span class="text-rose-400">*</span></label>
           <textarea
             rows="4"
             [ngModel]="feedbackMessage()"
@@ -74,56 +86,98 @@
         </div>
 
         <button
+          [disabled]="feedbackService.isSubmittingSignal() || !feedbackName() || !feedbackMessage()"
           (click)="submitFeedback()"
-          class="w-full py-3 rounded-xl bg-accent-gradient text-slate-950 font-bold text-sm hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 mt-2"
+          class="w-full py-3 rounded-xl bg-accent-gradient text-slate-950 font-bold text-sm hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 mt-2"
         >
-          <mat-icon class="!w-4 !h-4 !text-lg">send</mat-icon>
-          <span>Gửi Đóng Góp</span>
+          <mat-icon *ngIf="!feedbackService.isSubmittingSignal()" class="!w-4 !h-4 !text-lg">send</mat-icon>
+          <div *ngIf="feedbackService.isSubmittingSignal()" class="w-4 h-4 rounded-full border-2 border-slate-950 border-t-transparent animate-spin"></div>
+          <span>{{ feedbackService.isSubmittingSignal() ? 'Đang Gửi Dữ Liệu...' : 'Gửi Đóng Góp' }}</span>
         </button>
+
+        <p *ngIf="feedbackService.errorSignal()" class="text-xs text-rose-400 font-medium text-center mt-1">
+          {{ feedbackService.errorSignal() }}
+        </p>
       </div>
     </div>
 
     <!-- Right Column: Interactive Wish & Feedback List -->
     <div class="md:col-span-7 flex flex-col gap-4">
-      <h2 class="text-lg font-bold text-white flex items-center justify-between">
-        <span>Danh Sách Lời Chúc & Góp Ý</span>
-        <span class="text-xs text-theme-accent font-semibold">{{ feedbackList().length }} phản hồi</span>
-      </h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>Danh Sách Lời Chúc & Góp Ý</span>
+          <span class="text-xs text-theme-accent font-semibold">({{ feedbackService.feedbackListSignal().length }} phản hồi)</span>
+        </h2>
 
-      <div class="flex flex-col gap-3">
+        <button
+          (click)="feedbackService.getAllFeedback()"
+          class="text-xs text-slate-400 hover:text-white flex items-center gap-1 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-white/10 hover:border-theme-accent/40 transition-all cursor-pointer"
+        >
+          <mat-icon class="!w-3.5 !h-3.5 !text-xs" [ngClass]="{ 'animate-spin': feedbackService.isLoadingSignal() }">sync</mat-icon>
+          <span>Làm mới</span>
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="feedbackService.isLoadingSignal()" class="flex flex-col items-center justify-center p-8 glass-card rounded-2xl border border-white/10 gap-3">
+        <div class="w-8 h-8 rounded-full border-2 border-theme-accent border-t-transparent animate-spin"></div>
+        <span class="text-xs text-slate-400 font-medium">Đang tải dữ liệu từ máy chủ Google DB...</span>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!feedbackService.isLoadingSignal() && feedbackService.feedbackListSignal().length === 0" class="flex flex-col items-center justify-center p-8 glass-card rounded-2xl border border-white/10 gap-2 text-center">
+        <mat-icon class="text-slate-500 !w-8 !h-8 !text-3xl">chat_bubble_outline</mat-icon>
+        <span class="text-sm font-bold text-white">Chưa có phản hồi nào</span>
+        <span class="text-xs text-slate-400">Hãy là người đầu tiên gửi lời chúc hoặc góp ý nhé!</span>
+      </div>
+
+      <!-- List Items -->
+      <div *ngIf="!feedbackService.isLoadingSignal()" class="flex flex-col gap-3">
         <div
-          *ngFor="let fb of feedbackList()"
-          class="glass-card p-5 rounded-2xl border border-white/10 flex flex-col gap-3 hover:border-theme-accent/40 transition-colors"
+          *ngFor="let fb of feedbackService.feedbackListSignal()"
+          class="glass-card p-5 rounded-2xl border border-white/10 flex flex-col gap-3 hover:border-theme-accent/40 transition-colors group relative"
         >
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <img [src]="fb.avatar" [alt]="fb.name" class="w-10 h-10 rounded-full object-cover border border-theme-accent" />
+              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-theme-accent to-purple-500 flex items-center justify-center text-slate-950 font-black text-sm uppercase shadow-md">
+                {{ fb.fullName ? fb.fullName.charAt(0) : 'U' }}
+              </div>
               <div class="flex flex-col">
-                <span class="font-bold text-sm text-white">{{ fb.name }}</span>
-                <span class="text-[11px] text-slate-400">{{ fb.createdAt }}</span>
+                <span class="font-bold text-sm text-white">{{ fb.fullName || 'Người Dùng Ẩn Danh' }}</span>
+                <span class="text-[11px] text-slate-400">{{ formatTime(fb.createdAt) }}</span>
               </div>
             </div>
 
-            <div class="flex items-center gap-1">
-              <span *ngFor="let s of [1, 2, 3, 4, 5]" class="text-xs text-amber-400">
-                {{ s <= fb.rating ? '★' : '☆' }}
-              </span>
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-0.5">
+                <span *ngFor="let s of [1, 2, 3, 4, 5]" class="text-xs text-amber-400">
+                  {{ s <= fb.rating ? '★' : '☆' }}
+                </span>
+              </div>
+
+              <!-- Delete Action Button -->
+              <button
+                (click)="deleteFeedbackItem(fb.id, $event)"
+                class="text-slate-500 hover:text-rose-400 p-1 rounded-lg hover:bg-rose-500/10 transition-colors cursor-pointer"
+                matTooltip="Xóa phản hồi này"
+              >
+                <mat-icon class="!w-4 !h-4 !text-sm">delete_outline</mat-icon>
+              </button>
             </div>
           </div>
 
-          <p class="text-xs md:text-sm text-slate-200 leading-relaxed bg-slate-950/40 p-3 rounded-xl border border-white/5">
-            {{ fb.message }}
+          <p class="text-xs md:text-sm text-slate-200 leading-relaxed bg-slate-950/40 p-3 rounded-xl border border-white/5 whitespace-pre-line">
+            {{ fb.content }}
           </p>
 
-          <div class="flex items-center justify-between pt-2 text-xs text-slate-400">
-            <span class="px-2 py-0.5 rounded bg-slate-800 text-theme-accent font-semibold">
+          <div class="flex items-center justify-between pt-1 text-xs text-slate-400">
+            <span class="px-2.5 py-0.5 rounded-full bg-slate-800 text-theme-accent font-semibold border border-white/5 text-[11px]">
               {{ fb.category === 'loi-chuc' ? '🚀 Lời Chúc' : fb.category === 'gop-y' ? '💡 Góp Ý' : '🤝 Hợp Tác' }}
             </span>
 
-            <button (click)="likeFeedback(fb.id)" class="flex items-center gap-1 hover:text-theme-accent transition-colors cursor-pointer">
-              <mat-icon class="!w-4 !h-4 !text-sm text-rose-500">favorite</mat-icon>
-              <span>{{ fb.likes }} Yêu thích</span>
-            </button>
+            <span *ngIf="fb.email" class="text-[11px] text-slate-500 font-mono">
+              📧 {{ fb.email }}
+            </span>
           </div>
         </div>
       </div>
