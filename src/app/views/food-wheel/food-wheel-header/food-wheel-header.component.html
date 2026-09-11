@@ -1,0 +1,67 @@
+<div class="header-weather-card relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 backdrop-blur-xl border border-white/10 shadow-2xl bg-gradient-to-r from-slate-900/95 via-slate-800/90 to-slate-900/95">
+  <div class="absolute -top-24 -right-24 w-72 h-72 bg-gradient-to-br from-amber-500/20 via-rose-500/20 to-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 sm:gap-6">
+
+    <!-- Title & AI Event Context -->
+    <div class="space-y-2 sm:space-y-3 max-w-2xl min-w-0 w-full">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
+        <mat-icon class="!w-3.5 !h-3.5 !text-xs text-amber-400">auto_awesome</mat-icon>
+        AI Food Wheel &amp; Smart Meal Planner
+      </div>
+
+      <h1 class="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-rose-300 to-indigo-300">
+        Vòng Quay Món Ngon &amp; Thực Đơn Thông Minh
+      </h1>
+
+      @if (aiEventNote()) {
+        <p class="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed bg-slate-950/50 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-white/5">
+          💡 <strong class="text-amber-300">Gợi Ý Hôm Nay:</strong> {{ aiEventNote() }}
+        </p>
+      }
+    </div>
+
+    <!-- Live Open-Meteo Weather Badge Widget -->
+    <div class="weather-badge w-full lg:w-auto bg-slate-950/70 p-3.5 sm:p-5 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5 shadow-inner">
+
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="weather-icon-box w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-sky-500/20 to-blue-600/30 border border-sky-400/30 flex items-center justify-center text-sky-300 shadow-md shrink-0">
+          <mat-icon class="!w-7 !h-7 !text-2xl sm:!text-3xl">{{ weather().icon }}</mat-icon>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xl sm:text-2xl md:text-3xl font-black text-white">{{ weather().temperature }}°C</span>
+            <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30 font-medium">
+              {{ weather().conditionText }}
+            </span>
+          </div>
+          <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5 flex items-center gap-3">
+            <span>💧 {{ weather().humidity }}% Độ ẩm</span>
+            <span>💨 {{ weather().windSpeed }} km/h Gió</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+        <button
+          mat-icon-button
+          (click)="refreshWeather.emit()"
+          [matTooltip]="'Cập nhật thời tiết Hà Nội từ Open-Meteo'"
+          class="text-slate-400 hover:text-white transition-colors shrink-0"
+        >
+          <mat-icon [class.animate-spin]="weather().isLoading">refresh</mat-icon>
+        </button>
+
+        <button
+          (click)="fetchAiSuggestions.emit()"
+          [disabled]="isAiLoading()"
+          class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg hover:shadow-amber-500/25 transition-all disabled:opacity-50 min-h-[40px]"
+        >
+          <mat-icon class="!w-4 !h-4 !text-sm" [class.animate-spin]="isAiLoading()">smart_toy</mat-icon>
+          <span>{{ isAiLoading() ? 'AI Đang Phân Tích...' : '🤖 AI Gợi Ý Món' }}</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

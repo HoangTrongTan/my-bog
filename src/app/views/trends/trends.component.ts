@@ -5,6 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { GenZTrendItem, TrendCategory, TrendPlatform, TrendRegion, TrendService } from '../../services/trend.service';
 import { AudioService } from '../../services/audio.service';
+import { TrendsHeaderComponent } from './trends-header/trends-header.component';
+import { TrendsFilterBarComponent } from './trends-filter-bar/trends-filter-bar.component';
+import { TrendsDetailModalComponent } from './trends-detail-modal/trends-detail-modal.component';
 
 interface FloatingHeart {
   id: number;
@@ -18,7 +21,15 @@ interface FloatingHeart {
 @Component({
   selector: 'app-trends',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, MatTooltipModule],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    MatIconModule, 
+    MatTooltipModule,
+    TrendsHeaderComponent,
+    TrendsFilterBarComponent,
+    TrendsDetailModalComponent
+  ],
   templateUrl: './trends.component.html',
   styleUrl: './trends.component.scss',
 })

@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-4 border-b border-white/10 pb-6">
+  <!-- Top Row: Search + count badge -->
+  <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+    <div class="relative flex-1 max-w-md">
+      <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 !w-5 !h-5 !text-lg text-slate-400">search</mat-icon>
+      <input
+        type="text"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQueryChange.emit($event)"
+        placeholder="Tìm trend, nhạc hot, meme bựa, TikTok..."
+        class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-900/90 border border-white/15 text-white placeholder-slate-500 text-xs md:text-sm focus:border-rose-400 focus:outline-none transition-all shadow-inner"
+      />
+    </div>
+    <div class="text-xs text-slate-400 font-medium flex items-center gap-2">
+      <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold">
+        🔥 {{ totalCount() }} Trends Đang Hot
+      </span>
+    </div>
+  </div>
+
+  <!-- Filter Row 1: Region -->
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1">Khu Vực:</span>
+    <button
+      *ngFor="let r of regions()"
+      (click)="regionChange.emit(r.id)"
+      class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+      [ngClass]="{
+        'bg-rose-500 text-slate-950 shadow-lg shadow-rose-500/25': selectedRegion() === r.id,
+        'bg-slate-900/80 text-slate-400 border border-white/10 hover:text-white': selectedRegion() !== r.id
+      }"
+    >{{ r.label }}</button>
+  </div>
+
+  <!-- Filter Row 2: Platform -->
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1">Nền Tảng:</span>
+    <button
+      *ngFor="let p of platforms()"
+      (click)="platformChange.emit(p.id)"
+      class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+      [ngClass]="{
+        'bg-purple-500 text-white shadow-lg shadow-purple-500/25': selectedPlatform() === p.id,
+        'bg-slate-900/80 text-slate-400 border border-white/10 hover:text-white': selectedPlatform() !== p.id
+      }"
+    >{{ p.label }}</button>
+  </div>
+</div>

@@ -22,8 +22,6 @@
       scroll-behavior: smooth;
       -ms-overflow-style: none;
       scrollbar-width: none;
-      /* Force any descendant that overflows to be clipped, not push layout */
-      contain: layout;
     }
   }
 
