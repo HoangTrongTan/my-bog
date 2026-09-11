@@ -178,15 +178,23 @@
           <span>Dùng tay vuốt/xoay bánh xe trực tiếp để quay!</span>
         </p>
 
-        <!-- Spin Action Button -->
-        <div class="mt-4 sm:mt-6 flex flex-col items-center gap-2.5 w-full max-w-xs">
+        <!-- Spin Action Button & Sound Toggle -->
+        <div class="mt-4 sm:mt-6 flex flex-row items-center gap-2.5 w-full max-w-sm mx-auto">
           <button 
             (click)="spinWheel()" 
             [disabled]="isSpinning()"
-            class="spin-btn w-full py-3.5 md:py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-500 hover:from-amber-600 hover:to-indigo-600 text-slate-950 font-black text-base sm:text-lg md:text-xl uppercase tracking-wider shadow-2xl hover:shadow-amber-500/40 transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 min-h-[50px]"
+            class="spin-btn flex-1 py-3.5 md:py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-500 hover:from-amber-600 hover:to-indigo-600 text-slate-950 font-black text-base sm:text-lg md:text-xl uppercase tracking-wider shadow-2xl hover:shadow-amber-500/40 transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 min-h-[50px]"
           >
             <mat-icon class="!w-6 !h-6 !text-xl sm:!text-2xl" [class.animate-spin]="isSpinning()">casino</mat-icon>
             <span>{{ isSpinning() ? 'Đang Quay...' : 'QUAY NGAY!' }}</span>
+          </button>
+
+          <button 
+            (click)="audioService.toggleSound()"
+            [matTooltip]="'Bật/Tắt âm thanh'"
+            class="w-[50px] sm:w-[60px] h-[50px] sm:h-[60px] shrink-0 rounded-2xl bg-slate-800/80 backdrop-blur-sm text-amber-400 border border-white/10 hover:border-amber-500/50 flex items-center justify-center shadow-lg hover:shadow-[0_0_16px_rgba(245,158,11,0.25)] transition-all duration-200 active:scale-90"
+          >
+            <mat-icon class="!w-6 !h-6 !text-xl sm:!text-2xl">{{ audioService.soundEnabled() ? 'volume_up' : 'volume_off' }}</mat-icon>
           </button>
         </div>
 
@@ -489,27 +497,7 @@
   }
 
 
-  <!-- STICKY MOBILE FLOATING ACTION BAR -->
-  @if (activeTab() === 'wheel') {
-    <div class="fixed bottom-20 left-4 right-4 z-40 md:hidden flex items-center gap-2 p-2 rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-amber-500/40 shadow-[0_10px_25px_rgba(0,0,0,0.5)] animate-scaleUp">
-      <button 
-        (click)="spinWheel()" 
-        [disabled]="isSpinning()"
-        class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-rose-500 to-indigo-500 text-slate-950 font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-95 disabled:opacity-50 min-h-[44px]"
-      >
-        <mat-icon class="!w-5 !h-5 !text-lg" [class.animate-spin]="isSpinning()">casino</mat-icon>
-        <span>{{ isSpinning() ? 'Đang Quay...' : 'QUAY MÓN NGAY!' }}</span>
-      </button>
 
-      <button 
-        (click)="audioService.toggleSound()"
-        [matTooltip]="'Bật/Tắt âm thanh'"
-        class="w-11 h-11 rounded-xl bg-slate-800 text-amber-400 border border-white/10 flex items-center justify-center shrink-0 min-h-[44px]"
-      >
-        <mat-icon class="!w-5 !h-5 !text-lg">{{ audioService.soundEnabled() ? 'volume_up' : 'volume_off' }}</mat-icon>
-      </button>
-    </div>
-  }
 
   <!-- RESULT WINNING DISH MODAL DIALOG -->
   @if (showResultModal() && winningDish()) {
