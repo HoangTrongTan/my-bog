@@ -1,0 +1,48 @@
+<div class="fixed inset-0 z-[9990] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+
+  <div class="relative z-20 w-[92vw] sm:w-full max-w-md sm:max-w-lg max-h-[85vh] overflow-y-auto bg-slate-900 border border-amber-500/40 rounded-3xl p-5 sm:p-8 shadow-[0_0_50px_rgba(245,158,11,0.3)] space-y-4 sm:space-y-5 text-center transform animate-scaleUp custom-scrollbar">
+
+    <!-- Emoji Icon -->
+    <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center text-3xl sm:text-4xl shadow-xl animate-bounce shrink-0">
+      {{ winningDish().emoji || '🍲' }}
+    </div>
+
+    <!-- Info -->
+    <div class="space-y-2">
+      <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+        🎉 MÓN ĂN HÔM NAY CỦA BẠN!
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-rose-300 to-indigo-300">
+        {{ winningDish().name }}
+      </h2>
+      <p class="text-xs sm:text-sm text-slate-300 leading-relaxed bg-slate-950/60 p-3.5 sm:p-4 rounded-2xl border border-white/5">
+        {{ winningDish().reason || 'Món ăn tuyệt vời được AI gợi ý cực kỳ phù hợp với tiết trời ngày hôm nay!' }}
+      </p>
+    </div>
+
+    <!-- Stats chips -->
+    <div class="flex items-center justify-center gap-3 text-xs text-slate-400">
+      <span class="px-3 py-1.5 rounded-xl bg-slate-800 border border-white/5">🔥 {{ winningDish().calories }} kcal</span>
+      <span class="px-3 py-1.5 rounded-xl bg-slate-800 border border-white/5">🍱 {{ winningDish().category || 'Món chính' }}</span>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-2">
+      <button
+        (click)="applyToToday.emit()"
+        class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-slate-950 font-bold text-xs sm:text-sm shadow-lg hover:shadow-amber-500/30 transition-all flex items-center justify-center gap-2 min-h-[46px]"
+      >
+        <mat-icon class="!w-4 !h-4 !text-base">add_circle</mat-icon>
+        <span>Thêm Vào Thực Đơn Hôm Nay</span>
+      </button>
+
+      <button
+        (click)="close.emit()"
+        class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-800 text-slate-300 font-semibold text-xs sm:text-sm hover:bg-slate-700 transition-all min-h-[46px]"
+      >
+        Đóng
+      </button>
+    </div>
+
+  </div>
+</div>

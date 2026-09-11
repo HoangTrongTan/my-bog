@@ -36,7 +36,14 @@ const PALETTE = [
   '#FFC107', '#009688'
 ];
 
-export const PRESET_MENUS: { id: string; name: string; icon: string; dishes: FoodItem[] }[] = [
+export interface PresetMenu {
+  id: string;
+  name: string;
+  icon: string;
+  dishes: FoodItem[];
+}
+
+export const PRESET_MENUS: PresetMenu[] = [
   {
     id: 'preset-student',
     name: '🎓 Cơm Tiệm & Bún Phở Văn Phòng',

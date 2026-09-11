@@ -1,0 +1,46 @@
+<div class="glass-card p-6 md:p-10 !rounded-3xl border-2 border-rose-500/50 bg-gradient-to-r from-rose-950/40 via-slate-900/90 to-purple-950/40 relative overflow-hidden group shadow-[0_0_40px_rgba(244,63,94,0.25)]">
+  <!-- Ambient Neon Light Orbs -->
+  <div class="absolute -right-20 -top-20 w-96 h-96 bg-rose-500/20 rounded-full blur-3xl group-hover:bg-rose-500/30 transition-all duration-700 pointer-events-none"></div>
+  <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl group-hover:bg-purple-500/30 transition-all duration-700 pointer-events-none"></div>
+
+  <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+    <div class="flex flex-col gap-4 max-w-3xl">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-500/20 border border-rose-400/50 text-rose-300 text-xs font-black uppercase tracking-widest shadow-lg">
+        <mat-icon class="!w-4 !h-4 !text-sm text-rose-400">whatshot</mat-icon>
+        <span>Bản Tin Trends Giới Trẻ 2026 • TikTok &amp; Douyin Hub</span>
+      </div>
+      <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight">
+        Xu Hướng <span class="text-accent-gradient">Gen Z &amp; Viral Trends</span>
+      </h1>
+    </div>
+
+    <!-- Cache 24h Controls & Stats Box -->
+    <div class="flex flex-col gap-3 glass-card p-4 !rounded-2xl border-white/10 w-full lg:w-auto min-w-[290px] bg-slate-950/80">
+      <div class="flex items-center justify-between border-b border-white/10 pb-2">
+        <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+          Cache AI 24 Hours
+        </span>
+        <span class="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30">
+          Active
+        </span>
+      </div>
+
+      <div class="text-[11px] text-slate-400 flex flex-col gap-1">
+        <span class="flex items-center justify-between">
+          <span>Thời gian lưu cache:</span>
+          <span class="text-slate-200 font-medium">{{ lastCacheTime() }}</span>
+        </span>
+        <span class="text-[10px] text-slate-500">Tự động làm mới sau 24h để bảo toàn API</span>
+      </div>
+
+      <button
+        (click)="forceRefresh.emit()"
+        class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-rose-500 to-purple-600 hover:from-rose-400 hover:to-purple-500 text-white font-black text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+      >
+        <mat-icon class="!w-4 !h-4 !text-sm">sync</mat-icon>
+        <span>Reset &amp; Làm Mới Hot Trend 🔄</span>
+      </button>
+    </div>
+  </div>
+</div>

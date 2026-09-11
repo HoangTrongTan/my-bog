@@ -23,6 +23,10 @@ import { AudioService } from '../../services/audio.service';
 import { drawFoodWheel } from './wheel-canvas-renderer';
 import { ConfettiEffect } from './confetti-effect';
 import { NearbyRestaurantsComponent } from './nearby-restaurants/nearby-restaurants.component';
+import { FoodWheelHeaderComponent } from './food-wheel-header/food-wheel-header.component';
+import { FoodWheelPlannerTabComponent } from './food-wheel-planner-tab/food-wheel-planner-tab.component';
+import { FoodWheelDishesTabComponent } from './food-wheel-dishes-tab/food-wheel-dishes-tab.component';
+import { FoodWheelResultModalComponent } from './food-wheel-result-modal/food-wheel-result-modal.component';
 
 @Component({
   selector: 'app-food-wheel',
@@ -34,6 +38,10 @@ import { NearbyRestaurantsComponent } from './nearby-restaurants/nearby-restaura
     MatTooltipModule,
     MatButtonModule,
     NearbyRestaurantsComponent,
+    FoodWheelHeaderComponent,
+    FoodWheelPlannerTabComponent,
+    FoodWheelDishesTabComponent,
+    FoodWheelResultModalComponent,
   ],
   templateUrl: './food-wheel.component.html',
   styleUrl: './food-wheel.component.scss',
