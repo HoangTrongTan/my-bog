@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild, inject, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, OnDestroy, ViewChild, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../services/theme.service';
 
@@ -26,10 +26,13 @@ interface Particle {
       display: block;
       pointer-events: none;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ParticleWeatherComponent implements OnInit, OnDestroy {
   @ViewChild('particleCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+
+  private static readonly MAX_MOUSE_PARTICLES = 200;
 
   private themeService = inject(ThemeService);
   private ctx!: CanvasRenderingContext2D;
@@ -38,13 +41,18 @@ export class ParticleWeatherComponent implements OnInit, OnDestroy {
   private mouseParticles: Particle[] = [];
   private mouseX = -100;
   private mouseY = -100;
+  private prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
 
   ngOnInit() {
     const canvas = this.canvasRef.nativeElement;
     this.ctx = canvas.getContext('2d')!;
     this.resizeCanvas();
     this.initWeatherParticles();
-    this.animate();
+    if (!this.prefersReducedMotion) {
+      this.animate();
+    }
   }
 
   ngOnDestroy() {
@@ -64,7 +72,12 @@ export class ParticleWeatherComponent implements OnInit, OnDestroy {
     this.mouseX = e.clientX;
     this.mouseY = e.clientY;
 
-    // Spawn mouse trail particles based on active character style
+    if (this.prefersReducedMotion) return;
+
+    // Spawn mouse trail particles based on active character style,
+    // capped so a fast mouse fling can't outrun natural decay and balloon the array.
+    if (this.mouseParticles.length >= ParticleWeatherComponent.MAX_MOUSE_PARTICLES) return;
+
     const style = this.themeService.activeCharacterStyle();
     const count = 2;
     for (let i = 0; i < count; i++) {

@@ -36,8 +36,7 @@ import { callGeminiAiApi } from '../../configs/api.config';
 export class ViewMyCvComponent {
   async Res() {
     try {
-      const text = await callGeminiAiApi('từ này xấu hay tốt "yêu lắm" bạn trả lời ngắn thôi nhé');
-      console.log(text);
+      await callGeminiAiApi('từ này xấu hay tốt "yêu lắm" bạn trả lời ngắn thôi nhé');
     } catch (err) {
       console.warn('CV AI Test call failed:', err);
     }

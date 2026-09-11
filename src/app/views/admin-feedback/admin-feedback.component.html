@@ -88,6 +88,13 @@
       </div>
     </div>
 
+    @if (feedbackService.errorSignal()) {
+      <div class="glass-card px-5 py-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 flex items-center gap-2 text-rose-300 text-xs font-semibold">
+        <mat-icon class="!w-4 !h-4 !text-sm shrink-0">error</mat-icon>
+        <span>{{ feedbackService.errorSignal() }}</span>
+      </div>
+    }
+
     <!-- Stats Cards Grid -->
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
       <div class="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/60 flex items-center justify-between">

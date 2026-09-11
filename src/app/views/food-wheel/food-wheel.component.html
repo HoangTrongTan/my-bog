@@ -1,4 +1,4 @@
-<div class="food-wheel-page text-slate-100 min-h-screen p-3 sm:p-6 md:p-8 space-y-5 sm:space-y-6 pb-32 md:pb-8">
+<div class="food-wheel-page text-slate-100 min-h-screen p-3 sm:p-6 md:p-8 space-y-5 sm:space-y-6 pb-32 md:pb-8 w-full overflow-x-hidden">
   <!-- Toast Notification -->
   @if (copiedToast()) {
     <div class="fixed top-4 left-4 right-4 sm:top-6 sm:right-6 sm:left-auto z-50 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-center sm:justify-start gap-2.5 animate-bounce text-xs sm:text-sm font-semibold">
@@ -14,7 +14,7 @@
     <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 sm:gap-6">
       
       <!-- Title & AI Event Context -->
-      <div class="space-y-2 sm:space-y-3 max-w-2xl">
+      <div class="space-y-2 sm:space-y-3 max-w-2xl min-w-0 w-full">
         <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
           <mat-icon class="!w-3.5 !h-3.5 !text-xs text-amber-400">auto_awesome</mat-icon>
           AI Food Wheel & Smart Meal Planner
@@ -35,12 +35,12 @@
       <div class="weather-badge w-full lg:w-auto bg-slate-950/70 p-3.5 sm:p-5 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5 shadow-inner">
         @let weather = weatherService.weatherSignal();
         
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 min-w-0">
           <div class="weather-icon-box w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-sky-500/20 to-blue-600/30 border border-sky-400/30 flex items-center justify-center text-sky-300 shadow-md shrink-0">
             <mat-icon class="!w-7 !h-7 !text-2xl sm:!text-3xl">{{ weather.icon }}</mat-icon>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
               <span class="text-xl sm:text-2xl md:text-3xl font-black text-white">{{ weather.temperature }}°C</span>
               <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30 font-medium">
                 {{ weather.conditionText }}
@@ -78,8 +78,8 @@
   </div>
 
   <!-- Navigation Tabs -->
-  <div class="flex items-center justify-between border-b border-white/10 pb-2">
-    <div class="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2 w-full md:w-auto overflow-x-auto custom-scrollbar pb-1">
+  <div class="flex items-center justify-between border-b border-white/10 pb-2 gap-4">
+    <div class="flex items-center gap-1.5 sm:gap-2 w-full overflow-x-auto custom-scrollbar pb-1 min-w-0 flex-1">
       <button 
         (click)="activeTab.set('wheel')"
         [class]="activeTab() === 'wheel' 
@@ -111,6 +111,17 @@
       >
         <mat-icon class="!w-4 !h-4 !text-base">tune</mat-icon>
         <span>⚙️ Tùy Chỉnh</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('nearby')"
+        [class]="activeTab() === 'nearby' 
+          ? 'bg-emerald-500 text-slate-950 font-bold shadow-lg shadow-emerald-500/20' 
+          : 'bg-slate-800/60 text-slate-300 hover:bg-slate-800'"
+        class="px-2.5 sm:px-5 py-2.5 rounded-xl sm:rounded-2xl text-[11px] sm:text-sm transition-all flex items-center justify-center gap-1 sm:gap-2 whitespace-nowrap"
+      >
+        <mat-icon class="!w-4 !h-4 !text-base">location_on</mat-icon>
+        <span>🗺️ Quán Gần Đây</span>
       </button>
     </div>
 
@@ -266,12 +277,12 @@
       
       <!-- Planner Actions Bar -->
       <div class="bg-slate-900/60 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
-        <div>
+        <div class="min-w-0 w-full">
           <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-            <mat-icon class="text-amber-400 !w-5 !h-5 !text-xl">calendar_month</mat-icon>
-            Lịch Ăn Cả Tuần (7 Ngày)
+            <mat-icon class="text-amber-400 !w-5 !h-5 !text-xl shrink-0">calendar_month</mat-icon>
+            <span class="truncate">Lịch Ăn Cả Tuần (7 Ngày)</span>
           </h2>
-          <p class="text-xs text-slate-400 mt-0.5">AI cá nhân hóa thực đơn Sáng - Trưa - Tối - Ăn vặt theo thời tiết</p>
+          <p class="text-xs text-slate-400 mt-0.5 truncate">AI cá nhân hóa thực đơn Sáng - Trưa - Tối - Ăn vặt theo thời tiết</p>
         </div>
 
         <div class="flex items-center gap-2.5 w-full sm:w-auto">
@@ -370,12 +381,12 @@
     <div class="bg-slate-900/60 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl space-y-4 sm:space-y-6">
       
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-        <div>
+        <div class="min-w-0 w-full">
           <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-            <mat-icon class="text-amber-400 !w-5 !h-5 !text-xl">edit_note</mat-icon>
-            Chỉnh Sửa 10 Món Ăn Trong Vòng Quay
+            <mat-icon class="text-amber-400 !w-5 !h-5 !text-xl shrink-0">edit_note</mat-icon>
+            <span class="truncate">Chỉnh Sửa 10 Món Ăn Trong Vòng Quay</span>
           </h2>
-          <p class="text-xs text-slate-400 mt-0.5">Nhập trực tiếp 10 món ăn yêu thích của bạn hoặc tùy chỉnh tên món, calories, icon</p>
+          <p class="text-xs text-slate-400 mt-0.5 truncate">Nhập trực tiếp 10 món ăn yêu thích của bạn hoặc tùy chỉnh tên món, calories, icon</p>
         </div>
 
         <div class="flex items-center gap-2 w-full sm:w-auto">
@@ -472,6 +483,12 @@
     </div>
   }
 
+  <!-- TAB 4: NEARBY RESTAURANTS VIEW -->
+  @if (activeTab() === 'nearby') {
+    <app-nearby-restaurants />
+  }
+
+
   <!-- STICKY MOBILE FLOATING ACTION BAR -->
   @if (activeTab() === 'wheel') {
     <div class="fixed bottom-20 left-4 right-4 z-40 md:hidden flex items-center gap-2 p-2 rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-amber-500/40 shadow-[0_10px_25px_rgba(0,0,0,0.5)] animate-scaleUp">
@@ -502,7 +519,7 @@
       <!-- Fireworks Confetti Canvas Layer -->
       <canvas #confettiCanvas class="absolute inset-0 pointer-events-none z-10"></canvas>
 
-      <div class="relative z-20 w-[92vw] sm:w-full max-w-md sm:max-w-lg max-h-[85vh] overflow-y-auto bg-slate-900 border border-amber-500/40 rounded-3xl p-5 sm:p-8 shadow-[0_0_50px_rgba(245,158,11,0.3)] space-y-4 sm:space-y-5 text-center transform animate-scaleUp custom-scrollbar my-auto">
+      <div class="relative z-20 w-[92vw] sm:w-full max-w-md sm:max-w-lg max-h-[85vh] overflow-y-auto bg-slate-900 border border-amber-500/40 rounded-3xl p-5 sm:p-8 shadow-[0_0_50px_rgba(245,158,11,0.3)] space-y-4 sm:space-y-5 text-center transform animate-scaleUp custom-scrollbar">
         
         <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center text-3xl sm:text-4xl shadow-xl animate-bounce shrink-0">
           {{ winner.emoji || '🍲' }}

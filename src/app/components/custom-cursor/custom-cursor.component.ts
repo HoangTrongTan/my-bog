@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../services/theme.service';
 
@@ -89,9 +89,10 @@ import { ThemeService } from '../../services/theme.service';
       display: block;
       pointer-events: none !important;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomCursorComponent implements OnInit {
+export class CustomCursorComponent implements OnInit, OnDestroy {
   public themeService = inject(ThemeService);
 
   public cursorX = signal<number>(-100);
@@ -101,15 +102,33 @@ export class CustomCursorComponent implements OnInit {
   private targetX = -100;
   private targetY = -100;
   private animId: number = 0;
+  // Users who ask the OS for reduced motion get the cursor snapped directly
+  // to the pointer instead of the lerp-smoothed trailing animation.
+  private prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
 
   ngOnInit() {
-    this.smoothCursorLoop();
+    if (!this.prefersReducedMotion) {
+      this.smoothCursorLoop();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.animId) {
+      cancelAnimationFrame(this.animId);
+    }
   }
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(e: MouseEvent) {
     this.targetX = e.clientX;
     this.targetY = e.clientY;
+
+    if (this.prefersReducedMotion) {
+      this.cursorX.set(e.clientX);
+      this.cursorY.set(e.clientY);
+    }
 
     const targetEl = e.target as HTMLElement;
     if (targetEl) {

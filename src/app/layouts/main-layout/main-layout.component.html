@@ -15,18 +15,27 @@
   </div>
   <app-right-sidebar (openFortune)="openFortuneModal()" (openStudio)="openStudioSelector()" (openTodoList)="openTodoListModal()" />
   <!-- Backdrop overlay for mobile/desktop menu drawer -->
-  <div 
-    *ngIf="openMenu()" 
-    class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[9985] transition-opacity duration-300" 
+  <div
+    *ngIf="openMenu()"
+    class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[9985] transition-opacity duration-300"
     (click)="clickMenuOpen(false)"
   ></div>
 
   <!-- Slide-out Menu Drawer -->
-  <div class="menu-bars glass-card border-r border-white/10" [ngClass]="({ expan: openMenu() })">
+  <div
+    class="menu-bars glass-card border-r border-white/10"
+    [ngClass]="({ expan: openMenu() })"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menu điều hướng"
+    [cdkTrapFocus]="openMenu()"
+    [cdkTrapFocusAutoCapture]="openMenu()"
+  >
     <!-- Header Profile Section -->
     <div class="drawer-header flex flex-col items-center pt-8 pb-6 px-4 border-b border-white/10 relative shrink-0">
-      <button 
-        (click)="clickMenuOpen(false)" 
+      <button
+        (click)="clickMenuOpen(false)"
+        aria-label="Đóng menu"
         class="absolute top-4 right-4 text-slate-400 hover:text-white p-1.5 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
       >
         <mat-icon class="!w-5 !h-5 !text-xl">close</mat-icon>

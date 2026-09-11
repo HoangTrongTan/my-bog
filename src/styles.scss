@@ -170,3 +170,41 @@ body.light-mode {
 .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+/* ======================================================== */
+/* GLOBAL THEME EFFECTS KEYFRAMES                           */
+/* ======================================================== */
+@keyframes shurikenFly {
+  0% { transform: translate(var(--startX), var(--startY)) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate(var(--endX), var(--endY)) rotate(720deg); opacity: 0; }
+}
+
+@keyframes jumpscare {
+  0% { transform: scale(0.1); opacity: 0; }
+  10% { transform: scale(2.5) rotate(-10deg); opacity: 1; filter: drop-shadow(0 0 50px red); }
+  20% { transform: scale(2.2) rotate(10deg); filter: drop-shadow(0 0 30px red); }
+  80% { transform: scale(2.8) rotate(-5deg); opacity: 0.8; filter: drop-shadow(0 0 60px red); }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+@keyframes slash {
+  0% { opacity: 0; transform: scaleX(0); }
+  50% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1.5) translateY(20px); }
+}
+
+@keyframes glitch {
+  0% { opacity: 0; transform: scale(0.8) skew(0deg); filter: hue-rotate(0deg); }
+  20% { opacity: 1; transform: scale(1.1) skew(-10deg); filter: hue-rotate(90deg); }
+  40% { transform: scale(0.9) skew(10deg); filter: hue-rotate(-90deg); }
+  60% { transform: scale(1.05) skew(-5deg); filter: hue-rotate(45deg); }
+  80% { transform: scale(1) skew(5deg); opacity: 1; filter: hue-rotate(0deg); }
+  100% { opacity: 0; transform: scale(1.2); }
+}
+
+.animate-shuriken-fly { animation: shurikenFly 0.6s linear forwards; }
+.animate-jumpscare { animation: jumpscare 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.animate-slash { animation: slash 0.3s ease-out forwards; }
+.animate-glitch { animation: glitch 0.4s ease-in-out forwards; }

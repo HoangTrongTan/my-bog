@@ -4,16 +4,29 @@
   display: flex;
   overflow: hidden;
   position: relative;
+  /* Prevent any child from causing horizontal overflow */
+  max-width: 100%;
+
   .content {
     flex: 1;
+    min-width: 0;          /* Critical: allows flex child to shrink below intrinsic width */
+    overflow-x: hidden;    /* Block any horizontal bleed from page content */
+    display: flex;
+    flex-direction: column;
+
     .body {
+      flex: 1;
       height: 100%;
       overflow-y: overlay;
+      overflow-x: hidden;  /* Stop page content from blowing out the width */
       scroll-behavior: smooth;
-      -ms-overflow-style: none; /* Internet Explorer 10+ */
+      -ms-overflow-style: none;
       scrollbar-width: none;
+      /* Force any descendant that overflows to be clipped, not push layout */
+      contain: layout;
     }
   }
+
   .menu-bars {
     position: fixed;
     top: 0;

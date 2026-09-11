@@ -29,6 +29,28 @@ export interface GenZTrendItem {
   updatedAt: string;
 }
 
+/** Shape of a single trend item as returned by the Gemini AI JSON response, before defaults are applied. */
+interface RawAiTrendItem {
+  id?: string;
+  title?: string;
+  shortSummary?: string;
+  detailContent?: string;
+  genzSlangBadge?: string;
+  region?: TrendRegion;
+  regionLabel?: string;
+  platform?: TrendPlatform;
+  platformLabel?: string;
+  category?: TrendCategory;
+  categoryLabel?: string;
+  imageUrl?: string;
+  sourceUrl?: string;
+  sourceName?: string;
+  viewsCount?: string;
+  likeCount?: number;
+  tags?: string[];
+  viralScore?: number;
+}
+
 const CACHE_KEY = 'genz_trends_ai_only_v4';
 const CACHE_TIME_KEY = 'genz_trends_ai_timestamp_v4';
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 Hours Cache
@@ -138,7 +160,7 @@ YÊU CẦU BẮT BUỘC: Trả về KẾT QUẢ ĐÚNG MẢNG JSON HỢP LỆ (K
         .replace(/```json/g, '')
         .replace(/```/g, '')
         .trim();
-      const parsed: any[] = JSON.parse(cleanJson);
+      const parsed: RawAiTrendItem[] = JSON.parse(cleanJson);
 
       if (Array.isArray(parsed) && parsed.length > 0) {
         const formattedTrends: GenZTrendItem[] = parsed.map((item, idx) => {
@@ -179,9 +201,9 @@ YÊU CẦU BẮT BUỘC: Trả về KẾT QUẢ ĐÚNG MẢNG JSON HỢP LỆ (K
         this.isMissingKey.set(false);
         return;
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Gemini AI Trends generation error:', err);
-      if (err?.message === 'MISSING_API_KEY') {
+      if (err instanceof Error && err.message === 'MISSING_API_KEY') {
         this.isMissingKey.set(true);
         this.aiError.set('Chưa cấu hình API Key trên Vercel / Trình duyệt.');
       } else {
@@ -241,7 +263,7 @@ YÊU CẦU BẮT BUỘC: Trả về KẾT QUẢ ĐÚNG MẢNG JSON HỢP LỆ (K
     return updatedLikes;
   }
 
-  private buildDeepSourceUrl(item: any): string {
+  private buildDeepSourceUrl(item: RawAiTrendItem): string {
     const rawUrl = item?.sourceUrl;
     if (rawUrl && typeof rawUrl === 'string' && rawUrl.trim().startsWith('http')) {
       const trimmed = rawUrl.trim();

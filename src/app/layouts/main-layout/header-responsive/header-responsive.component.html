@@ -20,9 +20,9 @@
       <mat-icon class="text-amber-400">restaurant</mat-icon>
       <span>Vòng Quay Đồ Ăn & Thực Đơn AI</span>
     </button>
-    <button mat-menu-item [routerLink]="['/admin-feedback']">
-      <mat-icon class="text-rose-400">admin_panel_settings</mat-icon>
-      <span>Quản lý Góp Ý & Lời Chúc (Admin)</span>
+    <button mat-menu-item (click)="navigateToAdmin()">
+      <mat-icon class="text-red-500 drop-shadow-[0_0_5px_red]">admin_panel_settings</mat-icon>
+      <span class="text-red-500 font-bold">Admin: Quản lý Xóa/Sửa</span>
     </button>
     <button mat-menu-item (click)="onStudioClick()">
       <mat-icon class="text-theme-accent">palette</mat-icon>

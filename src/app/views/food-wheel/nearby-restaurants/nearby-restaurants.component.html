@@ -1,0 +1,454 @@
+<div class="nearby-restaurants-panel space-y-5">
+
+  <!-- ============================================================ -->
+  <!-- LOCATION STATUS HEADER                                       -->
+  <!-- ============================================================ -->
+  <div class="location-header-card relative overflow-hidden rounded-2xl p-4 sm:p-5
+              bg-slate-900/70 border border-white/10 shadow-xl backdrop-blur-xl">
+
+    <!-- Background glow blob -->
+    <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full
+                bg-gradient-to-br from-amber-500/15 to-rose-500/15 blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+
+      <!-- Location icon + title -->
+      <div class="flex items-center gap-3 min-w-0 flex-1">
+        <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-md
+                    bg-gradient-to-br from-amber-500/20 to-rose-500/20 border border-amber-500/30">
+          @switch (locationState().status) {
+            @case ('loading') {
+              <mat-icon class="!text-amber-400 !w-6 !h-6 !text-2xl animate-spin">my_location</mat-icon>
+            }
+            @case ('granted') {
+              <mat-icon class="!text-emerald-400 !w-6 !h-6 !text-2xl">location_on</mat-icon>
+            }
+            @case ('manual') {
+              <mat-icon class="!text-sky-400 !w-6 !h-6 !text-2xl">edit_location</mat-icon>
+            }
+            @default {
+              <mat-icon class="!text-slate-400 !w-6 !h-6 !text-2xl">location_off</mat-icon>
+            }
+          }
+        </div>
+
+        <div class="min-w-0">
+          <p class="text-sm font-bold text-white leading-tight">
+            @switch (locationState().status) {
+              @case ('idle')    { Chưa xác định vị trí }
+              @case ('loading') { Đang lấy vị trí... }
+              @case ('granted') { 📍 Đã xác định vị trí GPS }
+              @case ('manual')  { 📍 Vị trí nhập thủ công }
+              @case ('denied')  { ⚠️ Bị từ chối quyền định vị }
+              @case ('error')   { ⚠️ Lỗi định vị }
+            }
+          </p>
+
+          @if (locationState().lat !== null) {
+            <p class="text-[11px] text-slate-400 mt-0.5 font-mono">
+              {{ locationState().lat!.toFixed(5) }}, {{ locationState().lng!.toFixed(5) }}
+              @if (locationState().accuracy) {
+                <span class="text-emerald-400/70"> ±{{ locationState().accuracy!.toFixed(0) }}m</span>
+              }
+            </p>
+          } @else if (locationState().error) {
+            <p class="text-[11px] text-rose-400 mt-0.5 leading-snug">{{ locationState().error }}</p>
+          }
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+        @if (locationState().status !== 'loading') {
+          <button
+            (click)="requestLocation()"
+            class="flex-1 sm:flex-initial flex items-center justify-center gap-1.5
+                   px-3.5 py-2 rounded-xl text-xs font-semibold transition-all
+                   bg-amber-500/10 border border-amber-500/30 text-amber-400
+                   hover:bg-amber-500/20 hover:border-amber-400 min-h-[36px]"
+          >
+            <mat-icon class="!w-4 !h-4 !text-base">gps_fixed</mat-icon>
+            {{ locationState().status === 'idle' ? 'Lấy vị trí GPS' : 'Làm mới vị trí' }}
+          </button>
+        }
+        @if (loadState() === 'success') {
+          <button
+            (click)="retryFetch()"
+            [matTooltip]="'Tải lại danh sách quán ăn'"
+            class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0
+                   bg-slate-800 border border-white/10 text-slate-400 hover:text-amber-400
+                   hover:border-amber-500/30 transition-all"
+          >
+            <mat-icon class="!w-4 !h-4 !text-base">refresh</mat-icon>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Last fetched timestamp -->
+    @if (lastFetchedAt()) {
+      <p class="relative z-10 text-[10px] text-slate-500 mt-2.5 flex items-center gap-1">
+        <mat-icon class="!w-3 !h-3 !text-[11px]">schedule</mat-icon>
+        Cập nhật lúc {{ lastFetchedAt()! | date:'HH:mm:ss' }}
+        · Kết quả được cache 5 phút
+      </p>
+    }
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MANUAL LOCATION FALLBACK FORM (shown when denied/error)      -->
+  <!-- ============================================================ -->
+  @if (locationState().status === 'denied' || locationState().status === 'error') {
+    <div class="manual-location-card rounded-2xl p-4 sm:p-5
+                bg-slate-900/60 border border-rose-500/30 shadow-xl space-y-3">
+      <h3 class="text-sm font-bold text-rose-300 flex items-center gap-2">
+        <mat-icon class="!w-4 !h-4 !text-base text-rose-400">edit_location_alt</mat-icon>
+        Nhập tọa độ thủ công
+      </h3>
+      <p class="text-[11px] text-slate-400">
+        Ví dụ Hà Nội: Vĩ độ <strong class="text-white">21.0285</strong>,
+        Kinh độ <strong class="text-white">105.8542</strong>
+      </p>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Vĩ độ (Latitude)</label>
+          <input
+            type="number"
+            step="0.0001"
+            placeholder="21.0285"
+            [ngModel]="manualLat()"
+            (ngModelChange)="manualLat.set($event)"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2
+                   text-xs text-white placeholder-slate-600 focus:border-amber-500
+                   focus:outline-none min-h-[38px]"
+          />
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Kinh độ (Longitude)</label>
+          <input
+            type="number"
+            step="0.0001"
+            placeholder="105.8542"
+            [ngModel]="manualLng()"
+            (ngModelChange)="manualLng.set($event)"
+            class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2
+                   text-xs text-white placeholder-slate-600 focus:border-amber-500
+                   focus:outline-none min-h-[38px]"
+          />
+        </div>
+      </div>
+
+      @if (manualFormError()) {
+        <p class="text-[11px] text-rose-400 flex items-center gap-1">
+          <mat-icon class="!w-3.5 !h-3.5 !text-xs">error</mat-icon>
+          {{ manualFormError() }}
+        </p>
+      }
+
+      <button
+        (click)="submitManualLocation()"
+        class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500
+               text-slate-950 font-bold text-xs flex items-center justify-center gap-2
+               hover:from-amber-400 hover:to-rose-400 transition-all shadow-lg min-h-[40px]"
+      >
+        <mat-icon class="!w-4 !h-4 !text-base">search</mat-icon>
+        Tìm quán ăn tại tọa độ này
+      </button>
+    </div>
+  }
+
+  <!-- ============================================================ -->
+  <!-- FILTER BAR                                                   -->
+  <!-- ============================================================ -->
+  @if (locationState().lat !== null) {
+    <div class="filter-bar-card rounded-2xl p-4 sm:p-5
+                bg-slate-900/60 border border-white/10 shadow-xl space-y-4">
+
+      <!-- Amenity type chips -->
+      <div class="space-y-2">
+        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+          <mat-icon class="!w-3.5 !h-3.5 !text-xs text-amber-400">category</mat-icon>
+          Loại hình
+        </p>
+        <div class="flex flex-wrap gap-2">
+          @for (opt of amenityOptions; track opt.value) {
+            <button
+              (click)="onAmenityToggle(opt.value)"
+              [class]="selectedAmenities().includes(opt.value)
+                ? 'bg-amber-500/20 border-amber-500 text-amber-300 font-bold shadow-md'
+                : 'bg-slate-800/50 border-white/5 text-slate-400 hover:text-white hover:border-white/20'"
+              class="px-3 py-1.5 rounded-xl text-xs border transition-all flex items-center gap-1.5 min-h-[34px] shrink-0 whitespace-nowrap"
+            >
+              <mat-icon class="!w-3.5 !h-3.5 !text-xs">{{ opt.icon }}</mat-icon>
+              {{ opt.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Radius selector -->
+        <div class="space-y-2">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <mat-icon class="!w-3.5 !h-3.5 !text-xs text-rose-400">radar</mat-icon>
+            Bán kính tìm kiếm
+          </p>
+          <div class="flex items-center gap-2 flex-wrap">
+            @for (opt of radiusOptions; track opt.value) {
+              <button
+                (click)="onRadiusChange(opt.value)"
+                [class]="selectedRadius() === opt.value
+                  ? 'bg-rose-500/20 border-rose-500 text-rose-300 font-bold'
+                  : 'bg-slate-800/50 border-white/5 text-slate-400 hover:text-white'"
+                class="px-3 py-1.5 rounded-xl text-xs border transition-all min-h-[34px] shrink-0 whitespace-nowrap"
+              >
+                {{ opt.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Name search -->
+        <div class="space-y-2">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <mat-icon class="!w-3.5 !h-3.5 !text-xs text-sky-400">search</mat-icon>
+            Tìm theo tên / món ăn
+          </p>
+          <div class="relative">
+            <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 !w-4 !h-4 !text-base text-slate-500 pointer-events-none">search</mat-icon>
+            <input
+              type="text"
+              placeholder="Nhập tên quán hoặc loại món..."
+              [ngModel]="nameSearch()"
+              (ngModelChange)="onNameSearchChange($event)"
+              class="w-full bg-slate-950/80 border border-white/10 rounded-xl pl-9 pr-9 py-2
+                     text-xs text-white placeholder-slate-600 focus:border-amber-500
+                     focus:outline-none min-h-[38px] transition-colors"
+            />
+            @if (nameSearch()) {
+              <button
+                (click)="clearNameSearch()"
+                class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+              >
+                <mat-icon class="!w-4 !h-4 !text-base">close</mat-icon>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ============================================================ -->
+  <!-- LOADING SKELETON                                             -->
+  <!-- ============================================================ -->
+  @if (loadState() === 'loading') {
+    <div class="space-y-3">
+      <p class="text-xs text-amber-400/70 flex items-center gap-2 animate-pulse">
+        <mat-icon class="!w-4 !h-4 !text-base">wifi_find</mat-icon>
+        Đang tải dữ liệu từ OpenStreetMap...
+      </p>
+      @for (item of skeletonItems; track $index) {
+        <div class="restaurant-skeleton-card rounded-2xl p-4 bg-slate-900/50 border border-white/5 flex items-center gap-4">
+          <div class="skeleton-box w-12 h-12 rounded-xl shrink-0"></div>
+          <div class="flex-1 space-y-2">
+            <div class="skeleton-box h-4 rounded-lg w-3/5"></div>
+            <div class="skeleton-box h-3 rounded-lg w-2/5"></div>
+            <div class="skeleton-box h-3 rounded-lg w-4/5"></div>
+          </div>
+          <div class="skeleton-box h-8 w-16 rounded-xl shrink-0"></div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ============================================================ -->
+  <!-- ERROR STATE                                                  -->
+  <!-- ============================================================ -->
+  @if (loadState() === 'error') {
+    <div class="rounded-2xl p-6 sm:p-8 bg-slate-900/60 border border-rose-500/30
+                shadow-xl flex flex-col items-center justify-center gap-4 text-center">
+      <div class="w-16 h-16 rounded-full bg-rose-500/10 border border-rose-500/30
+                  flex items-center justify-center shadow-lg">
+        <mat-icon class="!w-8 !h-8 !text-3xl text-rose-400">wifi_off</mat-icon>
+      </div>
+      <div>
+        <p class="text-sm font-bold text-rose-300">Không thể tải dữ liệu</p>
+        <p class="text-xs text-slate-400 mt-1 max-w-xs leading-relaxed">{{ errorMessage() }}</p>
+      </div>
+      <button
+        (click)="retryFetch()"
+        class="px-5 py-2.5 rounded-xl bg-rose-500/20 border border-rose-500/40
+               text-rose-300 text-xs font-bold flex items-center gap-2 hover:bg-rose-500/30
+               transition-all min-h-[40px]"
+      >
+        <mat-icon class="!w-4 !h-4 !text-base">refresh</mat-icon>
+        Thử lại
+      </button>
+    </div>
+  }
+
+  <!-- ============================================================ -->
+  <!-- SUCCESS — RESTAURANT LIST                                    -->
+  <!-- ============================================================ -->
+  @if (loadState() === 'success') {
+
+    <!-- Count badge -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold text-white">
+          Tìm thấy <span class="text-amber-400">{{ restaurants().length }}</span> quán
+          trong bán kính {{ selectedRadius() >= 1000 ? (selectedRadius()/1000) + 'km' : selectedRadius() + 'm' }}
+        </span>
+        @if (nameSearch()) {
+          <span class="text-[11px] px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30">
+            🔍 "{{ nameSearch() }}"
+          </span>
+        }
+      </div>
+      <span class="text-[10px] text-slate-500">Sắp xếp theo khoảng cách</span>
+    </div>
+
+    <!-- Empty state -->
+    @if (restaurants().length === 0) {
+      <div class="rounded-2xl p-8 bg-slate-900/50 border border-white/5
+                  flex flex-col items-center gap-4 text-center">
+        <span class="text-5xl">🍜</span>
+        <div>
+          <p class="text-sm font-bold text-slate-300">Không tìm thấy quán nào</p>
+          <p class="text-xs text-slate-500 mt-1">
+            Thử tăng bán kính tìm kiếm hoặc chọn thêm loại hình quán ăn.
+          </p>
+        </div>
+        <button
+          (click)="onRadiusChange(5000)"
+          class="px-4 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30
+                 text-amber-400 text-xs font-semibold hover:bg-amber-500/25 transition-all"
+        >
+          Mở rộng ra 5km
+        </button>
+      </div>
+    }
+
+    <!-- Restaurant cards list -->
+    @if (restaurants().length > 0) {
+      <div class="space-y-3 max-h-[600px] overflow-y-auto pr-1 custom-nr-scrollbar">
+        @for (r of restaurants(); track trackById($index, r); let idx = $index) {
+          <div class="restaurant-card group rounded-2xl p-4 sm:p-4.5
+                      bg-slate-900/60 border border-white/8 shadow-lg
+                      hover:border-amber-500/40 hover:bg-slate-900/80
+                      transition-all duration-300 flex items-start gap-3 sm:gap-4">
+
+            <!-- Rank badge + icon -->
+            <div class="flex flex-col items-center gap-1.5 shrink-0">
+              <div class="w-11 h-11 rounded-xl flex items-center justify-center shadow-md
+                          bg-gradient-to-br from-amber-500/15 to-rose-500/15
+                          border border-amber-500/20 group-hover:border-amber-500/40 transition-colors">
+                <mat-icon class="!text-amber-400 !w-5 !h-5 !text-xl">
+                  {{ getAmenityIcon(r.amenityType ?? 'restaurant') }}
+                </mat-icon>
+              </div>
+              <!-- Rank number (top 3 get special color) -->
+              <span class="text-[10px] font-black"
+                    [class]="idx === 0 ? 'text-amber-400' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-700' : 'text-slate-600'">
+                #{{ idx + 1 }}
+              </span>
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0 space-y-1.5">
+              <div class="flex items-start justify-between gap-2">
+                <h4 class="text-sm font-bold text-white leading-tight truncate group-hover:text-amber-300 transition-colors">
+                  {{ r.name }}
+                </h4>
+                <!-- Distance badge -->
+                @if (r.distance !== undefined) {
+                  <span class="text-xs font-black shrink-0 px-2 py-0.5 rounded-lg border
+                               {{ getDistanceColor(r.distance) }} bg-slate-950/50 border-white/5"
+                        [matTooltip]="r.distance + 'm từ vị trí của bạn'">
+                    📍 {{ formatDistance(r.distance) }}
+                  </span>
+                }
+              </div>
+
+              <!-- Cuisine + amenity type chips -->
+              <div class="flex items-center flex-wrap gap-1.5">
+                @if (r.amenityType) {
+                  <span class="text-[10px] px-2 py-0.5 rounded-lg bg-amber-500/10
+                               text-amber-400/80 border border-amber-500/20 font-medium">
+                    {{ getAmenityLabel(r.amenityType) }}
+                  </span>
+                }
+                @if (getCuisineDisplay(r.cuisine)) {
+                  <span class="text-[10px] px-2 py-0.5 rounded-lg bg-slate-800
+                               text-slate-400 border border-white/5">
+                    🍽️ {{ getCuisineDisplay(r.cuisine) }}
+                  </span>
+                }
+              </div>
+
+              <!-- Address -->
+              @if (r.address) {
+                <p class="text-[11px] text-slate-400 flex items-start gap-1 leading-snug">
+                  <mat-icon class="!w-3.5 !h-3.5 !text-xs shrink-0 mt-px text-slate-500">place</mat-icon>
+                  <span class="line-clamp-2">{{ r.address }}</span>
+                </p>
+              }
+
+              <!-- Opening hours + phone row -->
+              <div class="flex items-center flex-wrap gap-x-3 gap-y-1">
+                @if (r.openingHours) {
+                  <p class="text-[11px] text-emerald-400/80 flex items-center gap-1">
+                    <mat-icon class="!w-3 !h-3 !text-[11px]">schedule</mat-icon>
+                    {{ r.openingHours }}
+                  </p>
+                }
+                @if (r.phone) {
+                  <a [href]="'tel:' + r.phone"
+                     class="text-[11px] text-sky-400 hover:text-sky-300 flex items-center gap-1 transition-colors">
+                    <mat-icon class="!w-3 !h-3 !text-[11px]">call</mat-icon>
+                    {{ r.phone }}
+                  </a>
+                }
+              </div>
+
+              <!-- Navigate button -->
+              <button
+                (click)="openInGoogleMaps(r)"
+                [matTooltip]="'Mở Google Maps chỉ đường tới ' + r.name"
+                class="navigate-btn mt-1 w-full flex items-center justify-center gap-1.5
+                       py-2 rounded-xl text-[11px] font-semibold transition-all
+                       bg-slate-800/80 border border-white/8 text-slate-400
+                       hover:bg-blue-500/15 hover:border-blue-500/40 hover:text-blue-300
+                       active:scale-95"
+              >
+                <mat-icon class="!w-3.5 !h-3.5 !text-xs">directions</mat-icon>
+                Chỉ đường
+                <mat-icon class="!w-3 !h-3 !text-[11px] opacity-50">open_in_new</mat-icon>
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+
+  }
+
+  <!-- ============================================================ -->
+  <!-- OSM ATTRIBUTION FOOTER                                       -->
+  <!-- ============================================================ -->
+  <div class="osm-attribution text-center pt-2 border-t border-white/5">
+    <p class="text-[10px] text-slate-600 flex items-center justify-center gap-1">
+      <mat-icon class="!w-3 !h-3 !text-[11px]">map</mat-icon>
+      Dữ liệu quán ăn từ
+      <a href="https://www.openstreetmap.org" target="_blank" rel="noopener"
+         class="text-slate-500 hover:text-amber-400 underline underline-offset-2 transition-colors">
+        © OpenStreetMap contributors
+      </a>
+      · Powered by Overpass API
+    </p>
+  </div>
+
+</div>

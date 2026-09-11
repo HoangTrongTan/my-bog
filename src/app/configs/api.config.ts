@@ -6,7 +6,13 @@
 
 import { GENERATED_AUTH_API_KEY } from './env.generated';
 
-declare const process: any;
+declare const process: { env?: Record<string, string | undefined> } | undefined;
+
+interface RuntimeEnvWindow extends Window {
+  __ENV__?: { AUTH_API_KEY?: string; GEMINI_API_KEY?: string };
+  AUTH_API_KEY?: string;
+  GEMINI_API_KEY?: string;
+}
 
 export { GEMINI_AI_MODELS, GEMINI_API_BASE_URL } from '../constants/ai.constants';
 export { getGeminiApiUrl, callGeminiAiApi } from '../utils/ai.utils';
@@ -19,7 +25,7 @@ export const getGeminiApiKey = (): string => {
 
   // 2. Check window runtime environment variables
   if (typeof window !== 'undefined') {
-    const win = window as any;
+    const win = window as RuntimeEnvWindow;
     const envKey =
       win.__ENV__?.AUTH_API_KEY ||
       win.__ENV__?.GEMINI_API_KEY ||

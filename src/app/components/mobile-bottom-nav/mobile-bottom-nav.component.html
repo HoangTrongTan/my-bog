@@ -4,7 +4,7 @@
     
     <!-- Button 1: Home -->
     <a
-      routerLink="/"
+      [routerLink]="['/', path.HOME]"
       routerLinkActive="active-nav"
       [routerLinkActiveOptions]="{ exact: true }"
       (click)="audioService.playClickSound()"
@@ -16,7 +16,7 @@
 
     <!-- Button 2: About Me -->
     <a
-      routerLink="/about-me"
+      [routerLink]="['/', path.ABOUT_ME]"
       routerLinkActive="active-nav"
       (click)="audioService.playClickSound()"
       class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-slate-400 hover:text-white transition-all group cursor-pointer"
@@ -27,7 +27,7 @@
 
     <!-- Button 3: Projects -->
     <a
-      routerLink="/projects"
+      [routerLink]="['/', path.PROJECTS]"
       routerLinkActive="active-nav"
       (click)="audioService.playClickSound()"
       class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-slate-400 hover:text-white transition-all group relative cursor-pointer"
@@ -39,7 +39,7 @@
 
     <!-- Button 4: Skills -->
     <a
-      routerLink="/skills"
+      [routerLink]="['/', path.SKILLS]"
       routerLinkActive="active-nav"
       (click)="audioService.playClickSound()"
       class="flex flex-col items-center justify-center py-2 px-1 rounded-xl text-slate-400 hover:text-white transition-all group cursor-pointer"

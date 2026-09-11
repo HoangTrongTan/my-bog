@@ -19,19 +19,20 @@ import { ResponsiveBookComponent } from './responsive-book/responsive-book.compo
 
 // tạo next vói prev ý sau class là one, two, three ở flip-box
 export class AboutMeComponent implements OnInit, AfterViewInit {
-  @ViewChildren('leaf') leafs!: QueryList<ElementRef>;
+  @ViewChildren('leaf') leafs!: QueryList<ElementRef<HTMLElement>>;
   curentPage = 0;
   ngAfterViewInit() {}
 
   OnClick(next = true) {
-    let leaf: any;
+    let leaf: ElementRef<HTMLElement> | undefined;
     if (next) {
       if (this.curentPage >= this.leafs.length) return;
       leaf = this.leafs.get(this.curentPage);
       if (leaf) {
-        leaf.nativeElement.style.transform = 'rotate3d(0, 1, 0, -180deg)';
+        const currentLeaf = leaf;
+        currentLeaf.nativeElement.style.transform = 'rotate3d(0, 1, 0, -180deg)';
         setTimeout(() => {
-          leaf.nativeElement.style.zIndex = '60';
+          currentLeaf.nativeElement.style.zIndex = '60';
         }, 100)
       }
       this.curentPage++;
@@ -41,16 +42,18 @@ export class AboutMeComponent implements OnInit, AfterViewInit {
     this.curentPage--;
     leaf = this.leafs.get(this.curentPage);
     if (leaf) {
-      leaf.nativeElement.style.transform = 'rotate3d(0, 1, 0, 0deg)';
+      const currentLeaf = leaf;
+      const zIndexPage = this.curentPage;
+      currentLeaf.nativeElement.style.transform = 'rotate3d(0, 1, 0, 0deg)';
       setTimeout(() => {
-        leaf.nativeElement.style.zIndex = `${70 - this.curentPage * 10}`;
+        currentLeaf.nativeElement.style.zIndex = `${70 - zIndexPage * 10}`;
       }, 100);
     }
   }
 
   ngOnInit(): void {
     // make sure you have a canvas in the body
-    const canvas: any = document.getElementById('canvas3dhome');
+    const canvas = document.getElementById('canvas3dhome') as HTMLCanvasElement;
     // start the application and load the scene
     const spline = new Application(canvas);
     spline.load('https://prod.spline.design/0AgcNBmJ3guKmseE/scene.splinecode');

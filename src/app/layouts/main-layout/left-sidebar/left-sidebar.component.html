@@ -28,11 +28,16 @@
           cdkDrag
           class="group relative flex items-center w-full rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing"
         >
-          <!-- Drag Handle Icon (Visible on hover when expanded) -->
+          <!-- Drag Handle Icon (visible on hover, and on keyboard focus for non-mouse users).
+               Focusable + labeled so Angular CDK's built-in keyboard drag-drop (Space to pick up,
+               Arrow keys to move, Space to drop) is actually reachable without a mouse. -->
           <div
             *ngIf="openMenu()"
             cdkDragHandle
-            class="absolute left-1 z-10 opacity-0 group-hover:opacity-60 text-slate-400 cursor-grab p-1"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="'Kéo thả hoặc dùng phím mũi tên để đổi thứ tự ' + item.toolltip"
+            class="absolute left-1 z-10 opacity-0 group-hover:opacity-60 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-theme-accent text-slate-400 cursor-grab p-1"
           >
             <mat-icon class="!w-4 !h-4 !text-sm">drag_indicator</mat-icon>
           </div>

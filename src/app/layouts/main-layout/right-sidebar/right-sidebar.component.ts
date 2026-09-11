@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -6,6 +6,8 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { AudioService } from '../../../services/audio.service';
 import { ThemeService } from '../../../services/theme.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { PATH_CONFIG } from '../../../configs/path';
 
 @Component({
   selector: 'app-right-sidebar',
@@ -13,10 +15,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './right-sidebar.component.html',
   styleUrl: './right-sidebar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RightSidebarComponent {
   public audioService = inject(AudioService);
   public themeService = inject(ThemeService);
+  public router = inject(Router);
 
   @Output() openFortune = new EventEmitter<void>();
   @Output() openStudio = new EventEmitter<void>();
@@ -35,5 +39,10 @@ export class RightSidebarComponent {
   public onTodoListClick() {
     this.openTodoList.emit();
     this.audioService.playClickSound();
+  }
+
+  public navigateToAdmin() {
+    this.audioService.playClickSound();
+    this.router.navigate(['/' + PATH_CONFIG.ADMIN_FEEDBACK]);
   }
 }

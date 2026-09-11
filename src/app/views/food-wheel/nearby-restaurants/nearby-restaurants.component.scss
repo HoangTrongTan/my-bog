@@ -1,0 +1,125 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.nearby-restaurants-panel {
+
+  /* Custom scrollbar for the restaurant list */
+  .custom-nr-scrollbar {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(245, 158, 11, 0.35) rgba(15, 23, 42, 0.5);
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(245, 158, 11, 0.35);
+      border-radius: 10px;
+      &:hover {
+        background: rgba(245, 158, 11, 0.6);
+      }
+    }
+  }
+
+  /* Skeleton shimmer animation */
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: -400px 0;
+    }
+    100% {
+      background-position: 400px 0;
+    }
+  }
+
+  .skeleton-box {
+    background: linear-gradient(
+      90deg,
+      rgba(30, 41, 59, 0.8) 25%,
+      rgba(51, 65, 85, 0.5) 50%,
+      rgba(30, 41, 59, 0.8) 75%
+    );
+    background-size: 800px 100%;
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+    border-radius: 8px;
+  }
+
+  /* Restaurant card hover lift effect */
+  .restaurant-card {
+    transform: translateY(0);
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .navigate-btn {
+      transition: background-color 0.2s ease, border-color 0.2s ease,
+                  color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+      }
+    }
+  }
+
+  /* Location header gradient pulse (loading state) */
+  .location-header-card {
+    transition: border-color 0.3s ease;
+  }
+
+  /* Filter chip active glow */
+  .filter-bar-card button:not(.disabled-state) {
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+
+  /* OSM Attribution */
+  .osm-attribution a {
+    &:hover {
+      text-decoration-color: rgba(245, 158, 11, 0.6);
+    }
+  }
+}
+
+/* Character theme overrides — consistent with food-wheel styles */
+body.style-ninja .nearby-restaurants-panel {
+  .restaurant-card:hover {
+    border-color: rgba(236, 72, 153, 0.4);
+  }
+  .location-header-card {
+    border-color: rgba(236, 72, 153, 0.2);
+  }
+}
+
+body.style-robot .nearby-restaurants-panel {
+  .restaurant-card:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+  }
+  .location-header-card {
+    border-color: rgba(6, 182, 212, 0.2);
+  }
+}
+
+body.style-quan-van-truong .nearby-restaurants-panel {
+  .restaurant-card:hover {
+    border-color: rgba(234, 179, 8, 0.4);
+  }
+}
+
+body.style-cosmic .nearby-restaurants-panel {
+  .restaurant-card:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+  }
+  .location-header-card {
+    border-color: rgba(168, 85, 247, 0.2);
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
 import { IconBarsToggle } from '../../../components/icon-bars-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,6 +27,7 @@ import { AudioService } from '../../../services/audio.service';
   ],
   templateUrl: './left-sidebar.component.html',
   styleUrl: './left-sidebar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeftSidebarComponent {
   public themeService = inject(ThemeService);

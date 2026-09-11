@@ -1,7 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   OnInit,
   OnDestroy,
+  AfterViewInit,
   ViewChild,
   ElementRef,
   HostListener,
@@ -18,6 +20,9 @@ import { WeatherService, WeatherData } from '../../services/weather.service';
 import { FoodAiService, FoodItem, DailyMealPlan, PRESET_MENUS } from '../../services/food-ai.service';
 import { ThemeService } from '../../services/theme.service';
 import { AudioService } from '../../services/audio.service';
+import { drawFoodWheel } from './wheel-canvas-renderer';
+import { ConfettiEffect } from './confetti-effect';
+import { NearbyRestaurantsComponent } from './nearby-restaurants/nearby-restaurants.component';
 
 @Component({
   selector: 'app-food-wheel',
@@ -28,11 +33,13 @@ import { AudioService } from '../../services/audio.service';
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
+    NearbyRestaurantsComponent,
   ],
   templateUrl: './food-wheel.component.html',
   styleUrl: './food-wheel.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FoodWheelComponent implements OnInit, OnDestroy {
+export class FoodWheelComponent implements OnInit, OnDestroy, AfterViewInit {
   public weatherService = inject(WeatherService);
   public foodAiService = inject(FoodAiService);
   public themeService = inject(ThemeService);
@@ -41,7 +48,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   @ViewChild('wheelCanvas', { static: false }) wheelCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('confettiCanvas', { static: false }) confettiCanvas!: ElementRef<HTMLCanvasElement>;
 
-  public activeTab = signal<'wheel' | 'planner' | 'dishes'>('wheel');
+  public activeTab = signal<'wheel' | 'planner' | 'dishes' | 'nearby'>('wheel');
   public presetMenus = PRESET_MENUS;
   public selectedPresetId = signal<string>('ai');
 
@@ -65,6 +72,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   private spinVelocity = 0;
   private animFrameId: number | null = null;
   private lastTickIndex = -1;
+  private resizeDebounceId: ReturnType<typeof setTimeout> | null = null;
 
   // Touch Gesture Drag & Flick Variables
   private isDragging = false;
@@ -74,9 +82,8 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   private lastAngleForVelocity = 0;
   private touchVelocity = 0;
 
-  // Particle systems for win fireworks
-  private particles: { x: number; y: number; vx: number; vy: number; color: string; radius: number; alpha: number }[] = [];
-  private confettiAnimId: number | null = null;
+  // Win-screen celebration effect
+  private readonly confetti = new ConfettiEffect();
 
   // Current Character Style Pointer Config
   public characterPointer = computed(() => {
@@ -103,7 +110,10 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize')
   onWindowResize(): void {
-    this.drawWheel();
+    // Debounce: a full wheel redraw involves gradients/shadows/text per slice,
+    // so redrawing on every resize tick would jank a drag-resize.
+    if (this.resizeDebounceId) clearTimeout(this.resizeDebounceId);
+    this.resizeDebounceId = setTimeout(() => this.drawWheel(), 150);
   }
 
   ngOnInit(): void {
@@ -113,7 +123,8 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.animFrameId) cancelAnimationFrame(this.animFrameId);
-    if (this.confettiAnimId) cancelAnimationFrame(this.confettiAnimId);
+    this.confetti.destroy();
+    if (this.resizeDebounceId) clearTimeout(this.resizeDebounceId);
   }
 
   ngAfterViewInit(): void {
@@ -178,7 +189,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   /**
    * Update dish item at index
    */
-  public updateDish(index: number, field: keyof FoodItem, value: any): void {
+  public updateDish<K extends keyof FoodItem>(index: number, field: K, value: FoodItem[K]): void {
     const list = [...this.dishes()];
     if (list[index]) {
       list[index] = { ...list[index], [field]: value };
@@ -223,7 +234,8 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
       relAngle += 2 * Math.PI;
     }
 
-    return Math.floor(relAngle / sliceAngle) % count;
+    // Add 0.0001 epsilon to prevent floating point precision issues causing Math.floor to round down incorrectly (e.g. 6.999999 -> 6 instead of 7)
+    return Math.floor((relAngle / sliceAngle) + 0.0001) % count;
   }
 
   /**
@@ -355,104 +367,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
    */
   public drawWheel(): void {
     if (!this.wheelCanvas) return;
-    const canvas = this.wheelCanvas.nativeElement;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const size = canvas.width;
-    const center = size / 2;
-    const outerRadius = size / 2 - 15;
-    const innerRadius = Math.round(size * 0.08); // Responsive inner radius
-    const list = this.dishes();
-    const count = list.length;
-    if (count === 0) return;
-
-    ctx.clearRect(0, 0, size, size);
-
-    const sliceAngle = (2 * Math.PI) / count;
-
-    // 1. Draw Outer Glow Ring
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(center, center, outerRadius + 8, 0, 2 * Math.PI);
-    ctx.strokeStyle = this.characterPointer().color;
-    ctx.lineWidth = 6;
-    ctx.shadowColor = this.characterPointer().color;
-    ctx.shadowBlur = 15;
-    ctx.stroke();
-    ctx.restore();
-
-    // 2. Draw Slices
-    for (let i = 0; i < count; i++) {
-      const item = list[i];
-      const startAngle = this.currentAngle + i * sliceAngle;
-      const endAngle = startAngle + sliceAngle;
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(center, center);
-      ctx.arc(center, center, outerRadius, startAngle, endAngle);
-      ctx.closePath();
-
-      // Gradient Fill for Premium Aesthetic
-      const midAngle = startAngle + sliceAngle / 2;
-      const gradX = center + Math.cos(midAngle) * outerRadius;
-      const gradY = center + Math.sin(midAngle) * outerRadius;
-      const grad = ctx.createLinearGradient(center, center, gradX, gradY);
-      grad.addColorStop(0, '#1e293b');
-      grad.addColorStop(0.4, item.color || '#3b82f6');
-      grad.addColorStop(1, this.adjustBrightness(item.color || '#3b82f6', -30));
-
-      ctx.fillStyle = grad;
-      ctx.fill();
-
-      // Slice Border
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Draw Dish Text + Emoji
-      ctx.translate(center, center);
-      ctx.rotate(midAngle);
-
-      ctx.textAlign = 'right';
-      ctx.fillStyle = '#ffffff';
-      const fontSize = Math.max(11, Math.round(outerRadius * 0.062));
-      ctx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-      ctx.shadowBlur = 4;
-
-      // Truncate long dish name
-      const maxTextLen = size < 400 ? 11 : 14;
-      const displayName = item.name.length > maxTextLen ? item.name.substring(0, maxTextLen) + '...' : item.name;
-      const textOffset = outerRadius - Math.round(outerRadius * 0.08);
-      ctx.fillText(`${item.emoji || '🍲'} ${displayName}`, textOffset, fontSize / 3);
-
-      ctx.restore();
-    }
-
-    // 3. Draw Center Hub Cap
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(center, center, innerRadius, 0, 2 * Math.PI);
-    const hubGrad = ctx.createRadialGradient(center, center, 5, center, center, innerRadius);
-    hubGrad.addColorStop(0, '#ffffff');
-    hubGrad.addColorStop(0.7, '#0f172a');
-    hubGrad.addColorStop(1, '#020617');
-    ctx.fillStyle = hubGrad;
-    ctx.shadowColor = this.characterPointer().color;
-    ctx.shadowBlur = 10;
-    ctx.fill();
-    ctx.strokeStyle = this.characterPointer().color;
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
-    // Center Emoji or Icon
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = `${Math.round(innerRadius * 0.6)}px sans-serif`;
-    ctx.fillText('🍱', center, center);
-    ctx.restore();
+    drawFoodWheel(this.wheelCanvas.nativeElement, this.dishes(), this.currentAngle, this.characterPointer().color);
   }
 
   /**
@@ -460,59 +375,7 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
    */
   private launchConfetti(): void {
     if (!this.confettiCanvas) return;
-    const canvas = this.confettiCanvas.nativeElement;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = canvas.parentElement?.clientWidth || 600;
-    canvas.height = canvas.parentElement?.clientHeight || 600;
-
-    const colors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#38bdf8'];
-    this.particles = [];
-
-    for (let i = 0; i < 90; i++) {
-      this.particles.push({
-        x: canvas.width / 2,
-        y: canvas.height / 2,
-        vx: (Math.random() - 0.5) * 14,
-        vy: (Math.random() - 0.8) * 14,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        radius: Math.random() * 5 + 3,
-        alpha: 1,
-      });
-    }
-
-    const renderParticles = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let aliveCount = 0;
-
-      for (let p of this.particles) {
-        if (p.alpha <= 0) continue;
-        aliveCount++;
-
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.25; // gravity
-        p.alpha -= 0.015;
-
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, p.alpha);
-        ctx.fillStyle = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.restore();
-      }
-
-      if (aliveCount > 0) {
-        this.confettiAnimId = requestAnimationFrame(renderParticles);
-      } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    };
-
-    if (this.confettiAnimId) cancelAnimationFrame(this.confettiAnimId);
-    this.confettiAnimId = requestAnimationFrame(renderParticles);
+    this.confetti.launch(this.confettiCanvas.nativeElement);
   }
 
   /**
@@ -565,28 +428,5 @@ export class FoodWheelComponent implements OnInit, OnDestroy {
   public showCopiedToast(msg?: string): void {
     this.copiedToast.set(true);
     setTimeout(() => this.copiedToast.set(false), 2500);
-  }
-
-  /**
-   * Color brightness helper
-   */
-  private adjustBrightness(hex: string, percent: number): string {
-    let num = parseInt(hex.replace('#', ''), 16);
-    let amt = Math.round(2.55 * percent);
-    let R = (num >> 16) + amt;
-    let G = ((num >> 8) & 0x00ff) + amt;
-    let B = (num & 0x0000ff) + amt;
-
-    return (
-      '#' +
-      (
-        0x1000000 +
-        (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
-        (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
-        (B < 255 ? (B < 1 ? 0 : B) : 255)
-      )
-        .toString(16)
-        .slice(1)
-    );
   }
 }

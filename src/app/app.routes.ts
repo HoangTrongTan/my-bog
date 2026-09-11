@@ -4,7 +4,6 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { HomeComponent } from './views/home/home.component';
 import { ViewMyCvComponent } from './views/view-my-cv/view-my-cv.component';
 import { PATH_CONFIG } from './configs/path';
-import { AboutMeComponent } from './views/about-me/about-me.component';
 
 export const routes: Routes = [
   {
@@ -27,7 +26,10 @@ export const routes: Routes = [
       },
       {
         path: PATH_CONFIG.ABOUT_ME,
-        component: AboutMeComponent,
+        loadComponent: () =>
+          import('./views/about-me/about-me.component').then(
+            (mod) => mod.AboutMeComponent
+          ),
       },
       {
         path: PATH_CONFIG.CERTIFICATIONS,

@@ -2,3 +2,29 @@
 <div class="loader-fixed" [ngClass]="{ isHide: !isLoading() }">
     <loader />
 </div>
+
+<!-- GLOBAL THEME EFFECTS OVERLAY -->
+<div class="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+  @for (effect of activeThemeEffects(); track effect.id) {
+    @if (effect.type === 'style-ninja') {
+      <div class="absolute w-12 h-12 text-4xl animate-shuriken-fly flex items-center justify-center text-pink-500 drop-shadow-[0_0_15px_#ec4899]" [ngStyle]="effect.style">
+        <mat-icon class="!w-12 !h-12 !text-[48px]">change_history</mat-icon>
+      </div>
+    }
+    @if (effect.type === 'style-horror') {
+      <div class="absolute text-[80px] sm:text-[120px] animate-jumpscare drop-shadow-[0_0_30px_red]" [ngStyle]="effect.style">
+        👻
+      </div>
+    }
+    @if (effect.type === 'style-quan-van-truong') {
+      <div class="absolute left-0 right-0 h-[200px] flex items-center justify-center animate-slash z-[110]" [ngStyle]="effect.style">
+        <div class="w-[150vw] h-4 bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_40px_#eab308]"></div>
+      </div>
+    }
+    @if (effect.type === 'style-robot') {
+      <div class="absolute animate-glitch w-32 h-32 border-[3px] border-cyan-400 rounded-full bg-cyan-500/30 flex items-center justify-center shadow-[0_0_30px_#06b6d4]" [ngStyle]="effect.style">
+        <mat-icon class="text-cyan-300 !w-16 !h-16 !text-[64px]">memory</mat-icon>
+      </div>
+    }
+  }
+</div>

@@ -126,6 +126,7 @@ export class FeedbackService {
    * Body: { action: "delete", id: string }
    */
   public async deleteFeedback(id: string): Promise<boolean> {
+    this.errorSignal.set(null);
     try {
       const requestBody = JSON.stringify({
         action: 'delete',
@@ -151,9 +152,11 @@ export class FeedbackService {
         this.feedbackListSignal.update((list) => list.filter((item) => item.id !== id));
         return true;
       }
+      this.errorSignal.set(resJson.message || 'Xóa phản hồi thất bại');
       return false;
-    } catch (err) {
+    } catch (err: any) {
       console.error('deleteFeedback Error:', err);
+      this.errorSignal.set(err.message || 'Không thể xóa phản hồi');
       return false;
     }
   }
@@ -165,6 +168,7 @@ export class FeedbackService {
    * Body: { action: "multi_delete", ids: string[] }
    */
   public async multiDeleteFeedback(ids: string[]): Promise<boolean> {
+    this.errorSignal.set(null);
     try {
       const requestBody = JSON.stringify({
         action: 'multi_delete',
@@ -190,9 +194,11 @@ export class FeedbackService {
         this.feedbackListSignal.update((list) => list.filter((item) => !idSet.has(item.id)));
         return true;
       }
+      this.errorSignal.set(resJson.message || 'Xóa các phản hồi đã chọn thất bại');
       return false;
-    } catch (err) {
+    } catch (err: any) {
       console.error('multiDeleteFeedback Error:', err);
+      this.errorSignal.set(err.message || 'Không thể xóa các phản hồi đã chọn');
       return false;
     }
   }

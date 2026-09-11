@@ -7,9 +7,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  overflow-y: overlay;
-  scrollbar-width: none;
+  position: sticky;       /* Stick to top so content scroll never covers it */
+  top: 0;
+  z-index: 100;           /* High enough to sit above page content layers */
+  flex-shrink: 0;         /* Never compress the header height */
+  overflow: visible;      /* Don't clip the avatar dropdown */
   .menu-toggle {
     color: #ececec;
     display: flex;
@@ -17,9 +19,13 @@
     align-items: center;
     .icon-menu-bar {
       padding: 6px;
+      cursor: pointer;
+      position: relative;
+      z-index: 101;       /* Ensure the tap target is always on top */
     }
     .icon-home {
       padding: 6px;
+      cursor: pointer;
     }
   }
   .avatar {

@@ -1,5 +1,7 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  HostListener,
   signal,
   ViewChild
 } from '@angular/core';
@@ -11,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { MENU } from '../../configs/menu-sidebar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { A11yModule } from '@angular/cdk/a11y';
 import { ParticleWeatherComponent } from '../../components/particle-weather/particle-weather.component';
 import { CustomCursorComponent } from '../../components/custom-cursor/custom-cursor.component';
 import { ThemeCharacterSelectorComponent } from '../../components/theme-character-selector/theme-character-selector.component';
@@ -36,10 +39,12 @@ import { TodoListModalComponent } from '../../components/todo-list-modal/todo-li
     ThemeCharacterSelectorComponent,
     FortuneModalComponent,
     MobileBottomNavComponent,
-    TodoListModalComponent
+    TodoListModalComponent,
+    A11yModule
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayoutComponent {
   @ViewChild('fortuneModal') fortuneModal!: FortuneModalComponent;
@@ -51,6 +56,13 @@ export class MainLayoutComponent {
 
   clickMenuOpen(status: boolean) {
     this.openMenu.set(status);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey() {
+    if (this.openMenu()) {
+      this.clickMenuOpen(false);
+    }
   }
 
   openFortuneModal() {
