@@ -44,7 +44,6 @@ yarn-error.log
 
 # Visual Studio Code
 
-.vscode/*
 
 !.vscode/settings.json
 
@@ -85,7 +84,5 @@ Thumbs.db
 config.bat
 
 # Environment & API Key Secrets
-.env
-.env.*
 !.env.example
 src/environments/environment*.ts

@@ -1,0 +1,98 @@
+<div class="space-y-4 sm:space-y-6">
+
+  <!-- Planner Actions Bar -->
+  <div class="bg-slate-900/60 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+    <div class="min-w-0 w-full">
+      <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+        <mat-icon class="text-amber-400 !w-5 !h-5 !text-xl shrink-0">calendar_month</mat-icon>
+        <span class="truncate">Lịch Ăn Cả Tuần (7 Ngày)</span>
+      </h2>
+      <p class="text-xs text-slate-400 mt-0.5 truncate">AI cá nhân hóa thực đơn Sáng - Trưa - Tối - Ăn vặt theo thời tiết</p>
+    </div>
+
+    <div class="flex items-center gap-2.5 w-full sm:w-auto">
+      <button
+        (click)="fetchAiSuggestions.emit()"
+        [disabled]="isAiLoading()"
+        class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg transition-all min-h-[40px]"
+      >
+        <mat-icon class="!w-4 !h-4 !text-sm" [class.animate-spin]="isAiLoading()">auto_awesome</mat-icon>
+        <span>Tạo Lịch Tuần Mới</span>
+      </button>
+
+      <button
+        (click)="copyToClipboard.emit()"
+        class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-2 border border-white/10 transition-all min-h-[40px]"
+      >
+        <mat-icon class="!w-4 !h-4 !text-sm text-slate-300">content_copy</mat-icon>
+        <span>Sao Chép</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Day Filter Chips Bar -->
+  <div class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar">
+    <span class="text-[11px] text-slate-400 font-semibold shrink-0 mr-1">Lọc ngày:</span>
+    <button
+      (click)="daySelected.emit(-1)"
+      [class]="selectedPlannerDay() === -1 ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800/80 text-slate-400 hover:text-white'"
+      class="px-3 py-1.5 rounded-xl text-xs shrink-0 transition-all border border-white/5"
+    >Tất cả (7 ngày)</button>
+
+    @for (day of weeklyPlan(); track day.dayName; let dIdx = $index) {
+      <button
+        (click)="daySelected.emit(dIdx)"
+        [class]="selectedPlannerDay() === dIdx ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800/80 text-slate-400 hover:text-white'"
+        class="px-3 py-1.5 rounded-xl text-xs shrink-0 transition-all border border-white/5"
+      >{{ day.dayName }}</button>
+    }
+  </div>
+
+  <!-- 7 Days Grid Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+    @for (day of weeklyPlan(); track day.dayName; let dIdx = $index) {
+      @if (selectedPlannerDay() === -1 || selectedPlannerDay() === dIdx) {
+        <div class="day-card bg-slate-900/60 p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/10 shadow-xl space-y-3.5 hover:border-amber-500/40 transition-all">
+
+          <div class="flex items-center justify-between border-b border-white/5 pb-2.5">
+            <h3 class="text-sm sm:text-base font-extrabold text-amber-300 flex items-center gap-1.5">
+              <mat-icon class="!w-4 !h-4 !text-sm text-amber-400">today</mat-icon>
+              {{ day.dayName }}
+            </h3>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-white/5 font-mono">
+              {{ day.dateStr }}
+            </span>
+          </div>
+
+          <!-- Meals List -->
+          <div class="space-y-2 text-xs">
+            <div class="p-2 rounded-xl bg-slate-950/60 border border-white/5">
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-0.5">🌅 Sáng</span>
+              <p class="font-semibold text-slate-200 truncate">{{ day.breakfast }}</p>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-950/60 border border-white/5">
+              <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block mb-0.5">☀️ Trưa</span>
+              <p class="font-semibold text-slate-200 truncate">{{ day.lunch }}</p>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-950/60 border border-white/5">
+              <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider block mb-0.5">🌙 Tối</span>
+              <p class="font-semibold text-slate-200 truncate">{{ day.dinner }}</p>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-950/60 border border-white/5">
+              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-0.5">🍡 Ăn Vặt</span>
+              <p class="font-semibold text-slate-200 truncate">{{ day.snack }}</p>
+            </div>
+          </div>
+
+          <!-- Health Tip -->
+          <div class="pt-2 border-t border-white/5 text-[10px] sm:text-[11px] text-slate-400 flex items-start gap-1.5">
+            <span class="shrink-0 text-amber-400">💡</span>
+            <p class="italic leading-snug line-clamp-2">{{ day.healthTip }}</p>
+          </div>
+
+        </div>
+      }
+    }
+  </div>
+
+</div>
